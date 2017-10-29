@@ -1,6 +1,8 @@
 import React from 'react';
+import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import MenuItem from './MenuItem';
 
 const StyledHeader = styled.header`
   background: #cf3a43;
@@ -28,27 +30,52 @@ const StyledHeader = styled.header`
     }
   }
 `;
-const Header = () => (
+
+const MenuItems = {
+  unit: [
+    {
+      to: '/units',
+      text: 'My Unit',
+    },
+    {
+      to: '/elections',
+      text: 'My Election',
+    },
+  ],
+  chapter: [
+    {
+      to: '/units',
+      text: 'Units',
+    },
+    {
+      to: '/elections',
+      text: 'Elections',
+    },
+    {
+      to: '/elections/schedule',
+      text: 'Schedule Elections',
+    },
+  ],
+  loggedOut: [
+    {
+      to: '/register',
+      text: 'Register',
+    },
+  ],
+};
+
+const Header = ({ menu }) => (
   <StyledHeader>
     <h1>
       <Link to="/">Tahosa Lodge Elections</Link>
     </h1>
 
-    <ul>
-      <li>
-        <Link to="/unit-information">Unit Information</Link>
-      </li>
-      <li>
-        <Link to="/request-election">Calendar</Link>
-      </li>
-      <li>
-        <Link to="/request-election">Election List</Link>
-      </li>
-      <li>
-        <Link to="/request-election">Join Election Team</Link>
-      </li>
-    </ul>
+    <ul>{MenuItems[menu].map(item => <MenuItem to={item.to} text={item.text} />)}</ul>
   </StyledHeader>
 );
+
+Header.propTypes = {
+  menu: propTypes.string.isRequired,
+};
 
 export default Header;

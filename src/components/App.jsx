@@ -16,7 +16,7 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Header />
+          <Header menu="loggedOut" />
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/unit-information" component={UnitInformation} />
