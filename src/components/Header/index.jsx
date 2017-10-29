@@ -36,7 +36,7 @@ const Header = () => (
 
     <ul>
       <li>
-        <Link to="/request-election">Request Election</Link>
+        <Link to="/unit-information">Unit Information</Link>
       </li>
       <li>
         <Link to="/request-election">Calendar</Link>
