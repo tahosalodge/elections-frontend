@@ -3,6 +3,7 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
+import { connect } from 'react-redux';
 import Header from './Header';
 import Home from './Home';
 import UnitInformation from './Forms/UnitInformation';
@@ -14,10 +15,10 @@ import Election from './Election';
 import Register from './Forms/Register';
 import Login from './Forms/Login';
 
-const App = ({ history }) => (
+const App = ({ history, capability }) => (
   <ConnectedRouter history={history}>
     <div>
-      <Header menu="loggedOut" />
+      <Header menu={capability} />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/unit-information" component={UnitInformation} />
@@ -35,6 +36,11 @@ const App = ({ history }) => (
 
 App.propTypes = {
   history: propTypes.object.isRequired, // eslint-disable-line
+  capability: propTypes.string.isRequired,
 };
 
-export default App;
+const mapStateToProps = state => ({
+  capability: state.login.capability,
+});
+
+export default connect(mapStateToProps, null)(App);

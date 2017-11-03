@@ -7,6 +7,7 @@ const initialState = {
   successful: false,
   messages: [],
   errors: [],
+  capability: 'loggedOut',
 };
 
 // Reducer
@@ -14,31 +15,30 @@ export default function loginReducer(state = initialState, action) {
   switch (action.type) {
     case 'LOGIN_REQUESTING':
       return {
+        ...state,
         requesting: true,
         successful: false,
-        messages: [{ body: 'Signing up...', time: new Date() }],
-        errors: [],
       };
 
     case 'LOGIN_SUCCESS':
       return {
-        errors: [],
+        ...state,
         requesting: false,
         successful: true,
         token: action.response.token,
+        capability: action.response.capability,
       };
 
     case 'LOGIN_ERROR':
       return {
+        ...state,
         errors: state.errors.concat([
           {
             body: action.error.toString(),
             time: new Date(),
           },
         ]),
-        messages: [],
         requesting: false,
-        successful: false,
       };
 
     default:
