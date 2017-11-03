@@ -1,14 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import createHistory from 'history/createBrowserHistory';
+
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
-import store from './redux/store';
+import configureStore from './redux/store';
+
+const history = createHistory();
+const store = configureStore(history);
 
 const Root = () => (
   // eslint-disable-next-line
   <Provider store={store}>
-    <App />
+    <App history={history} />
   </Provider>
 );
 
