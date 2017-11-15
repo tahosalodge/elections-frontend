@@ -8,6 +8,8 @@ const initialState = {
   messages: [],
   errors: [],
   capability: 'loggedOut',
+  chapter: null,
+  unit: null,
 };
 
 // Reducer
@@ -27,6 +29,7 @@ export default function loginReducer(state = initialState, action) {
         successful: true,
         token: action.response.token,
         capability: action.response.capability,
+        chapter: action.response.chapter,
       };
 
     case 'LOGIN_ERROR':
@@ -55,6 +58,12 @@ export function loginRequest({ email, password }) {
   };
 }
 
+export function loginVerifyRequest() {
+  return {
+    type: 'LOGIN_CHECK_TOKEN',
+  };
+}
+
 // API Request
 function loginApi(email, password) {
   return fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
@@ -66,6 +75,20 @@ function loginApi(email, password) {
       email,
       password,
     }),
+  })
+    .then(handleApiErrors)
+    .then(response => response.json())
+    .then(json => json)
+    .catch((error) => {
+      throw error;
+    });
+}
+
+function tokenVerify(token) {
+  return fetch(`${process.env.REACT_APP_API_URL}/auth/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   })
     .then(handleApiErrors)
     .then(response => response.json())
@@ -88,6 +111,17 @@ function* loginFlow(action) {
   }
 }
 
+function* checkToken() {
+  try {
+    const token = localStorage.getItem('electionToken');
+    const response = yield call(tokenVerify, token);
+    yield put({ type: 'LOGIN_SUCCESS', response });
+  } catch (error) {
+    yield put({ type: 'LOGIN_ERROR', error });
+  }
+}
+
 export function* loginSaga() {
+  yield takeLatest('LOGIN_CHECK_TOKEN', checkToken);
   yield takeLatest('LOGIN_REQUESTING', loginFlow);
 }
