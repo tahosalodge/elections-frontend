@@ -2,6 +2,8 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 
+import { CHAPTERS } from '../../constants';
+
 const UnitInformation = (props) => {
   const {
     handleSubmit, pristine, reset, submitting,
@@ -18,8 +20,9 @@ const UnitInformation = (props) => {
           <label htmlFor="district">District</label>
           <Field type="select" id="district" name="district" component="select">
             <option>---</option>
-            <option value="spirit-eagle">Pioneer Trails</option>
-            <option value="spirit-eagle">Pioneer Trails</option>
+            {Object.keys(CHAPTERS).map(chapter => (
+              <option value={chapter}>{CHAPTERS[chapter].district}</option>
+            ))}
           </Field>
         </div>
         <div>
