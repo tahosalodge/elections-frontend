@@ -74,7 +74,11 @@ const Header = ({ menu }) => (
       <Link to="/">Tahosa Lodge Elections</Link>
     </h1>
 
-    <ul>{MenuItems[menu].map(item => <MenuItem to={item.to} text={item.text} />)}</ul>
+    <ul>
+      {MenuItems[menu].map(item => (
+        <MenuItem key={`menuItem${item.to}`} to={item.to} text={item.text} />
+      ))}
+    </ul>
   </StyledHeader>
 );
 
