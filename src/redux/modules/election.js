@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import handleApiErrors from '../helpers/handleApiErrors';
+import { apiRequest } from '../helpers/api';
 
 const initialState = {
   requesting: false,
@@ -52,27 +52,11 @@ export function electionRequest({ id }) {
   };
 }
 
-// API Request
-function electionApi(id) {
-  return fetch(`${process.env.REACT_APP_API_URL}/elections/${id}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(handleApiErrors)
-    .then(response => response.json())
-    .then(json => json)
-    .catch((error) => {
-      throw error;
-    });
-}
-
 // Saga
 function* electionFlow(action) {
   try {
     const { id } = action.payload;
-    const response = yield call(electionApi, id);
+    const response = yield call(apiRequest, `/elections/${id}`);
     yield put({ type: 'ELECTION_SUCCESS', response });
   } catch (error) {
     yield put({ type: 'ELECTION_ERROR', error });

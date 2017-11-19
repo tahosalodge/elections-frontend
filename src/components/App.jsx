@@ -17,7 +17,7 @@ import ElectionList from './ElectionList';
 import Election from './Election';
 import Register from './Forms/Register';
 import Login from './Forms/Login';
-import { loginVerifyRequest } from '../redux/modules/login';
+import { userVerifyRequest } from '../redux/modules/user';
 
 const Page = styled.div`
   max-width: 1200px;
@@ -31,7 +31,7 @@ const Page = styled.div`
 
 class App extends React.PureComponent {
   componentWillMount() {
-    this.props.loginVerifyRequest();
+    this.props.userVerifyRequest();
   }
   render() {
     const { history, capability } = this.props;
@@ -63,11 +63,11 @@ class App extends React.PureComponent {
 App.propTypes = {
   history: propTypes.object.isRequired, // eslint-disable-line
   capability: propTypes.string.isRequired,
-  loginVerifyRequest: propTypes.func.isRequired,
+  userVerifyRequest: propTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  capability: state.login.capability,
+  capability: state.user.capability,
 });
 
-export default connect(mapStateToProps, { loginVerifyRequest })(App);
+export default connect(mapStateToProps, { userVerifyRequest })(App);

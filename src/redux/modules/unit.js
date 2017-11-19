@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import handleApiErrors from '../helpers/handleApiErrors';
+import { apiRequest } from '../helpers/api';
 
 const initialState = {
   requesting: false,
@@ -51,26 +51,10 @@ export function unitsRequest() {
   };
 }
 
-// API Request
-function unitApi() {
-  return fetch(`${process.env.REACT_APP_API_URL}/units/`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(handleApiErrors)
-    .then(response => response.json())
-    .then(json => json)
-    .catch((error) => {
-      throw error;
-    });
-}
-
 // Saga
 function* unitFlow() {
   try {
-    const response = yield call(unitApi);
+    const response = yield call(apiRequest, '/units');
     yield put({ type: 'UNITS_SUCCESS', response });
   } catch (error) {
     yield put({ type: 'UNITS_ERROR', error });
