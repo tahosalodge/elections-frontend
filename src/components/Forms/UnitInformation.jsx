@@ -21,7 +21,9 @@ const UnitInformation = (props) => {
           <Field type="select" id="district" name="district" component="select">
             <option>---</option>
             {Object.keys(CHAPTERS).map(chapter => (
-              <option value={chapter}>{CHAPTERS[chapter].district}</option>
+              <option key={`option-${chapter}`} value={chapter}>
+                {CHAPTERS[chapter].district}
+              </option>
             ))}
           </Field>
         </div>
