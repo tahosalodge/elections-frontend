@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { loginRequest } from '../../redux/modules/login';
+import { loginRequest } from '../../redux/modules/user';
 
 class Login extends React.Component {
   constructor(props) {
@@ -54,7 +54,7 @@ Login.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  login: state.login,
+  login: state.user,
 });
 
 const connected = connect(mapStateToProps, { loginRequest })(Login);
