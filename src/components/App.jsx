@@ -9,7 +9,8 @@ import styled from 'styled-components';
 import Header from './Header';
 import Home from './Home';
 import UnitInformation from './Forms/UnitInformation';
-import Unit from './Unit';
+import Units from './Units';
+import UnitLanding from './Units/UnitLanding';
 import ElectionForm from './Forms/Election';
 import Candidate from './Forms/Candidate';
 import Nomination from './Forms/Nomination';
@@ -43,8 +44,8 @@ class App extends React.PureComponent {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/units/new" component={UnitInformation} />
-              <Route path="/units/:id" component={Unit} />
-              <Route path="/units/" component={Unit} />
+              <Route path="/units/:id" component={UnitLanding} />
+              <Route path="/units/" component={Units} />
               <Route path="/request-election" component={ElectionForm} />
               <Route path="/candidate" component={Candidate} />
               <Route path="/nomination" component={Nomination} />
