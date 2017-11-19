@@ -12,6 +12,6 @@ const Row = ({ headers, data }) => {
 };
 Row.propTypes = {
   headers: propTypes.arrayOf(propTypes.object).isRequired,
-  data: propTypes.object.isRequired,
+  data: propTypes.shape().isRequired,
 };
 export default Row;

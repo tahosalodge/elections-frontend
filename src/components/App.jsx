@@ -31,6 +31,12 @@ const Page = styled.div`
 `;
 
 class App extends React.PureComponent {
+  static propTypes = {
+    history: propTypes.shape().isRequired,
+    capability: propTypes.string.isRequired,
+    userVerifyRequest: propTypes.func.isRequired,
+  };
+
   componentWillMount() {
     this.props.userVerifyRequest();
   }
@@ -60,12 +66,6 @@ class App extends React.PureComponent {
     );
   }
 }
-
-App.propTypes = {
-  history: propTypes.object.isRequired, // eslint-disable-line
-  capability: propTypes.string.isRequired,
-  userVerifyRequest: propTypes.func.isRequired,
-};
 
 const mapStateToProps = state => ({
   capability: state.user.capability,

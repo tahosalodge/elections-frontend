@@ -10,11 +10,13 @@ class Unit extends React.PureComponent {
     unitsRequest: propTypes.func.isRequired,
     units: propTypes.arrayOf(propTypes.object).isRequired,
     user: propTypes.shape().isRequired,
+    history: propTypes.shape({
+      push: propTypes.func,
+    }).isRequired,
   };
 
   componentWillMount() {
     if (this.props.user.unit) {
-      console.log(this.props);
       this.props.history.push(`/units/${this.props.user.unit}`);
     }
     this.props.unitsRequest();

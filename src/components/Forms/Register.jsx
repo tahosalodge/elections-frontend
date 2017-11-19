@@ -6,13 +6,15 @@ import { Field, reduxForm } from 'redux-form';
 import { registerRequest } from '../../redux/modules/register';
 
 class Register extends React.Component {
-  constructor(props) {
-    super(props);
-    this.submit = this.submit.bind(this);
-  }
-  submit(values) {
-    this.props.registerRequest(values);
-  }
+  static propTypes = {
+    handleSubmit: propTypes.func.isRequired,
+    pristine: propTypes.bool.isRequired,
+    reset: propTypes.func.isRequired,
+    submitting: propTypes.bool.isRequired,
+    registerRequest: propTypes.func.isRequired,
+  };
+
+  submit = values => this.props.registerRequest(values);
 
   render() {
     const {
@@ -60,14 +62,6 @@ class Register extends React.Component {
     );
   }
 }
-
-Register.propTypes = {
-  handleSubmit: propTypes.func.isRequired,
-  pristine: propTypes.bool.isRequired,
-  reset: propTypes.func.isRequired,
-  submitting: propTypes.bool.isRequired,
-  registerRequest: propTypes.func.isRequired,
-};
 
 const mapStateToProps = state => ({
   register: state.signup,

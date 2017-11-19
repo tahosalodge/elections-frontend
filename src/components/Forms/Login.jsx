@@ -6,13 +6,15 @@ import { Field, reduxForm } from 'redux-form';
 import { loginRequest } from '../../redux/modules/user';
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.submit = this.submit.bind(this);
-  }
-  submit(values) {
-    this.props.loginRequest(values);
-  }
+  static propTypes = {
+    handleSubmit: propTypes.func.isRequired,
+    pristine: propTypes.bool.isRequired,
+    reset: propTypes.func.isRequired,
+    submitting: propTypes.bool.isRequired,
+    loginRequest: propTypes.func.isRequired,
+  };
+
+  submit = values => this.props.loginRequest(values);
 
   render() {
     const {
@@ -44,14 +46,6 @@ class Login extends React.Component {
     );
   }
 }
-
-Login.propTypes = {
-  handleSubmit: propTypes.func.isRequired,
-  pristine: propTypes.bool.isRequired,
-  reset: propTypes.func.isRequired,
-  submitting: propTypes.bool.isRequired,
-  loginRequest: propTypes.func.isRequired,
-};
 
 const mapStateToProps = state => ({
   login: state.user,
