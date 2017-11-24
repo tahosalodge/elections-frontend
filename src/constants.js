@@ -1,33 +1,40 @@
-export const chapters = {
-  kodiak: {
+export const chapters = [
+  {
+    value: 'kodiak',
     chapter: 'Kodiak',
     district: 'Gateway',
   },
-  'medicine-bear': {
+  {
+    value: 'medicine-bear',
     chapter: 'Medicine Bear',
     district: 'Valley',
   },
-  'medicine-pipe': {
+  {
+    value: 'medicine-pipe',
     chapter: 'Medicine Pipe',
     district: 'Centennial',
   },
-  'running-antelope': {
+  {
+    value: 'running-antelope',
     chapter: 'Running Antelope',
     district: 'Timberline',
   },
-  'spirit-eagle': {
+  {
+    value: 'spirit-eagle',
     chapter: 'Spirit Eagle',
     district: 'Pioneer Trails',
   },
-  'white-buffalo': {
+  {
+    value: 'white-buffalo',
     chapter: 'White Buffalo',
     district: 'Frontier',
   },
-  'white-eagle': {
+  {
+    value: 'white-eagle',
     chapter: 'White Eagle',
     district: 'Arapahoe',
   },
-};
+];
 
 export const ranks = [
   {

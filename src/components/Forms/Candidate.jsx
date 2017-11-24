@@ -8,7 +8,6 @@ class Candidate extends React.Component {
   static propTypes = {
     handleSubmit: propTypes.func.isRequired,
     pristine: propTypes.bool.isRequired,
-    reset: propTypes.func.isRequired,
     submitting: propTypes.bool.isRequired,
   };
 
@@ -17,9 +16,7 @@ class Candidate extends React.Component {
   };
 
   render() {
-    const {
-      handleSubmit, pristine, reset, submitting,
-    } = this.props;
+    const { handleSubmit, pristine, submitting } = this.props;
     return (
       <div>
         <h1>Candidate</h1>
@@ -39,7 +36,7 @@ class Candidate extends React.Component {
           <FieldWithLabel label="Long Term Camping Nights" id="campingLongTerm" />
           <FieldWithLabel label="Short Term Camping Nights" id="campingShortTerm" />
           <Select label="Rank" id="rank" options={ranks} />
-          <Button text="Submit" />
+          <Button text="Submit" disabled={pristine || submitting} />
         </form>
       </div>
     );

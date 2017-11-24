@@ -24,10 +24,10 @@ class Register extends React.Component {
         <h1>Register</h1>
         <form onSubmit={handleSubmit(this.submit)}>
           <h2>Register</h2>
-          <FieldWithLabel id="fname" text="First Name" />
-          <FieldWithLabel id="lname" text="Last Name" />
-          <FieldWithLabel id="email" text="Email" type="email" />
-          <FieldWithLabel id="password" text="Password" type="password" />
+          <FieldWithLabel id="fname" label="First Name" />
+          <FieldWithLabel id="lname" label="Last Name" />
+          <FieldWithLabel id="email" label="Email" type="email" />
+          <FieldWithLabel id="password" label="Password" type="password" />
           <SelectChapter />
           <Button text="Register" disabled={pristine || submitting} />
         </form>

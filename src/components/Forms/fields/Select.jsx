@@ -21,10 +21,7 @@ const Select = ({
 Select.propTypes = {
   label: propTypes.string.isRequired,
   id: propTypes.string.isRequired,
-  options: propTypes.arrayOf({
-    label: propTypes.string,
-    value: propTypes.string,
-  }).isRequired,
+  options: propTypes.arrayOf(propTypes.object).isRequired,
   labelKey: propTypes.string,
 };
 

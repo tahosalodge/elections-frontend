@@ -18,9 +18,9 @@ class RequestElection extends React.Component {
       <div>
         <h1>Request Election</h1>
         <form onSubmit={handleSubmit}>
-          <FieldWithLabel id="date[1]" name="Date 1" />
-          <FieldWithLabel id="date[2]" name="Date 2" />
-          <FieldWithLabel id="date[3]" name="Date 3" />
+          <FieldWithLabel id="date[1]" label="Date 1" />
+          <FieldWithLabel id="date[2]" label="Date 2" />
+          <FieldWithLabel id="date[3]" label="Date 3" />
           <Button text="Request Election" disabled={pristine || submitting} />
         </form>
       </div>

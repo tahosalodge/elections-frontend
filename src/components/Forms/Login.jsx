@@ -2,7 +2,7 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { flow } from 'lodash/fp/flow';
+import { flow } from 'lodash';
 import { FieldWithLabel, Button } from './fields';
 
 import { loginRequest } from '../../redux/modules/user';
