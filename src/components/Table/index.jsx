@@ -35,7 +35,9 @@ const Table = ({ headers, data }) => (
     <thead>
       <tr>{headers.map(value => <th key={value.title}>{value.title}</th>)}</tr>
     </thead>
-    <tbody>{data.map(item => <Row key={item._id} headers={headers} data={item} />)}</tbody>
+    <tbody>
+      {data.map(item => <Row key={item._id} parentKey={item._id} headers={headers} data={item} />)}
+    </tbody>
   </StyledTable>
 );
 

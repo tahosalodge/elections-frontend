@@ -27,6 +27,7 @@ const headers = [
 
 const data = [
   {
+    _id: 'lkj243598xc',
     year: '2018',
     electionStatus: 'Scheduled',
     candidates: 0,
@@ -34,6 +35,7 @@ const data = [
     nominations: 0,
   },
   {
+    _id: 'lkxcou34tlc',
     year: '2017',
     electionStatus: 'Results Entered',
     candidates: 8,

@@ -1,17 +1,18 @@
 import React from 'react';
 import propTypes from 'prop-types';
 
-const Row = ({ headers, data }) => {
-  const processedData = headers.map((header) => {
+const Row = ({ headers, data, parentKey }) => {
+  const cols = headers.map((header) => {
     if (header.field === 'actions') {
-      return header.component;
+      return <td key={`${parentKey}-${header.field}`}>{header.component}</td>;
     }
-    return data[header.field];
+    return <td key={`${parentKey}-${header.field}`}>{data[header.field]}</td>;
   });
-  return <tr>{processedData.map(item => <td key={item}>{item}</td>)}</tr>;
+  return <tr>{cols}</tr>;
 };
 Row.propTypes = {
   headers: propTypes.arrayOf(propTypes.object).isRequired,
   data: propTypes.shape().isRequired,
+  parentKey: propTypes.string.isRequired,
 };
 export default Row;
