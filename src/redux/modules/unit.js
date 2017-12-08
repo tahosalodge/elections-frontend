@@ -1,12 +1,16 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { schema, normalize } from 'normalizr';
 import { apiRequest } from '../helpers/api';
+
+export const UNIT_ENTITY = new schema.Entity('units', {}, { idAttribute: '_id' });
+export const UNIT_SCHEMA = [UNIT_ENTITY];
 
 const initialState = {
   requesting: false,
   successful: false,
   messages: [],
   errors: [],
-  units: [],
+  items: [],
 };
 
 // Reducer
@@ -24,7 +28,7 @@ export default function unitReducer(state = initialState, action) {
         ...state,
         requesting: false,
         successful: true,
-        units: action.response,
+        items: action.payload.data.units,
       };
 
     case 'UNITS_ERROR':
@@ -51,11 +55,20 @@ export function unitsRequest() {
   };
 }
 
+function unitsSuccess(units) {
+  return {
+    type: 'UNITS_SUCCESS',
+    payload: {
+      data: normalize(units, UNIT_SCHEMA).entities,
+    },
+  };
+}
+
 // Saga
 function* unitFlow() {
   try {
-    const response = yield call(apiRequest, '/units');
-    yield put({ type: 'UNITS_SUCCESS', response });
+    const units = yield call(apiRequest, '/units');
+    yield put(unitsSuccess(units));
   } catch (error) {
     yield put({ type: 'UNITS_ERROR', error });
   }

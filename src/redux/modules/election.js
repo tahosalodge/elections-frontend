@@ -1,33 +1,37 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { schema, normalize } from 'normalizr';
 import { apiRequest } from '../helpers/api';
+
+export const UNIT_ENTITY = new schema.Entity('elections', {}, { idAttribute: '_id' });
+export const UNIT_SCHEMA = [UNIT_ENTITY];
 
 const initialState = {
   requesting: false,
   successful: false,
   messages: [],
   errors: [],
-  elections: [],
+  items: {},
 };
 
 // Reducer
 export default function electionReducer(state = initialState, action) {
   switch (action.type) {
-    case 'ELECTION_REQUESTING':
+    case 'ELECTIONS_REQUESTING':
       return {
         ...state,
         requesting: true,
         successful: false,
       };
 
-    case 'ELECTION_SUCCESS':
+    case 'ELECTIONS_SUCCESS':
       return {
         ...state,
         requesting: false,
         successful: true,
-        data: action.response[0],
+        items: action.payload.data.elections,
       };
 
-    case 'ELECTION_ERROR':
+    case 'ELECTIONS_ERROR':
       return {
         ...state,
         errors: state.errors.concat([
@@ -45,24 +49,31 @@ export default function electionReducer(state = initialState, action) {
 }
 
 // Action
-export function electionRequest({ id }) {
+export function electionsRequest() {
   return {
-    type: 'ELECTION_REQUESTING',
-    id,
+    type: 'ELECTIONS_REQUESTING',
+  };
+}
+
+function electionsSuccess(units) {
+  return {
+    type: 'ELECTIONS_SUCCESS',
+    payload: {
+      data: normalize(units, UNIT_SCHEMA).entities,
+    },
   };
 }
 
 // Saga
-function* electionFlow(action) {
+function* electionFlow() {
   try {
-    const { id } = action.payload;
-    const response = yield call(apiRequest, `/elections/${id}`);
-    yield put({ type: 'ELECTION_SUCCESS', response });
+    const response = yield call(apiRequest, '/elections');
+    yield put(electionsSuccess(response));
   } catch (error) {
-    yield put({ type: 'ELECTION_ERROR', error });
+    yield put({ type: 'ELECTIONS_ERROR', error });
   }
 }
 
 export function* electionSaga() {
-  yield takeLatest('ELECTION_REQUESTING', electionFlow);
+  yield takeLatest('ELECTIONS_REQUESTING', electionFlow);
 }
