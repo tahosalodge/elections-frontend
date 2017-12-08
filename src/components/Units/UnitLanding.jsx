@@ -1,59 +1,66 @@
 import React from 'react';
-
+import propTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Table from '../Table';
+import { unitsRequest } from '../../redux/modules/unit';
+import { electionsRequest } from '../../redux/modules/election';
+import electionSelector from '../../selectors/elections';
+import LoadingOrContent from '../LoadingOrContent';
 
 const headers = [
   {
-    title: 'Year',
-    field: 'year',
+    title: 'Date',
+    field: 'date',
   },
   {
     title: 'Status',
-    field: 'electionStatus',
-  },
-  {
-    title: 'Candidates',
-    field: 'candidates',
-  },
-  {
-    title: 'Elected',
-    field: 'elected',
-  },
-  {
-    title: 'Nominations',
-    field: 'nominations',
+    field: 'status',
   },
 ];
 
-const data = [
-  {
-    _id: 'lkj243598xc',
-    year: '2018',
-    electionStatus: 'Scheduled',
-    candidates: 0,
-    elected: 0,
-    nominations: 0,
-  },
-  {
-    _id: 'lkxcou34tlc',
-    year: '2017',
-    electionStatus: 'Results Entered',
-    candidates: 8,
-    elected: 4,
-    nominations: 1,
-  },
-];
-const UnitLanding = () => (
-  <div>
-    <h1>Troop 868</h1>
-    <h2>Elections</h2>
-    <Table headers={headers} data={data} />
-    <button>Request Election</button>
+class UnitLanding extends React.Component {
+  static propTypes = {
+    elections: propTypes.shape(propTypes.object).isRequired,
+    unit: propTypes.shape().isRequired,
+    unitsRequest: propTypes.func.isRequired,
+    electionsRequest: propTypes.func.isRequired,
+    loading: propTypes.shape({
+      election: propTypes.bool,
+      unit: propTypes.bool,
+    }).isRequired,
+  };
 
-    <h2>Leaders</h2>
-    <Table headers={headers} data={data} />
-    <button>Add Leader</button>
-  </div>
-);
+  componentWillMount() {
+    this.props.unitsRequest();
+    this.props.electionsRequest();
+  }
 
-export default UnitLanding;
+  render() {
+    const { elections, unit, loading } = this.props;
+    return (
+      <LoadingOrContent loading={!loading.unit || !loading.election || !unit}>
+        <h1>Troop {unit.number}</h1>
+
+        <h2>Elections</h2>
+        <Table headers={headers} data={elections} />
+        <Link to="/elections/new">Request Election</Link>
+
+        {/* <h2>Leaders</h2>
+        <Table headers={headers} data={data} />
+        <button>Add Leader</button> */}
+      </LoadingOrContent>
+    );
+  }
+}
+
+const mapStateToProps = (state, props) => ({
+  elections: electionSelector(state, props),
+  unit: state.unit.items[props.match.params.id] || {},
+  loading: {
+    election: state.election.successful,
+    unit: state.unit.successful,
+  },
+});
+
+export default connect(mapStateToProps, { unitsRequest, electionsRequest })(UnitLanding);

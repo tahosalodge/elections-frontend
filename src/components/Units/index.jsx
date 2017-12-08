@@ -3,12 +3,13 @@ import propTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { unitsRequest } from '../../redux/modules/unit';
+import arraySelector from '../../selectors/array';
 import Table from '../Table';
 
 class Unit extends React.PureComponent {
   static propTypes = {
     unitsRequest: propTypes.func.isRequired,
-    units: propTypes.arrayOf(propTypes.object).isRequired,
+    units: propTypes.shape().isRequired,
     user: propTypes.shape().isRequired,
     history: propTypes.shape({
       push: propTypes.func,
@@ -16,8 +17,9 @@ class Unit extends React.PureComponent {
   };
 
   componentWillMount() {
-    if (this.props.user.unit) {
-      this.props.history.push(`/units/${this.props.user.unit}`);
+    const { user, history } = this.props;
+    if (user.unit) {
+      history.push(`/units/${this.props.user.unit}`);
     }
     this.props.unitsRequest();
   }
@@ -41,7 +43,7 @@ class Unit extends React.PureComponent {
 
     return (
       <div>
-        <h2>Hey there! It looks like you're not linked to a unit.</h2>
+        <h2>Hey there! It looks like you&apos;re not linked to a unit.</h2>
         <p>
           Please select a unit from below, otherwise you can{' '}
           <Link to="/units/new">create a new unit</Link>.
@@ -53,7 +55,7 @@ class Unit extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  units: state.unit.units,
+  units: arraySelector(state.unit.items),
   user: state.user,
 });
 export default connect(mapStateToProps, { unitsRequest })(withRouter(Unit));
