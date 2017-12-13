@@ -1,6 +1,8 @@
 export function handleApiErrors(response) {
   if (!response.ok) {
-    throw Error(response.statusText);
+    const error = new Error(response.statusText);
+    error.code = 'API';
+    throw error;
   }
   return response;
 }
@@ -20,7 +22,9 @@ export function apiRequest(url, method = 'GET', data = null) {
   return fetch(`${process.env.REACT_APP_API_URL}${url}`, fetchParams)
     .then(handleApiErrors)
     .then(response => response.json())
-    .catch((error) => {
+    .catch(() => {
+      const error = new Error('Connection issue');
+      error.code = 'NETWORK';
       throw error;
     });
 }

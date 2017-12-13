@@ -84,8 +84,12 @@ function* checkToken() {
     yield put({ type: 'USER_LOGIN_SUCCESS', response });
   } catch (error) {
     yield put({ type: 'USER_LOGIN_ERROR', error });
-    localStorage.removeItem('electionToken');
-    yield put(push('/login'));
+    if (error.code !== 'NETWORK') {
+      localStorage.removeItem('electionToken');
+    }
+    if (window.location.pathname !== '/register') {
+      yield put(push('/login'));
+    }
   }
 }
 

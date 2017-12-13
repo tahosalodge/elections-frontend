@@ -50,7 +50,8 @@ class App extends React.PureComponent {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/units/new" component={UnitInformation} />
-              <Route path="/units/:id" component={UnitLanding} />
+              <Route path="/units/:unitId/edit" component={UnitInformation} />
+              <Route path="/units/:unitId" component={UnitLanding} />
               <Route path="/units/" component={Units} />
               <Route path="/elections/new" component={ElectionForm} />
               <Route path="/candidate" component={Candidate} />

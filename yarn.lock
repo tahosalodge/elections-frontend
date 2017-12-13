@@ -5395,6 +5395,13 @@ react-dates@^14.0.0:
     react-with-styles "^2.2.0"
     react-with-styles-interface-css "^3.0.0"
 
+react-day-picker@^7.0.5:
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-7.0.5.tgz#595e709525322c1bc29e09ed3894c9279f718b46"
+  dependencies:
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
+
 react-dev-utils@^4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-4.2.1.tgz#9f2763e7bafa1a1b9c52254d2a479deec280f111"

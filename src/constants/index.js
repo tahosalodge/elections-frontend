@@ -1,3 +1,5 @@
+export { default as states } from './states';
+
 export const chapters = [
   {
     value: 'kodiak',
@@ -79,3 +81,4 @@ export const lodge = 'Tahosa';
 export const colors = {
   red: '#cf3a43',
 };
+

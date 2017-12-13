@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Table from '../Table';
-import { unitsRequest } from '../../redux/modules/unit';
+import { unitRequest } from '../../redux/modules/unit';
 import { electionsRequest } from '../../redux/modules/election';
 import electionSelector from '../../selectors/elections';
 import LoadingOrContent from '../LoadingOrContent';
@@ -21,9 +21,9 @@ const headers = [
 
 class UnitLanding extends React.Component {
   static propTypes = {
-    elections: propTypes.shape(propTypes.object).isRequired,
+    elections: propTypes.arrayOf(propTypes.object).isRequired,
     unit: propTypes.shape().isRequired,
-    unitsRequest: propTypes.func.isRequired,
+    unitRequest: propTypes.func.isRequired,
     electionsRequest: propTypes.func.isRequired,
     loading: propTypes.shape({
       election: propTypes.bool,
@@ -32,7 +32,7 @@ class UnitLanding extends React.Component {
   };
 
   componentWillMount() {
-    this.props.unitsRequest();
+    this.props.unitRequest(this.props.match.params.unitId);
     this.props.electionsRequest();
   }
 
@@ -41,7 +41,7 @@ class UnitLanding extends React.Component {
     return (
       <LoadingOrContent loading={!loading.unit || !loading.election || !unit}>
         <h1>Troop {unit.number}</h1>
-
+        <Link to={`${window.location.pathname}/edit`}>Edit Unit</Link>
         <h2>Elections</h2>
         <Table headers={headers} data={elections} />
         <Link to="/elections/new">Request Election</Link>
@@ -56,11 +56,11 @@ class UnitLanding extends React.Component {
 
 const mapStateToProps = (state, props) => ({
   elections: electionSelector(state, props),
-  unit: state.unit.items[props.match.params.id] || {},
+  unit: state.unit.items[props.match.params.unitId] || {},
   loading: {
     election: state.election.successful,
     unit: state.unit.successful,
   },
 });
 
-export default connect(mapStateToProps, { unitsRequest, electionsRequest })(UnitLanding);
+export default connect(mapStateToProps, { unitRequest, electionsRequest })(UnitLanding);

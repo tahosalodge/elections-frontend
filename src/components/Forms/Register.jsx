@@ -23,7 +23,6 @@ class Register extends React.Component {
       <div>
         <h1>Register</h1>
         <form onSubmit={handleSubmit(this.submit)}>
-          <h2>Register</h2>
           <FieldWithLabel id="fname" label="First Name" />
           <FieldWithLabel id="lname" label="Last Name" />
           <FieldWithLabel id="email" label="Email" type="email" />

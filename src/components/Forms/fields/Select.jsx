@@ -10,7 +10,7 @@ const Select = ({
     <Field type="select" id={id} name={id} component="select">
       <option>---</option>
       {options.map(option => (
-        <option key={`option-${option.value}`} value={option}>
+        <option key={`option-${option.value}`} value={option.value}>
           {option[labelKey]}
         </option>
       ))}
