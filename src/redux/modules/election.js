@@ -1,9 +1,9 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { schema, normalize } from 'normalizr';
 import { apiRequest } from '../helpers/api';
 
-export const UNIT_ENTITY = new schema.Entity('elections', {}, { idAttribute: '_id' });
-export const UNIT_SCHEMA = [UNIT_ENTITY];
+export const ELECTION_ENTITY = new schema.Entity('elections', {}, { idAttribute: '_id' });
+export const ELECTION_SCHEMA = [ELECTION_ENTITY];
 
 const initialState = {
   requesting: false,
@@ -16,14 +16,14 @@ const initialState = {
 // Reducer
 export default function electionReducer(state = initialState, action) {
   switch (action.type) {
-    case 'ELECTIONS_REQUESTING':
+    case 'ELECTION_FETCH_REQUEST':
       return {
         ...state,
         requesting: true,
         successful: false,
       };
 
-    case 'ELECTIONS_SUCCESS':
+    case 'ELECTION_SUCCESS':
       return {
         ...state,
         requesting: false,

@@ -17,7 +17,7 @@ const initialState = {
 // Reducer
 export default function unitReducer(state = initialState, action) {
   switch (action.type) {
-    case 'UNITS_REQUESTING':
+    case 'UNIT_FETCH_REQUEST':
       return {
         ...state,
         requesting: true,
@@ -32,14 +32,14 @@ export default function unitReducer(state = initialState, action) {
         items: action.payload.data.units,
       };
 
-    case 'UNIT_REQUESTING':
+    case 'UNIT_GET_REQUEST':
       return {
         ...state,
         requesting: true,
         successful: false,
       };
 
-    case 'UNIT_UPDATE_REQUESTING':
+    case 'UNIT_UPDATE_REQUEST':
       return {
         ...state,
         requesting: true,
@@ -77,7 +77,7 @@ export default function unitReducer(state = initialState, action) {
 // Action
 export function unitsRequest() {
   return {
-    type: 'UNITS_REQUESTING',
+    type: 'UNIT_FETCH_REQUEST',
   };
 }
 
@@ -99,7 +99,7 @@ function unitsError(error) {
 
 export function unitRequest(unitId) {
   return {
-    type: 'UNIT_REQUESTING',
+    type: 'UNIT_GET_REQUEST',
     payload: {
       unitId,
     },
@@ -117,7 +117,7 @@ function unitSuccess(unit) {
 
 export function unitUpdateRequest(unitId, data) {
   return {
-    type: 'UNIT_UPDATE_REQUESTING',
+    type: 'UNIT_UPDATE_REQUEST',
     payload: {
       unitId,
       data,
@@ -126,7 +126,7 @@ export function unitUpdateRequest(unitId, data) {
 }
 
 // Saga
-function* getUnits() {
+function* fetchUnits() {
   try {
     const units = yield call(apiRequest, '/units');
     yield put(unitsSuccess(units));
@@ -157,7 +157,7 @@ function* updateUnit(action) {
 }
 
 export function* unitSaga() {
-  yield takeLatest('UNITS_REQUESTING', getUnits);
-  yield takeLatest('UNIT_REQUESTING', getUnit);
-  yield takeLatest('UNIT_UPDATE_REQUESTING', updateUnit);
+  yield takeLatest('UNIT_FETCH_REQUEST', fetchUnits);
+  yield takeLatest('UNIT_GET_REQUEST', getUnit);
+  yield takeLatest('UNIT_UPDATE_REQUEST', updateUnit);
 }

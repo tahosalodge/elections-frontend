@@ -11,7 +11,7 @@ const initialState = {
 // Reducer
 export default function registerReducer(state = initialState, action) {
   switch (action.type) {
-    case 'REGISTER_REQUESTING':
+    case 'REGISTER_REQUEST':
       return {
         requesting: true,
         successful: false,
@@ -55,7 +55,7 @@ export function registerRequest({
   fname, lname, email, password, chapter,
 }) {
   return {
-    type: 'REGISTER_REQUESTING',
+    type: 'REGISTER_REQUEST',
     fname,
     lname,
     email,
@@ -75,5 +75,5 @@ function* registerFlow(action) {
 }
 
 export function* registerSaga() {
-  yield takeLatest('REGISTER_REQUESTING', registerFlow);
+  yield takeLatest('REGISTER_REQUEST', registerFlow);
 }

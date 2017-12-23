@@ -15,7 +15,7 @@ const initialState = {
 // Reducer
 export default function userReducer(state = initialState, action) {
   switch (action.type) {
-    case 'USER_LOGIN_REQUESTING':
+    case 'USER_LOGIN_REQUEST':
       return {
         ...state,
         requesting: true,
@@ -50,7 +50,7 @@ export default function userReducer(state = initialState, action) {
 // Action
 export function loginRequest({ email, password }) {
   return {
-    type: 'USER_LOGIN_REQUESTING',
+    type: 'USER_LOGIN_REQUEST',
     email,
     password,
   };
@@ -95,5 +95,5 @@ function* checkToken() {
 
 export function* userSaga() {
   yield takeLatest('USER_LOGIN_CHECK_TOKEN', checkToken);
-  yield takeLatest('USER_LOGIN_REQUESTING', loginFlow);
+  yield takeLatest('USER_LOGIN_REQUEST', loginFlow);
 }

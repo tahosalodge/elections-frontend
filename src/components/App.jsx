@@ -9,8 +9,8 @@ import styled from 'styled-components';
 import Header from './Header';
 import Home from './Home';
 import UnitInformation from './Forms/UnitInformation';
-import Units from './Units';
-import UnitLanding from './Units/UnitLanding';
+import Unit from './Unit';
+import NoUnitPage from './NoUnitPage';
 import ElectionForm from './Forms/Election';
 import Candidate from './Forms/Candidate';
 import Nomination from './Forms/Nomination';
@@ -51,8 +51,8 @@ class App extends React.PureComponent {
               <Route exact path="/" component={Home} />
               <Route exact path="/units/new" component={UnitInformation} />
               <Route path="/units/:unitId/edit" component={UnitInformation} />
-              <Route path="/units/:unitId" component={UnitLanding} />
-              <Route path="/units/" component={Units} />
+              <Route path="/units/:unitId" component={Unit} />
+              <Route path="/units/" component={NoUnitPage} />
               <Route path="/elections/new" component={ElectionForm} />
               <Route path="/candidate" component={Candidate} />
               <Route path="/nomination" component={Nomination} />
