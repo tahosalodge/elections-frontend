@@ -8,6 +8,7 @@ const StyledTable = styled.table`
   border: 1px solid #dedede;
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 1em;
 
   th {
     font-size: 1.2em;

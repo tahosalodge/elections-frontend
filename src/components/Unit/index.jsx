@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Table from '../Table';
 import { unitRequest } from '../../redux/modules/unit';
-import { electionsRequest } from '../../redux/modules/election';
+import { fetchElections } from '../../redux/modules/election';
 import electionSelector from '../../selectors/elections';
 import LoadingOrContent from '../LoadingOrContent';
 
@@ -24,16 +24,21 @@ class UnitLanding extends React.Component {
     elections: propTypes.arrayOf(propTypes.object).isRequired,
     unit: propTypes.shape().isRequired,
     unitRequest: propTypes.func.isRequired,
-    electionsRequest: propTypes.func.isRequired,
+    fetchElections: propTypes.func.isRequired,
     loading: propTypes.shape({
       election: propTypes.bool,
       unit: propTypes.bool,
+    }).isRequired,
+    match: propTypes.shape({
+      params: propTypes.shape({
+        unitId: propTypes.string,
+      }),
     }).isRequired,
   };
 
   componentWillMount() {
     this.props.unitRequest(this.props.match.params.unitId);
-    this.props.electionsRequest();
+    this.props.fetchElections();
   }
 
   render() {
@@ -43,7 +48,8 @@ class UnitLanding extends React.Component {
         <h1>Troop {unit.number}</h1>
         <Link to={`${window.location.pathname}/edit`}>Edit Unit</Link>
         <h2>Elections</h2>
-        <Table headers={headers} data={elections} />
+        {elections.length > 0 && <Table headers={headers} data={elections} />}
+        {elections.length <= 0 && <p>No elections found.</p>}
         <Link to="/elections/new">Request Election</Link>
 
         {/* <h2>Leaders</h2>
@@ -63,4 +69,4 @@ const mapStateToProps = (state, props) => ({
   },
 });
 
-export default connect(mapStateToProps, { unitRequest, electionsRequest })(UnitLanding);
+export default connect(mapStateToProps, { unitRequest, fetchElections })(UnitLanding);
