@@ -3,9 +3,9 @@ import propTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
+import { adultLeadershipPositions } from 'constants';
+import { unitUpdateRequest } from 'redux/state/unit';
 import { FieldWithLabel, Button, Select, SelectDistrict, Address } from './fields';
-import { adultLeadershipPositions } from '../../constants';
-import { unitUpdateRequest } from '../../redux/modules/unit';
 
 class UnitInformation extends React.Component {
   static propTypes = {

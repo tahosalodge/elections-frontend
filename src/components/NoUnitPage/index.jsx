@@ -2,9 +2,9 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { unitsRequest } from '../../redux/modules/unit';
-import arraySelector from '../../selectors/array';
-import Table from '../Table';
+import { unitsRequest } from 'redux/state/unit';
+import arraySelector from 'selectors/array';
+import Table from 'components/Table';
 
 class Unit extends React.PureComponent {
   static propTypes = {

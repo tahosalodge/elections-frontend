@@ -1,8 +1,8 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
+import { ranks } from 'constants';
 import { FieldWithLabel, Address, Select, Button } from './fields';
-import { ranks } from '../../constants';
 
 class Candidate extends React.Component {
   static propTypes = {

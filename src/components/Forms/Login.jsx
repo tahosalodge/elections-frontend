@@ -3,9 +3,8 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { flow } from 'lodash';
+import { loginRequest } from 'redux/state/user';
 import { FieldWithLabel, Button } from './fields';
-
-import { loginRequest } from '../../redux/modules/user';
 
 class Login extends React.Component {
   static propTypes = {

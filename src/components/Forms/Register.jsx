@@ -2,9 +2,9 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
+import { registerRequest } from 'redux/state/register';
 import { FieldWithLabel, Button, SelectChapter } from './fields';
 
-import { registerRequest } from '../../redux/modules/register';
 
 class Register extends React.Component {
   static propTypes = {

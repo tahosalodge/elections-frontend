@@ -1,6 +1,6 @@
 import React from 'react';
+import Table from 'components/Table';
 import ElectionMenu from './ElectionMenu';
-import Table from '../Table';
 
 const headers = ['Candidate', 'Status'];
 const data = [

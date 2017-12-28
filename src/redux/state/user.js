@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
-import { apiRequest } from '../helpers/api';
+import { apiRequest } from 'redux/helpers/api';
 
 const initialState = {
   requesting: false,

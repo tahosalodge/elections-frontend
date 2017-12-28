@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
 import { routerReducer } from 'react-router-redux';
-import register from './modules/register';
-import user from './modules/user';
-import unit from './modules/unit';
-import election from './modules/election';
+import register from 'redux/state/register';
+import user from 'redux/state/user';
+import unit from 'redux/state/unit';
+import election from 'redux/state/election';
 
 const rootReducer = combineReducers({
   routerReducer,

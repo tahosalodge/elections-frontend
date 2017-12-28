@@ -2,16 +2,16 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { unitRequest } from 'redux/modules/unit';
+import { fetchElections } from 'redux/modules/election';
+import electionSelector from 'selectors/elections';
+import LoadingOrContent from 'components/LoadingOrContent';
 import Table from '../Table';
-import { unitRequest } from '../../redux/modules/unit';
-import { fetchElections } from '../../redux/modules/election';
-import electionSelector from '../../selectors/elections';
-import LoadingOrContent from '../LoadingOrContent';
 
 const headers = [
   {
-    title: 'Date',
-    field: 'date',
+    title: 'Season',
+    field: 'season',
   },
   {
     title: 'Status',

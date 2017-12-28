@@ -6,19 +6,19 @@ import { ConnectedRouter } from 'react-router-redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import Header from './Header';
-import Home from './Home';
-import UnitInformation from './Forms/UnitInformation';
-import Unit from './Unit';
-import NoUnitPage from './NoUnitPage';
-import ElectionForm from './Forms/Election';
-import Candidate from './Forms/Candidate';
-import Nomination from './Forms/Nomination';
-import ElectionList from './ElectionList';
-import Election from './Election';
-import Register from './Forms/Register';
-import Login from './Forms/Login';
-import { userVerifyRequest } from '../redux/modules/user';
+import Header from 'components/Header';
+import Home from 'components/Home';
+import UnitInformation from 'components/Forms/UnitInformation';
+import Unit from 'components/Unit';
+import NoUnitPage from 'components/NoUnitPage';
+import ElectionForm from 'components/Forms/Election';
+import Candidate from 'components/Forms/Candidate';
+import Nomination from 'components/Forms/Nomination';
+import ElectionList from 'components/ElectionList';
+import Election from 'components/Election';
+import Register from 'components/Forms/Register';
+import Login from 'components/Forms/Login';
+import { userVerifyRequest } from 'redux/state/user';
 
 const Page = styled.div`
   max-width: 1200px;

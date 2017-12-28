@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { schema, normalize } from 'normalizr';
 import { push } from 'react-router-redux';
-import { apiRequest } from '../helpers/api';
+import { apiRequest } from 'redux/helpers/api';
 
 export const UNIT_ENTITY = new schema.Entity('units', {}, { idAttribute: '_id' });
 export const UNIT_SCHEMA = [UNIT_ENTITY];

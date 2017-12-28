@@ -1,7 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import styled from 'styled-components';
-import { colors } from '../../constants';
+import { colors } from 'constants';
 import Row from './Row';
 
 const StyledTable = styled.table`
