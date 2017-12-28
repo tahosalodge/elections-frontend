@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { colors } from '../../constants';
+import { colors } from 'constants/values';
 
 const Loader = styled.div`
   height: 100px;

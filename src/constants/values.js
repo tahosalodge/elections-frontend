@@ -1,5 +1,8 @@
 export { default as states } from './states';
 
+export const lodge = 'Tahosa';
+export const season = '2018';
+
 export const chapters = [
   {
     value: 'kodiak',
@@ -76,9 +79,6 @@ export const adultLeadershipPositions = [
   },
 ];
 
-export const lodge = 'Tahosa';
-
 export const colors = {
   red: '#cf3a43',
 };
-

@@ -1,6 +1,6 @@
 import React from 'react';
+import { chapters } from 'constants/values';
 import Select from './Select';
-import { chapters } from '../../../constants';
 
 const SelectChapter = () => (
   <Select label="Chapter" id="chapter" options={chapters} labelKey="chapter" />

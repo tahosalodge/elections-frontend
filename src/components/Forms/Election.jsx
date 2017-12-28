@@ -6,7 +6,7 @@ import addDays from 'date-fns/add_days';
 import isBefore from 'date-fns/is_before';
 
 import { createElection } from 'redux/state/election';
-import { Button, DatePicker } from './fields';
+import { Button, DatePicker } from './elements';
 
 class RequestElection extends React.Component {
   static propTypes = {

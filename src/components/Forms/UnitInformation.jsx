@@ -3,9 +3,9 @@ import propTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { adultLeadershipPositions } from 'constants';
+import { adultLeadershipPositions } from 'constants/values';
 import { unitUpdateRequest } from 'redux/state/unit';
-import { FieldWithLabel, Button, Select, SelectDistrict, Address } from './fields';
+import { FieldWithLabel, Button, Select, SelectDistrict, Address, Form } from './elements';
 
 class UnitInformation extends React.Component {
   static propTypes = {
@@ -57,7 +57,7 @@ class UnitInformation extends React.Component {
     return (
       <div>
         <h1>Unit Information</h1>
-        <form onSubmit={handleSubmit(this.submit)}>
+        <Form onSubmit={handleSubmit(this.submit)}>
           <FieldWithLabel label="Unit Number" id="number" />
           <SelectDistrict />
           <FieldWithLabel label="Active Members" id="activeMembers" />
@@ -83,7 +83,7 @@ class UnitInformation extends React.Component {
           <FieldWithLabel label="Phone" id="youthRepresentative.phone" type="phone" />
           <FieldWithLabel label="Email" id="youthRepresentative.email" type="email" />
           <Button text="Submit" disabled={pristine || submitting} />
-        </form>
+        </Form>
       </div>
     );
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
-import { FieldWithLabel, Address, Button } from './fields';
+import { FieldWithLabel, Address, Button } from './elements';
 
 class Nomination extends React.Component {
   static propTypes = {

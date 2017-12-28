@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { flow } from 'lodash';
 import { loginRequest } from 'redux/state/user';
-import { FieldWithLabel, Button } from './fields';
+import { FieldWithLabel, Button } from './elements';
 
 class Login extends React.Component {
   static propTypes = {

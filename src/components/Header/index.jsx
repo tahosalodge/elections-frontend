@@ -37,10 +37,6 @@ const MenuItems = {
       to: '/units',
       text: 'My Unit',
     },
-    {
-      to: '/elections',
-      text: 'My Election',
-    },
   ],
   chapter: [
     {

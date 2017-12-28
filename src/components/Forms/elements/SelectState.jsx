@@ -1,7 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
+import { states } from 'constants/values';
 import Select from './Select';
-import { states } from '../../../constants';
 
 const stateArray = Object.keys(states).map(state => ({ value: state, label: states[state] }));
 

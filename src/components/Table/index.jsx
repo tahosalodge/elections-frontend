@@ -1,7 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import styled from 'styled-components';
-import { colors } from 'constants';
 import Row from './Row';
 
 const StyledTable = styled.table`
@@ -22,7 +21,7 @@ const StyledTable = styled.table`
   }
 
   button {
-    background: ${colors.red};
+    background: #cf3a43;
     padding: 0.5em 1em;
     color: white;
     font-size: 0.8em;
