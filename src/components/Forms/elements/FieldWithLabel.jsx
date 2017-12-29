@@ -5,16 +5,6 @@ import { Field } from 'redux-form';
 
 const StyledField = styled.div`
   margin-bottom: 1em;
-
-  label {
-    margin-right: 1em;
-    flex: 1;
-  }
-
-  input {
-    font-size: 16px;
-    padding: 2px;
-  }
 `;
 
 const FieldWithLabel = ({ label, id, type }) => (

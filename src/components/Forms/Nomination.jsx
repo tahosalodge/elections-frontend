@@ -1,7 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
-import { FieldWithLabel, Address, Button } from './elements';
+import { FieldWithLabel, Address, Button, Form } from './elements';
 
 class Nomination extends React.Component {
   static propTypes = {
@@ -17,7 +17,7 @@ class Nomination extends React.Component {
     return (
       <div>
         <h1>Candidate</h1>
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <h2>Contact Information</h2>
           <FieldWithLabel id="fname" label="First Name" />
           <FieldWithLabel id="lname" label="Last Name" />
@@ -31,7 +31,7 @@ class Nomination extends React.Component {
           <FieldWithLabel id="campingShortTerm" label="Short Term Camping" />
           <FieldWithLabel id="position" label="Leadership Position" />
           <Button text="Submit Nomination" disabled={pristine || submitting} />
-        </form>
+        </Form>
       </div>
     );
   }

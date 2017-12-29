@@ -6,7 +6,7 @@ import addDays from 'date-fns/add_days';
 import isBefore from 'date-fns/is_before';
 
 import { createElection } from 'redux/state/election';
-import { Button, DatePicker } from './elements';
+import { Button, DatePicker, Form } from './elements';
 
 class RequestElection extends React.Component {
   static propTypes = {
@@ -41,12 +41,12 @@ class RequestElection extends React.Component {
     return (
       <div>
         <h1>Request Election</h1>
-        <form onSubmit={handleSubmit(this.submit)}>
+        <Form onSubmit={handleSubmit(this.submit)}>
           <DatePicker id="requestedDates[0]" label="Date 1" disabledDays={disabledDays} />
           <DatePicker id="requestedDates[1]" label="Date 2" disabledDays={disabledDays} />
           <DatePicker id="requestedDates[2]" label="Date 3" disabledDays={disabledDays} />
           <Button text="Request Election" disabled={pristine || submitting} />
-        </form>
+        </Form>
       </div>
     );
   }

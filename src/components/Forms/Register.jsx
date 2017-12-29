@@ -3,8 +3,7 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { registerRequest } from 'redux/state/register';
-import { FieldWithLabel, Button, SelectChapter } from './elements';
-
+import { FieldWithLabel, Button, SelectChapter, Form } from './elements';
 
 class Register extends React.Component {
   static propTypes = {
@@ -22,14 +21,14 @@ class Register extends React.Component {
     return (
       <div>
         <h1>Register</h1>
-        <form onSubmit={handleSubmit(this.submit)}>
+        <Form onSubmit={handleSubmit(this.submit)}>
           <FieldWithLabel id="fname" label="First Name" />
           <FieldWithLabel id="lname" label="Last Name" />
           <FieldWithLabel id="email" label="Email" type="email" />
           <FieldWithLabel id="password" label="Password" type="password" />
           <SelectChapter />
           <Button text="Register" disabled={pristine || submitting} />
-        </form>
+        </Form>
       </div>
     );
   }
