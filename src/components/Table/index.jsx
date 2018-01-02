@@ -1,49 +1,31 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import styled from 'styled-components';
-import Row from './Row';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
+import './index.css';
 
-const StyledTable = styled.table`
-  border: 1px solid #dedede;
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 1em;
-
-  th {
-    font-size: 1.2em;
-    text-align: left;
+const Table = ({ columns, data, notFoundMessage }) => {
+  if (data.length > 0) {
+    return (
+      <ReactTable
+        defaultPageSize={data.length}
+        showPagination={false}
+        columns={columns}
+        data={data}
+      />
+    );
   }
-
-  th,
-  td {
-    border: 1px solid #dedede;
-    padding: 0.6rem;
-  }
-
-  button {
-    background: #cf3a43;
-    padding: 0.5em 1em;
-    color: white;
-    font-size: 0.8em;
-    border: 0;
-    border-radius: 0;
-  }
-`;
-
-const Table = ({ headers, data }) => (
-  <StyledTable>
-    <thead>
-      <tr>{headers.map(value => <th key={value.title}>{value.title}</th>)}</tr>
-    </thead>
-    <tbody>
-      {data.map(item => <Row key={item._id} parentKey={item._id} headers={headers} data={item} />)}
-    </tbody>
-  </StyledTable>
-);
+  return <p>{notFoundMessage}</p>;
+};
 
 Table.propTypes = {
-  headers: propTypes.arrayOf(propTypes.object).isRequired,
+  columns: propTypes.arrayOf(propTypes.object).isRequired,
   data: propTypes.arrayOf(propTypes.object).isRequired,
+  notFoundMessage: propTypes.string,
+};
+
+Table.defaultProps = {
+  notFoundMessage: 'Nothing to display',
 };
 
 export default Table;

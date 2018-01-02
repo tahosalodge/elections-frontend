@@ -6,10 +6,10 @@ import { unitsRequest } from 'redux/state/unit';
 import arraySelector from 'selectors/array';
 import Table from 'components/Table';
 
-class Unit extends React.PureComponent {
+class NoUnitPage extends React.PureComponent {
   static propTypes = {
     unitsRequest: propTypes.func.isRequired,
-    units: propTypes.shape().isRequired,
+    units: propTypes.arrayOf(propTypes.object).isRequired,
     user: propTypes.shape().isRequired,
     history: propTypes.shape({
       push: propTypes.func,
@@ -19,27 +19,29 @@ class Unit extends React.PureComponent {
   componentWillMount() {
     const { user, history } = this.props;
     if (user.unit) {
-      history.push(`/units/${this.props.user.unit}`);
+      history.push(`/units/${user.unit}`);
     }
     this.props.unitsRequest();
   }
 
   render() {
-    const headers = [
+    const columns = [
       {
-        title: 'Unit',
-        field: 'number',
+        Header: 'Unit',
+        accessor: 'number',
       },
       {
-        title: 'District',
-        field: 'district',
+        Header: 'District',
+        accessor: 'district',
       },
       {
-        title: 'Actions',
-        field: 'actions',
-        component: <button>Join Unit</button>,
+        Header: 'Actions',
+        accessor: '_id',
+        Cell: cell => <button value={cell.value}>Join Unit</button>,
       },
     ];
+
+    const { units } = this.props;
 
     return (
       <div>
@@ -48,7 +50,7 @@ class Unit extends React.PureComponent {
           Please select a unit from below, otherwise you can{' '}
           <Link to="/units/new">create a new unit</Link>.
         </p>
-        <Table headers={headers} data={this.props.units} />
+        <Table columns={columns} data={units} />
       </div>
     );
   }
@@ -58,4 +60,4 @@ const mapStateToProps = state => ({
   units: arraySelector(state.unit.items),
   user: state.user,
 });
-export default connect(mapStateToProps, { unitsRequest })(withRouter(Unit));
+export default connect(mapStateToProps, { unitsRequest })(withRouter(NoUnitPage));

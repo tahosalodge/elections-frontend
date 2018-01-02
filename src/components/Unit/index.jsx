@@ -2,20 +2,25 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Table from 'components/Table';
 import { unitRequest } from 'redux/state/unit';
 import { fetchElections } from 'redux/state/election';
 import electionSelector from 'selectors/elections';
 import LoadingOrContent from 'components/LoadingOrContent';
-import Table from '../Table';
 
-const headers = [
+const columns = [
   {
-    title: 'Season',
-    field: 'season',
+    Header: 'Season',
+    accessor: 'season',
   },
   {
-    title: 'Status',
-    field: 'status',
+    Header: 'Status',
+    accessor: 'status',
+  },
+  {
+    Header: 'Details',
+    accessor: '_id',
+    Cell: cell => <Link to={`/election/${cell.value}`}>Details</Link>,
   },
 ];
 
@@ -48,7 +53,7 @@ class UnitLanding extends React.Component {
         <h1>Troop {unit.number}</h1>
         <Link to={`${window.location.pathname}/edit`}>Edit Unit</Link>
         <h2>Elections</h2>
-        {elections.length > 0 && <Table headers={headers} data={elections} />}
+        {elections.length > 0 && <Table columns={columns} data={elections} />}
         {elections.length <= 0 && <p>No elections found.</p>}
         <Link to="/elections/new">Request Election</Link>
 
