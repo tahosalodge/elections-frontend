@@ -2,7 +2,16 @@ import React from 'react';
 import Table from 'components/Table';
 import ElectionMenu from './ElectionMenu';
 
-const headers = ['Candidate', 'Status'];
+const columns = [
+  {
+    Header: 'Candidate',
+    accessor: 'candidate',
+  },
+  {
+    Header: 'Status',
+    accessor: 'status',
+  },
+];
 const data = [
   {
     candidate: 'Del Bolinske',
@@ -21,9 +30,9 @@ class Election extends React.Component {
           <strong>Election Status:</strong> Results Entered
         </p>
         <h2>Candidates</h2>
-        <Table headers={headers} data={data} />
+        <Table columns={columns} data={data} />
         <h2>Nominations</h2>
-        <Table headers={headers} data={data} />
+        <Table columns={columns} data={data} />
       </div>
     );
   }
