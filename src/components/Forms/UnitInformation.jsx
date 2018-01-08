@@ -4,7 +4,7 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { adultLeadershipPositions } from 'constants/values';
-import { unitUpdateRequest } from 'redux/state/unit';
+import { updateRequest } from 'redux/state/unit';
 import { FieldWithLabel, Button, Select, SelectDistrict, Address, Form } from './elements';
 
 class UnitInformation extends React.Component {
@@ -20,7 +20,7 @@ class UnitInformation extends React.Component {
     unit: propTypes.shape().isRequired,
     initialize: propTypes.func.isRequired,
     push: propTypes.func.isRequired,
-    unitUpdateRequest: propTypes.func.isRequired,
+    updateRequest: propTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -50,7 +50,7 @@ class UnitInformation extends React.Component {
     }
   }
 
-  submit = values => this.props.unitUpdateRequest(this.props.match.params.unitId, values);
+  submit = values => this.props.updateRequest(this.props.match.params.unitId, values);
 
   render() {
     const { handleSubmit, pristine, submitting } = this.props;
@@ -93,7 +93,7 @@ const mapStateToProps = (state, props) => ({
   unit: state.unit.items[props.match.params.unitId] || false,
 });
 
-const connected = connect(mapStateToProps, { push, unitUpdateRequest })(UnitInformation);
+const connected = connect(mapStateToProps, { push, updateRequest })(UnitInformation);
 
 export default reduxForm({
   form: 'unitInformation',

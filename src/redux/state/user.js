@@ -2,9 +2,12 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
 
+export const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
+export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
+export const USER_LOGIN_FAILURE = 'USER_LOGIN_FAILURE';
+export const USER_LOGIN_CHECK_TOKEN = 'USER_LOGIN_CHECK_TOKEN';
+
 const initialState = {
-  requesting: false,
-  successful: false,
   messages: [],
   errors: [],
   capability: 'loggedOut',
@@ -15,22 +18,13 @@ const initialState = {
 // Reducer
 export default function userReducer(state = initialState, action) {
   switch (action.type) {
-    case 'USER_LOGIN_REQUEST':
+    case USER_LOGIN_SUCCESS:
       return {
         ...state,
-        requesting: true,
-        successful: false,
-      };
-
-    case 'USER_LOGIN_SUCCESS':
-      return {
-        ...state,
-        requesting: false,
-        successful: true,
         ...action.response,
       };
 
-    case 'USER_LOGIN_ERROR':
+    case USER_LOGIN_FAILURE:
       return {
         ...state,
         errors: state.errors.concat([
@@ -39,7 +33,6 @@ export default function userReducer(state = initialState, action) {
             time: new Date(),
           },
         ]),
-        requesting: false,
       };
 
     default:
@@ -50,7 +43,7 @@ export default function userReducer(state = initialState, action) {
 // Action
 export function loginRequest({ email, password }) {
   return {
-    type: 'USER_LOGIN_REQUEST',
+    type: USER_LOGIN_REQUEST,
     email,
     password,
   };
@@ -58,7 +51,21 @@ export function loginRequest({ email, password }) {
 
 export function userVerifyRequest() {
   return {
-    type: 'USER_LOGIN_CHECK_TOKEN',
+    type: USER_LOGIN_CHECK_TOKEN,
+  };
+}
+
+function loginSuccess(response) {
+  return {
+    type: USER_LOGIN_SUCCESS,
+    response,
+  };
+}
+
+function loginFailure(error) {
+  return {
+    type: USER_LOGIN_FAILURE,
+    error,
   };
 }
 
@@ -68,10 +75,10 @@ function* loginFlow(action) {
     const { email, password } = action;
     const response = yield call(apiRequest, '/auth/login', 'POST', { email, password });
     localStorage.setItem('electionToken', response.token);
-    yield put({ type: 'USER_LOGIN_SUCCESS', response });
+    yield put(loginSuccess(response));
     yield put(push('/'));
   } catch (error) {
-    yield put({ type: 'USER_LOGIN_ERROR', error });
+    yield put(loginFailure(error));
   }
 }
 
@@ -81,9 +88,9 @@ function* checkToken() {
       throw new Error('No token found.');
     }
     const response = yield call(apiRequest, '/auth/me');
-    yield put({ type: 'USER_LOGIN_SUCCESS', response });
+    yield put(loginSuccess(response));
   } catch (error) {
-    yield put({ type: 'USER_LOGIN_ERROR', error });
+    yield put(loginFailure(error));
     if (error.code !== 'NETWORK') {
       localStorage.removeItem('electionToken');
     }
@@ -94,6 +101,6 @@ function* checkToken() {
 }
 
 export function* userSaga() {
-  yield takeLatest('USER_LOGIN_CHECK_TOKEN', checkToken);
-  yield takeLatest('USER_LOGIN_REQUEST', loginFlow);
+  yield takeLatest(USER_LOGIN_CHECK_TOKEN, checkToken);
+  yield takeLatest(USER_LOGIN_REQUEST, loginFlow);
 }

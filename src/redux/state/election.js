@@ -3,12 +3,18 @@ import { schema, normalize } from 'normalizr';
 import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
 
+export const ELECTION_FETCH_REQUEST = 'ELECTION_FETCH_REQUEST';
+export const ELECTION_FETCH_SUCCESS = 'ELECTION_FETCH_SUCCESS';
+export const ELECTION_FETCH_FAILURE = 'ELECTION_FETCH_FAILURE';
+
+export const ELECTION_CREATE_REQUEST = 'ELECTION_CREATE_REQUEST';
+export const ELECTION_CREATE_SUCCESS = 'ELECTION_CREATE_SUCCESS';
+export const ELECTION_CREATE_FAILURE = 'ELECTION_CREATE_FAILURE';
+
 export const ELECTION_ENTITY = new schema.Entity('elections', {}, { idAttribute: '_id' });
 export const ELECTION_SCHEMA = [ELECTION_ENTITY];
 
 const initialState = {
-  requesting: false,
-  successful: false,
   messages: [],
   errors: [],
   items: {},
@@ -16,31 +22,17 @@ const initialState = {
 
 // Reducer
 export default function electionReducer(state = initialState, action) {
-  switch (action.type) {
-    case 'ELECTION_FETCH_REQUEST':
+  const { type, payload } = action;
+  switch (type) {
+    case ELECTION_FETCH_SUCCESS:
+    case ELECTION_CREATE_REQUEST:
       return {
         ...state,
-        requesting: true,
-        successful: false,
+        items: payload.data.elections,
       };
 
-    case 'ELECTION_SUCCESS':
-      return {
-        ...state,
-        requesting: false,
-        successful: true,
-        items: action.payload.data.elections,
-      };
-
-    case 'ELECTION_CREATE_SUCCESS':
-      return {
-        ...state,
-        requesting: false,
-        successful: true,
-        items: action.payload.data.elections,
-      };
-
-    case 'ELECTION_ERROR':
+    case ELECTION_FETCH_FAILURE:
+    case ELECTION_CREATE_FAILURE:
       return {
         ...state,
         errors: state.errors.concat([
@@ -49,7 +41,6 @@ export default function electionReducer(state = initialState, action) {
             time: new Date(),
           },
         ]),
-        requesting: false,
       };
 
     default:
@@ -60,29 +51,45 @@ export default function electionReducer(state = initialState, action) {
 // Action
 export function fetchElections() {
   return {
-    type: 'ELECTION_FETCH_REQUEST',
+    type: ELECTION_FETCH_REQUEST,
   };
 }
 
 export function createElection(data) {
   return {
-    type: 'ELECTION_CREATE_REQUEST',
+    type: ELECTION_CREATE_REQUEST,
     payload: data,
   };
 }
 
-function electionSuccess(elections) {
+function electionCreateSuccess(elections) {
   return {
-    type: 'ELECTION_SUCCESS',
+    type: ELECTION_CREATE_SUCCESS,
     payload: {
       data: normalize(elections, ELECTION_SCHEMA).entities,
     },
   };
 }
 
-function electionError(error) {
+function electionFetchSuccess(elections) {
   return {
-    type: 'ELECTION_ERROR',
+    type: ELECTION_FETCH_SUCCESS,
+    payload: {
+      data: normalize(elections, ELECTION_SCHEMA).entities,
+    },
+  };
+}
+
+function electionFetchFailure(error) {
+  return {
+    type: ELECTION_FETCH_FAILURE,
+    error,
+  };
+}
+
+function electionCreateFailure(error) {
+  return {
+    type: ELECTION_FETCH_FAILURE,
     error,
   };
 }
@@ -91,9 +98,9 @@ function electionError(error) {
 function* fetchSaga() {
   try {
     const response = yield call(apiRequest, '/elections');
-    yield put(electionSuccess(response));
+    yield put(electionFetchSuccess(response));
   } catch (error) {
-    yield put(electionError(error));
+    yield put(electionFetchFailure(error));
   }
 }
 
@@ -106,14 +113,14 @@ function* createSaga(action) {
       unit,
     };
     const election = yield call(apiRequest, '/elections', 'POST', electionData);
-    yield put(electionSuccess(election));
+    yield put(electionCreateSuccess(election));
     yield put(push(`/elections/${election._id}`));
   } catch (error) {
-    yield put(electionError(error));
+    yield put(electionCreateFailure(error));
   }
 }
 
 export function* electionSaga() {
-  yield takeLatest('ELECTION_FETCH_REQUEST', fetchSaga);
-  yield takeLatest('ELECTION_CREATE_REQUEST', createSaga);
+  yield takeLatest(ELECTION_FETCH_REQUEST, fetchSaga);
+  yield takeLatest(ELECTION_CREATE_REQUEST, createSaga);
 }

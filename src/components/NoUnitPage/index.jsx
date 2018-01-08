@@ -17,9 +17,10 @@ class NoUnitPage extends React.PureComponent {
   };
 
   componentWillMount() {
-    const { user, history } = this.props;
+    const { user, history: { push } } = this.props;
+    console.log(user.unit);
     if (user.unit) {
-      history.push(`/units/${user.unit}`);
+      push(`/units/${user.unit}`);
     }
     this.props.unitsRequest();
   }

@@ -5,6 +5,7 @@ import register from 'redux/state/register';
 import user from 'redux/state/user';
 import unit from 'redux/state/unit';
 import election from 'redux/state/election';
+import loading from 'redux/state/loading';
 
 const rootReducer = combineReducers({
   routerReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   user,
   unit,
   election,
+  loading,
 });
 
 export default rootReducer;

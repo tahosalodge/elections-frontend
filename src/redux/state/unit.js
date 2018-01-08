@@ -3,12 +3,22 @@ import { schema, normalize } from 'normalizr';
 import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
 
+export const UNIT_FETCH_REQUEST = 'UNIT_FETCH_REQUEST';
+export const UNIT_FETCH_SUCCESS = 'UNIT_FETCH_SUCCESS';
+export const UNIT_FETCH_FAILURE = 'UNIT_FETCH_FAILURE';
+
+export const UNIT_GET_REQUEST = 'UNIT_GET_REQUEST';
+export const UNIT_GET_SUCCESS = 'UNIT_GET_SUCCESS';
+export const UNIT_GET_FAILURE = 'UNIT_GET_FAILURE';
+
+export const UNIT_UPDATE_REQUEST = 'UNIT_UPDATE_REQUEST';
+export const UNIT_UPDATE_SUCCESS = 'UNIT_UPDATE_SUCCESS';
+export const UNIT_UPDATE_FAILURE = 'UNIT_UPDATE_FAILURE';
+
 export const UNIT_ENTITY = new schema.Entity('units', {}, { idAttribute: '_id' });
 export const UNIT_SCHEMA = [UNIT_ENTITY];
 
 const initialState = {
-  requesting: false,
-  successful: false,
   messages: [],
   errors: [],
   items: {},
@@ -17,47 +27,24 @@ const initialState = {
 // Reducer
 export default function unitReducer(state = initialState, action) {
   switch (action.type) {
-    case 'UNIT_FETCH_REQUEST':
+    case UNIT_FETCH_SUCCESS:
       return {
         ...state,
-        requesting: true,
-        successful: false,
-      };
-
-    case 'UNITS_SUCCESS':
-      return {
-        ...state,
-        requesting: false,
-        successful: true,
         items: action.payload.data.units,
       };
 
-    case 'UNIT_GET_REQUEST':
+    case UNIT_GET_SUCCESS:
       return {
         ...state,
-        requesting: true,
-        successful: false,
-      };
-
-    case 'UNIT_UPDATE_REQUEST':
-      return {
-        ...state,
-        requesting: true,
-        successful: false,
-      };
-
-    case 'UNIT_SUCCESS':
-      return {
-        ...state,
-        requesting: false,
-        successful: true,
         items: {
           ...state.items,
           [action.payload.data._id]: action.payload.data,
         },
       };
 
-    case 'UNITS_ERROR':
+    case UNIT_FETCH_FAILURE:
+    case UNIT_GET_FAILURE:
+    case UNIT_UPDATE_FAILURE:
       return {
         ...state,
         errors: state.errors.concat([
@@ -66,7 +53,6 @@ export default function unitReducer(state = initialState, action) {
             time: new Date(),
           },
         ]),
-        requesting: false,
       };
 
     default:
@@ -77,47 +63,54 @@ export default function unitReducer(state = initialState, action) {
 // Action
 export function unitsRequest() {
   return {
-    type: 'UNIT_FETCH_REQUEST',
+    type: UNIT_FETCH_REQUEST,
   };
 }
 
-function unitsSuccess(units) {
+function fetchSuccess(units) {
   return {
-    type: 'UNITS_SUCCESS',
+    type: UNIT_FETCH_SUCCESS,
     payload: {
       data: normalize(units, UNIT_SCHEMA).entities,
     },
   };
 }
 
-function unitsError(error) {
+function fetchFailure(error) {
   return {
-    type: 'UNITS_ERROR',
+    type: UNIT_FETCH_FAILURE,
     error,
   };
 }
 
 export function unitRequest(unitId) {
   return {
-    type: 'UNIT_GET_REQUEST',
+    type: UNIT_GET_REQUEST,
     payload: {
       unitId,
     },
   };
 }
 
-function unitSuccess(unit) {
+function getSuccess(unit) {
   return {
-    type: 'UNIT_SUCCESS',
+    type: UNIT_GET_SUCCESS,
     payload: {
       data: unit,
     },
   };
 }
 
-export function unitUpdateRequest(unitId, data) {
+function getFailure(error) {
   return {
-    type: 'UNIT_UPDATE_REQUEST',
+    type: UNIT_GET_SUCCESS,
+    error,
+  };
+}
+
+export function updateRequest(unitId, data) {
+  return {
+    type: UNIT_UPDATE_REQUEST,
     payload: {
       unitId,
       data,
@@ -125,13 +118,29 @@ export function unitUpdateRequest(unitId, data) {
   };
 }
 
+function updateSuccess(unit) {
+  return {
+    type: UNIT_UPDATE_SUCCESS,
+    payload: {
+      data: unit,
+    },
+  };
+}
+
+function updateFailure(error) {
+  return {
+    type: UNIT_UPDATE_SUCCESS,
+    error,
+  };
+}
+
 // Saga
 function* fetchUnits() {
   try {
     const units = yield call(apiRequest, '/units');
-    yield put(unitsSuccess(units));
+    yield put(fetchSuccess(units));
   } catch (error) {
-    yield put(unitsError(error));
+    yield put(fetchFailure(error));
   }
 }
 
@@ -139,9 +148,9 @@ function* getUnit(action) {
   try {
     const { unitId } = action.payload;
     const unit = yield call(apiRequest, `/units/${unitId}`);
-    yield put(unitSuccess(unit[0]));
+    yield put(getSuccess(unit[0]));
   } catch (error) {
-    yield put(unitsError(error));
+    yield put(getFailure(error));
   }
 }
 
@@ -149,15 +158,15 @@ function* updateUnit(action) {
   try {
     const { unitId, data } = action.payload;
     const unit = yield call(apiRequest, `/units/${unitId}`, 'PUT', data);
-    yield put(unitSuccess(unit));
+    yield put(updateSuccess(unit));
     yield put(push(`/units/${unitId}`));
   } catch (error) {
-    yield put(unitsError(error));
+    yield put(updateFailure(error));
   }
 }
 
 export function* unitSaga() {
-  yield takeLatest('UNIT_FETCH_REQUEST', fetchUnits);
-  yield takeLatest('UNIT_GET_REQUEST', getUnit);
-  yield takeLatest('UNIT_UPDATE_REQUEST', updateUnit);
+  yield takeLatest(UNIT_FETCH_REQUEST, fetchUnits);
+  yield takeLatest(UNIT_GET_REQUEST, getUnit);
+  yield takeLatest(UNIT_UPDATE_REQUEST, updateUnit);
 }

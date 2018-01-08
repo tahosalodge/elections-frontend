@@ -30,10 +30,8 @@ class UnitLanding extends React.Component {
     unit: propTypes.shape().isRequired,
     unitRequest: propTypes.func.isRequired,
     fetchElections: propTypes.func.isRequired,
-    loading: propTypes.shape({
-      election: propTypes.bool,
-      unit: propTypes.bool,
-    }).isRequired,
+    loadingElection: propTypes.bool.isRequired,
+    loadingUnit: propTypes.bool.isRequired,
     match: propTypes.shape({
       params: propTypes.shape({
         unitId: propTypes.string,
@@ -47,9 +45,11 @@ class UnitLanding extends React.Component {
   }
 
   render() {
-    const { elections, unit, loading } = this.props;
+    const {
+      elections, unit, loadingElection, loadingUnit,
+    } = this.props;
     return (
-      <LoadingOrContent loading={!loading.unit || !loading.election || !unit}>
+      <LoadingOrContent loading={loadingUnit || loadingElection || !unit}>
         <h1>Troop {unit.number}</h1>
         <Link to={`${window.location.pathname}/edit`}>Edit Unit</Link>
         <h2>Elections</h2>
@@ -68,10 +68,8 @@ class UnitLanding extends React.Component {
 const mapStateToProps = (state, props) => ({
   elections: electionSelector(state, props),
   unit: state.unit.items[props.match.params.unitId] || {},
-  loading: {
-    election: state.election.successful,
-    unit: state.unit.successful,
-  },
+  loadingElection: state.loading.election,
+  loadingUnit: state.loading.unit,
 });
 
 export default connect(mapStateToProps, { unitRequest, fetchElections })(UnitLanding);

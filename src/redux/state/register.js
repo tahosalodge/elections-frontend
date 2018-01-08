@@ -1,9 +1,11 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { apiRequest } from 'redux/helpers/api';
 
+export const REGISTER_REQUEST = 'REGISTER_REQUEST';
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+export const REGISTER_FAILURE = 'REGISTER_FAILURE';
+
 const initialState = {
-  requesting: false,
-  successful: false,
   messages: [],
   errors: [],
 };
@@ -11,15 +13,13 @@ const initialState = {
 // Reducer
 export default function registerReducer(state = initialState, action) {
   switch (action.type) {
-    case 'REGISTER_REQUEST':
+    case REGISTER_REQUEST:
       return {
-        requesting: true,
-        successful: false,
         messages: [{ body: 'Signing up...', time: new Date() }],
         errors: [],
       };
 
-    case 'REGISTER_SUCCESS':
+    case REGISTER_SUCCESS:
       return {
         errors: [],
         messages: [
@@ -28,11 +28,9 @@ export default function registerReducer(state = initialState, action) {
             time: new Date(),
           },
         ],
-        requesting: false,
-        successful: true,
       };
 
-    case 'REGISTER_ERROR':
+    case REGISTER_FAILURE:
       return {
         errors: state.errors.concat([
           {
@@ -41,8 +39,6 @@ export default function registerReducer(state = initialState, action) {
           },
         ]),
         messages: [],
-        requesting: false,
-        successful: false,
       };
 
     default:
@@ -55,7 +51,7 @@ export function registerRequest({
   fname, lname, email, password, chapter,
 }) {
   return {
-    type: 'REGISTER_REQUEST',
+    type: REGISTER_REQUEST,
     fname,
     lname,
     email,
@@ -64,16 +60,30 @@ export function registerRequest({
   };
 }
 
+function registerSuccess(response) {
+  return {
+    type: REGISTER_SUCCESS,
+    response,
+  };
+}
+
+function registerFailure(error) {
+  return {
+    type: REGISTER_FAILURE,
+    error,
+  };
+}
+
 // Saga
 function* registerFlow(action) {
   try {
     const response = yield call(apiRequest, '/auth/register', 'POST', action);
-    yield put({ type: 'REGISTER_SUCCESS', response });
+    yield put(registerSuccess(response));
   } catch (error) {
-    yield put({ type: 'REGISTER_ERROR', error });
+    yield put(registerFailure(error));
   }
 }
 
 export function* registerSaga() {
-  yield takeLatest('REGISTER_REQUEST', registerFlow);
+  yield takeLatest(REGISTER_REQUEST, registerFlow);
 }
