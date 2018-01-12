@@ -3,7 +3,6 @@ import propTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { unitsRequest } from 'redux/state/unit';
-import arraySelector from 'selectors/array';
 import Table from 'components/Table';
 
 class NoUnitPage extends React.PureComponent {
@@ -67,7 +66,7 @@ class NoUnitPage extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  units: arraySelector(state.unit.items),
+  units: state.unit.items || {},
   user: state.user,
 });
 export default connect(mapStateToProps, { unitsRequest })(withRouter(NoUnitPage));
