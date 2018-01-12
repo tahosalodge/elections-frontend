@@ -3,8 +3,9 @@ import propTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
+import { flow } from 'lodash';
 import { adultLeadershipPositions } from 'constants/values';
-import { updateRequest } from 'redux/state/unit';
+import { updateRequest, createRequest } from 'redux/state/unit';
 import { FieldWithLabel, Button, Select, SelectDistrict, Address, Form } from './elements';
 
 class UnitInformation extends React.Component {
@@ -21,6 +22,7 @@ class UnitInformation extends React.Component {
     initialize: propTypes.func.isRequired,
     push: propTypes.func.isRequired,
     updateRequest: propTypes.func.isRequired,
+    createRequest: propTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -50,7 +52,14 @@ class UnitInformation extends React.Component {
     }
   }
 
-  submit = values => this.props.updateRequest(this.props.match.params.unitId, values);
+  submit = (values) => {
+    const { match: { params } } = this.props;
+    if (params.unitId) {
+      this.props.updateRequest(params.unitId, values);
+    } else {
+      this.props.createRequest(values);
+    }
+  };
 
   render() {
     const { handleSubmit, pristine, submitting } = this.props;
@@ -90,11 +99,12 @@ class UnitInformation extends React.Component {
 }
 
 const mapStateToProps = (state, props) => ({
-  unit: state.unit.items[props.match.params.unitId] || false,
+  unit: state.unit.items[props.match.params.unitId] || {},
 });
 
-const connected = connect(mapStateToProps, { push, updateRequest })(UnitInformation);
-
-export default reduxForm({
-  form: 'unitInformation',
-})(connected);
+export default flow(
+  connect(mapStateToProps, { push, updateRequest, createRequest }),
+  reduxForm({
+    form: 'unitInformation',
+  }),
+)(UnitInformation);

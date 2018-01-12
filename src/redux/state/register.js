@@ -1,4 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
@@ -79,6 +80,7 @@ function* registerFlow(action) {
   try {
     const response = yield call(apiRequest, '/auth/register', 'POST', action);
     yield put(registerSuccess(response));
+    yield put(push('/units'));
   } catch (error) {
     yield put(registerFailure(error));
   }

@@ -51,7 +51,7 @@ class UnitLanding extends React.Component {
     return (
       <LoadingOrContent loading={loadingUnit || loadingElection || !unit}>
         <h1>Troop {unit.number}</h1>
-        <Link to={`${window.location.pathname}/edit`}>Edit Unit</Link>
+        <Link to={`${window.location.pathname}/edit`}>Edit Unit Information</Link>
         <h2>Elections</h2>
         {elections.length > 0 && <Table columns={columns} data={elections} />}
         {elections.length <= 0 && <p>No elections found.</p>}

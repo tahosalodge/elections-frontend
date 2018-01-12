@@ -1,10 +1,10 @@
-export function handleApiErrors(response) {
-  if (!response.ok) {
-    const error = new Error(response.statusText);
-    error.code = 'API';
-    throw error;
+export function handleResponse(response) {
+  if (response.ok) {
+    return response.json();
   }
-  return response;
+  return response.json().then((error) => {
+    throw new Error(error.message);
+  });
 }
 
 export function apiRequest(url, method = 'GET', data = null) {
@@ -20,11 +20,8 @@ export function apiRequest(url, method = 'GET', data = null) {
     fetchParams.headers.Authorization = `Bearer ${token}`;
   }
   return fetch(`${process.env.REACT_APP_API_URL}${url}`, fetchParams)
-    .then(handleApiErrors)
-    .then(response => response.json())
-    .catch(() => {
-      const error = new Error('Connection issue');
-      error.code = 'NETWORK';
-      throw error;
+    .then(handleResponse)
+    .catch((error) => {
+      throw new Error(error);
     });
 }

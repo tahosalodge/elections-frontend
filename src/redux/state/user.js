@@ -27,12 +27,13 @@ export default function userReducer(state = initialState, action) {
     case USER_LOGIN_FAILURE:
       return {
         ...state,
-        errors: state.errors.concat([
+        errors: [
+          ...state.errors,
           {
-            body: action.error.toString(),
+            body: action.error.message,
             time: new Date(),
           },
-        ]),
+        ],
       };
 
     default:
@@ -78,6 +79,7 @@ function* loginFlow(action) {
     yield put(loginSuccess(response));
     yield put(push('/'));
   } catch (error) {
+    console.log(error);
     yield put(loginFailure(error));
   }
 }
@@ -90,7 +92,6 @@ function* checkToken() {
     const response = yield call(apiRequest, '/auth/me');
     yield put(loginSuccess(response));
   } catch (error) {
-    yield put(loginFailure(error));
     if (error.code !== 'NETWORK') {
       localStorage.removeItem('electionToken');
     }

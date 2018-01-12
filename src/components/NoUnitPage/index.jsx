@@ -18,7 +18,6 @@ class NoUnitPage extends React.PureComponent {
 
   componentWillMount() {
     const { user, history: { push } } = this.props;
-    console.log(user.unit);
     if (user.unit) {
       push(`/units/${user.unit}`);
     }
@@ -36,10 +35,19 @@ class NoUnitPage extends React.PureComponent {
         accessor: 'district',
       },
       {
-        Header: 'Actions',
-        accessor: '_id',
-        Cell: cell => <button value={cell.value}>Join Unit</button>,
+        Header: 'Unit Leader',
+        accessor: 'unitLeader',
+        Cell: ({ value }) => (
+          <span>
+            {value.fname} {value.lname}
+          </span>
+        ),
       },
+      // {
+      //   Header: 'Actions',
+      //   accessor: '_id',
+      //   Cell: cell => <button value={cell.value}>Join Unit</button>,
+      // },
     ];
 
     const { units } = this.props;
@@ -48,8 +56,9 @@ class NoUnitPage extends React.PureComponent {
       <div>
         <h2>Hey there! It looks like you&apos;re not linked to a unit.</h2>
         <p>
-          Please select a unit from below, otherwise you can{' '}
-          <Link to="/units/new">create a new unit</Link>.
+          You can <Link to="/units/new">create a new unit</Link>, or if your unit is listed below,
+          contact the unit leader for access. <br />
+          If you need help, <Link to="/help">let us know</Link>.
         </p>
         <Table columns={columns} data={units} />
       </div>

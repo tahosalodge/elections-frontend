@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import downArrow from './downarrow.svg';
 
 const Form = styled.form`
   max-width: 400px;
@@ -24,6 +25,9 @@ const Form = styled.form`
 
   select {
     appearance: none;
+    background: #fff url(${downArrow}) no-repeat center center/contain;
+    background-size: 12px;
+    background-position: 95% center;
   }
 `;
 

@@ -2,6 +2,7 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { schema, normalize } from 'normalizr';
 import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
+import { season } from 'constants/values';
 
 export const ELECTION_FETCH_REQUEST = 'ELECTION_FETCH_REQUEST';
 export const ELECTION_FETCH_SUCCESS = 'ELECTION_FETCH_SUCCESS';
@@ -25,7 +26,7 @@ export default function electionReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case ELECTION_FETCH_SUCCESS:
-    case ELECTION_CREATE_REQUEST:
+    case ELECTION_CREATE_SUCCESS:
       return {
         ...state,
         items: payload.data.elections,
@@ -110,6 +111,7 @@ function* createSaga(action) {
     const electionData = {
       ...action.payload,
       status: 'requested',
+      season,
       unit,
     };
     const election = yield call(apiRequest, '/elections', 'POST', electionData);

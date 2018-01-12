@@ -56,7 +56,8 @@ class App extends React.PureComponent {
               <Route path="/elections/new" component={ElectionForm} />
               <Route path="/candidate" component={Candidate} />
               <Route path="/nomination" component={Nomination} />
-              <Route path="/election" component={Election} />
+              <Route path="/elections/:electionId/edit" component={ElectionForm} />
+              <Route path="/elections/:electionId" component={Election} />
               <Route path="/election-list" component={ElectionList} />
               <Route path="/register" component={Register} />
               <Route path="/login" component={Login} />

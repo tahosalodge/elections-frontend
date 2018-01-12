@@ -1,4 +1,9 @@
 import React from 'react';
+import propTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchElections } from 'redux/state/election';
+import LoadingOrContent from 'components/LoadingOrContent';
 import Table from 'components/Table';
 import ElectionMenu from './ElectionMenu';
 
@@ -12,30 +17,41 @@ const columns = [
     accessor: 'status',
   },
 ];
-const data = [
-  {
-    candidate: 'Del Bolinske',
-    status: 'Not Elected',
-  },
-];
 
-// eslint-disable-next-line
 class Election extends React.Component {
+  static propTypes = {
+    fetchElections: propTypes.func.isRequired,
+    election: propTypes.shape().isRequired,
+    loading: propTypes.bool.isRequired,
+  };
+
+  componentWillMount() {
+    this.props.fetchElections();
+  }
+
   render() {
+    const { election, loading } = this.props;
     return (
-      <div>
+      <LoadingOrContent loading={loading}>
         <h1>Election Title</h1>
         <ElectionMenu />
         <p>
-          <strong>Election Status:</strong> Results Entered
+          <strong>Election Status: {election.status}</strong>
         </p>
-        <h2>Candidates</h2>
-        <Table columns={columns} data={data} />
-        <h2>Nominations</h2>
-        <Table columns={columns} data={data} />
-      </div>
+        <p>Adding candidates and nominations coming soon!</p>
+        {/* <h2>Candidates</h2> */}
+        {/* <Table columns={columns} data={data} /> */}
+        {/* <Link to="/">Add Candidate</Link> */}
+        {/* <h2>Nominations</h2> */}
+        {/* <Table columns={columns} data={data} /> */}
+      </LoadingOrContent>
     );
   }
 }
 
-export default Election;
+const mapStateToProps = (state, props) => ({
+  election: state.election.items[props.match.params.electionId] || {},
+  loading: state.loading.election,
+});
+
+export default connect(mapStateToProps, { fetchElections })(Election);

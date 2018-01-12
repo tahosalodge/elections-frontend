@@ -15,6 +15,10 @@ export const UNIT_UPDATE_REQUEST = 'UNIT_UPDATE_REQUEST';
 export const UNIT_UPDATE_SUCCESS = 'UNIT_UPDATE_SUCCESS';
 export const UNIT_UPDATE_FAILURE = 'UNIT_UPDATE_FAILURE';
 
+export const UNIT_CREATE_REQUEST = 'UNIT_CREATE_REQUEST';
+export const UNIT_CREATE_SUCCESS = 'UNIT_CREATE_SUCCESS';
+export const UNIT_CREATE_FAILURE = 'UNIT_CREATE_FAILURE';
+
 export const UNIT_ENTITY = new schema.Entity('units', {}, { idAttribute: '_id' });
 export const UNIT_SCHEMA = [UNIT_ENTITY];
 
@@ -26,19 +30,21 @@ const initialState = {
 
 // Reducer
 export default function unitReducer(state = initialState, action) {
-  switch (action.type) {
+  const { type, payload, error } = action;
+  switch (type) {
     case UNIT_FETCH_SUCCESS:
       return {
         ...state,
-        items: action.payload.data.units,
+        items: payload.data.units,
       };
 
+    case UNIT_UPDATE_SUCCESS:
     case UNIT_GET_SUCCESS:
       return {
         ...state,
         items: {
           ...state.items,
-          [action.payload.data._id]: action.payload.data,
+          [payload.data._id]: payload.data,
         },
       };
 
@@ -49,7 +55,7 @@ export default function unitReducer(state = initialState, action) {
         ...state,
         errors: state.errors.concat([
           {
-            body: action.error.toString(),
+            body: error.toString(),
             time: new Date(),
           },
         ]),
@@ -60,7 +66,9 @@ export default function unitReducer(state = initialState, action) {
   }
 }
 
-// Action
+/**
+ * UNIT_FETCH Actions
+ */
 export function unitsRequest() {
   return {
     type: UNIT_FETCH_REQUEST,
@@ -82,6 +90,10 @@ function fetchFailure(error) {
     error,
   };
 }
+
+/**
+ * UNIT_GET Actions
+ */
 
 export function unitRequest(unitId) {
   return {
@@ -108,6 +120,10 @@ function getFailure(error) {
   };
 }
 
+/**
+ * UNIT_UPDATE Actions
+ */
+
 export function updateRequest(unitId, data) {
   return {
     type: UNIT_UPDATE_REQUEST,
@@ -130,6 +146,35 @@ function updateSuccess(unit) {
 function updateFailure(error) {
   return {
     type: UNIT_UPDATE_SUCCESS,
+    error,
+  };
+}
+
+/**
+ * UNIT_CREATE Actions
+ */
+
+export function createRequest(data) {
+  return {
+    type: UNIT_CREATE_REQUEST,
+    payload: {
+      data,
+    },
+  };
+}
+
+function createSuccess(unit) {
+  return {
+    type: UNIT_CREATE_SUCCESS,
+    payload: {
+      data: unit,
+    },
+  };
+}
+
+function createFailure(error) {
+  return {
+    type: UNIT_CREATE_FAILURE,
     error,
   };
 }
@@ -165,8 +210,20 @@ function* updateUnit(action) {
   }
 }
 
+function* createUnit(action) {
+  try {
+    const { data } = action.payload;
+    const unit = yield call(apiRequest, '/units/', 'POST', data);
+    yield put(createSuccess(unit));
+    yield put(push(`/units/${unit.data._id}`));
+  } catch (error) {
+    yield put(createFailure(error));
+  }
+}
+
 export function* unitSaga() {
   yield takeLatest(UNIT_FETCH_REQUEST, fetchUnits);
   yield takeLatest(UNIT_GET_REQUEST, getUnit);
   yield takeLatest(UNIT_UPDATE_REQUEST, updateUnit);
+  yield takeLatest(UNIT_CREATE_REQUEST, createUnit);
 }
