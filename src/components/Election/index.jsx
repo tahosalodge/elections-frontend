@@ -1,27 +1,28 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchElections } from 'redux/state/election';
 import LoadingOrContent from 'components/LoadingOrContent';
-import Table from 'components/Table';
+// import Table from 'components/Table';
 import ElectionMenu from './ElectionMenu';
 
-const columns = [
-  {
-    Header: 'Candidate',
-    accessor: 'candidate',
-  },
-  {
-    Header: 'Status',
-    accessor: 'status',
-  },
-];
+// const columns = [
+//   {
+//     Header: 'Candidate',
+//     accessor: 'candidate',
+//   },
+//   {
+//     Header: 'Status',
+//     accessor: 'status',
+//   },
+// ];
 
 class Election extends React.Component {
   static propTypes = {
     fetchElections: propTypes.func.isRequired,
     election: propTypes.shape().isRequired,
+    unit: propTypes.shape().isRequired,
     loading: propTypes.bool.isRequired,
   };
 
@@ -30,10 +31,12 @@ class Election extends React.Component {
   }
 
   render() {
-    const { election, loading } = this.props;
+    const { election, unit, loading } = this.props;
     return (
       <LoadingOrContent loading={loading}>
-        <h1>Election Title</h1>
+        <h1>
+          {election.season} - Troop {unit.number}
+        </h1>
         <ElectionMenu />
         <p>
           <strong>Election Status: {election.status}</strong>
@@ -51,6 +54,7 @@ class Election extends React.Component {
 
 const mapStateToProps = (state, props) => ({
   election: state.election.items[props.match.params.electionId] || {},
+  unit: state.unit.items[state.user.unit] || {},
   loading: state.loading.election,
 });
 

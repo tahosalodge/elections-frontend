@@ -26,7 +26,6 @@ export default function electionReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case ELECTION_FETCH_SUCCESS:
-    case ELECTION_CREATE_SUCCESS:
       return {
         ...state,
         items: payload.data.elections,
@@ -42,6 +41,15 @@ export default function electionReducer(state = initialState, action) {
             time: new Date(),
           },
         ]),
+      };
+
+    case ELECTION_CREATE_SUCCESS:
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [payload.data._id]: payload.data,
+        },
       };
 
     default:
@@ -110,7 +118,7 @@ function* createSaga(action) {
     const unit = yield select(state => state.user.unit);
     const electionData = {
       ...action.payload,
-      status: 'requested',
+      status: 'Requested',
       season,
       unit,
     };

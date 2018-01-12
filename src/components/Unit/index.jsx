@@ -20,7 +20,7 @@ const columns = [
   {
     Header: 'Details',
     accessor: '_id',
-    Cell: cell => <Link to={`/election/${cell.value}`}>Details</Link>,
+    Cell: cell => <Link to={`/elections/${cell.value}`}>Details</Link>,
   },
 ];
 

@@ -79,6 +79,7 @@ function registerFailure(error) {
 function* registerFlow(action) {
   try {
     const response = yield call(apiRequest, '/auth/register', 'POST', action);
+    localStorage.setItem('electionToken', response.token);
     yield put(registerSuccess(response));
     yield put(push('/units'));
   } catch (error) {

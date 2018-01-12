@@ -79,7 +79,6 @@ function* loginFlow(action) {
     yield put(loginSuccess(response));
     yield put(push('/'));
   } catch (error) {
-    console.log(error);
     yield put(loginFailure(error));
   }
 }
@@ -95,7 +94,8 @@ function* checkToken() {
     if (error.code !== 'NETWORK') {
       localStorage.removeItem('electionToken');
     }
-    if (window.location.pathname !== '/register') {
+    const { pathname } = window.location;
+    if (pathname !== '/register' && pathname !== '/') {
       yield put(push('/login'));
     }
   }

@@ -40,6 +40,7 @@ export default function unitReducer(state = initialState, action) {
 
     case UNIT_UPDATE_SUCCESS:
     case UNIT_GET_SUCCESS:
+    case UNIT_CREATE_SUCCESS:
       return {
         ...state,
         items: {
@@ -215,7 +216,7 @@ function* createUnit(action) {
     const { data } = action.payload;
     const unit = yield call(apiRequest, '/units/', 'POST', data);
     yield put(createSuccess(unit));
-    yield put(push(`/units/${unit.data._id}`));
+    yield put(push(`/units/${unit._id}`));
   } catch (error) {
     yield put(createFailure(error));
   }
