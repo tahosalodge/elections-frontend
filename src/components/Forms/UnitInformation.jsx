@@ -98,9 +98,16 @@ class UnitInformation extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => ({
-  unit: state.unit.items[props.match.params.unitId] || {},
-});
+const mapStateToProps = (state, props) => {
+  if (props.match.path === '/units/new') {
+    return {
+      unit: {},
+    };
+  }
+  return {
+    unit: state.unit.items[props.match.params.unitId] || {},
+  };
+};
 
 export default flow(
   connect(mapStateToProps, { push, updateRequest, createRequest }),
