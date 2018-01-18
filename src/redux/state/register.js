@@ -49,7 +49,7 @@ export default function registerReducer(state = initialState, action) {
 
 // Action
 export function registerRequest({
-  fname, lname, email, password, chapter,
+  fname, lname, email, password, chapter, capability,
 }) {
   return {
     type: REGISTER_REQUEST,
@@ -58,6 +58,7 @@ export function registerRequest({
     email,
     password,
     chapter,
+    capability,
   };
 }
 

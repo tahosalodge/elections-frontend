@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Table from 'components/Table';
 import { unitRequest } from 'redux/state/unit';
 import { fetchElections } from 'redux/state/election';
-import electionSelector from 'selectors/elections';
+import { electionsByUnit } from 'selectors/elections';
 import LoadingOrContent from 'components/LoadingOrContent';
 
 const columns = [
@@ -66,7 +66,7 @@ class UnitLanding extends React.Component {
 }
 
 const mapStateToProps = (state, props) => ({
-  elections: electionSelector(state, props),
+  elections: electionsByUnit(state, props),
   unit: state.unit.items[props.match.params.unitId] || {},
   loadingElection: state.loading.election,
   loadingUnit: state.loading.unit,

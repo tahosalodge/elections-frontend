@@ -31,7 +31,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "lint": "eslint src/*",
-    "lint-fix": "eslint src/* --fix"
+    "lint-fix": "eslint src/* --fix",
+    "docker-build": "yarn build && sh build.sh"
   },
   "devDependencies": {
     "eslint": "^4.8.0",

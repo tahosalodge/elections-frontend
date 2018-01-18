@@ -95,7 +95,7 @@ function* checkToken() {
       localStorage.removeItem('electionToken');
     }
     const { pathname } = window.location;
-    if (pathname !== '/register' && pathname !== '/') {
+    if (pathname.indexOf('register') === -1 && pathname !== '/') {
       yield put(push('/login'));
     }
   }

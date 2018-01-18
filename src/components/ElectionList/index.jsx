@@ -1,29 +1,58 @@
 import React from 'react';
+import propTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Table from 'components/Table';
+import LoadingOrContent from 'components/LoadingOrContent';
+import { electionUnitJoin } from 'selectors/elections';
+import { fetchElections } from 'redux/state/election';
+import { unitsRequest } from 'redux/state/unit';
 
-const headers = ['Unit', 'Chapter', 'Election Status', 'Candidates ', 'Elected', 'Nominations'];
-const data = [
+const columns = [
   {
-    unit: 'Troop 633',
-    chapter: 'White Eagle',
-    electionStatus: 'Scheduled',
-    candidates: 0,
-    elected: 0,
-    nominations: 0,
+    Header: 'Unit',
+    accessor: 'unit',
+    Cell: ({ value: { number } }) => `Troop ${number}`,
   },
   {
-    unit: 'Troop 79',
-    chapter: 'White Buffalo',
-    electionStatus: 'Results Entered',
-    candidates: 8,
-    elected: 4,
-    nominations: 1,
+    Header: 'Chapter',
+    accessor: 'unit',
+    Cell: ({ value: { district } }) => district,
+  },
+  {
+    Header: 'Status',
+    accessor: 'status',
   },
 ];
-// eslint-disable-next-line
+
 class ElectionList extends React.Component {
+  static propTypes = {
+    elections: propTypes.arrayOf(propTypes.shape()).isRequired,
+    fetchElections: propTypes.func.isRequired,
+    unitsRequest: propTypes.func.isRequired,
+    loading: propTypes.shape({
+      election: propTypes.bool,
+      unit: propTypes.bool,
+    }).isRequired,
+  };
+
+  componentWillMount() {
+    this.props.fetchElections();
+    this.props.unitsRequest();
+  }
+
   render() {
-    return <Table headers={headers} data={data} />;
+    const { elections, loading } = this.props;
+    return (
+      <LoadingOrContent loading={loading.unit || loading.election}>
+        <Table data={elections} columns={columns} />
+      </LoadingOrContent>
+    );
   }
 }
-export default ElectionList;
+
+const mapStateToProps = state => ({
+  elections: electionUnitJoin(state),
+  loading: state.loading,
+});
+
+export default connect(mapStateToProps, { fetchElections, unitsRequest })(ElectionList);

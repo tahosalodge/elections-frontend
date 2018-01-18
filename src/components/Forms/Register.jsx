@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { registerRequest } from 'redux/state/register';
 import Notices from 'components/Notices';
-import { FieldWithLabel, Button, SelectChapter, Form } from './elements';
+import { FieldWithLabel, Button, SelectChapter, SelectDistrict, Form } from './elements';
 
 class Register extends React.Component {
   static propTypes = {
@@ -13,9 +13,35 @@ class Register extends React.Component {
     submitting: propTypes.bool.isRequired,
     registerRequest: propTypes.func.isRequired,
     register: propTypes.shape().isRequired,
+    match: propTypes.shape({
+      params: propTypes.shape({
+        type: propTypes.string,
+      }),
+    }).isRequired,
   };
 
-  submit = values => this.props.registerRequest(values);
+  submit = (values) => {
+    let capability;
+    const { params } = this.props.match;
+    if (params.type === 'chapter') {
+      capability = 'chapter';
+    } else {
+      capability = 'unit';
+    }
+    const updatedValues = {
+      ...values,
+      capability,
+    };
+    this.props.registerRequest(updatedValues);
+  };
+
+  chapterSelect = () => {
+    const { params } = this.props.match;
+    if (params.type === 'chapter') {
+      return <SelectChapter />;
+    }
+    return <SelectDistrict />;
+  };
 
   render() {
     const {
@@ -31,7 +57,7 @@ class Register extends React.Component {
           <FieldWithLabel id="lname" label="Last Name" />
           <FieldWithLabel id="email" label="Email" type="email" />
           <FieldWithLabel id="password" label="Password" type="password" />
-          <SelectChapter />
+          {this.chapterSelect()}
           <Button text="Register" disabled={pristine || submitting} />
         </Form>
       </div>

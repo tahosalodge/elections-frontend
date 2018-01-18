@@ -18,6 +18,7 @@ import ElectionList from 'components/ElectionList';
 import Election from 'components/Election';
 import Register from 'components/Forms/Register';
 import Login from 'components/Forms/Login';
+import Help from 'components/Help';
 import { userVerifyRequest } from 'redux/state/user';
 
 const Page = styled.div`
@@ -59,7 +60,9 @@ class App extends React.PureComponent {
               <Route path="/elections/:electionId/edit" component={ElectionForm} />
               <Route path="/elections/:electionId" component={Election} />
               <Route path="/election-list" component={ElectionList} />
-              <Route path="/register" component={Register} />
+              <Route path="/register/:type" component={Register} />
+              <Route path="/register/" component={Register} />
+              <Route path="/help" component={Help} />
               <Route path="/login" component={Login} />
             </Switch>
           </Page>
