@@ -44,8 +44,8 @@ const MenuItems = {
       text: 'Units',
     },
     {
-      to: '/elections',
-      text: 'Elections',
+      to: '/election-list',
+      text: 'Election List',
     },
     {
       to: '/elections/schedule',

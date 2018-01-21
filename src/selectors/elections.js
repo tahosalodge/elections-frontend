@@ -19,10 +19,12 @@ export const electionUnitJoin = createSelector([getUnits, getElections], (units,
   const electionsWithUnits = Object.keys(elections).reduce((map, electionId) => {
     const newMap = [...map];
     const thisElection = elections[electionId];
-    newMap.push({
-      ...thisElection,
-      unit: units[thisElection.unit],
-    });
+    if (units[thisElection.unit]) {
+      newMap.push({
+        ...thisElection,
+        unit: units[thisElection.unit],
+      });
+    }
     return newMap;
   }, []);
   return electionsWithUnits;

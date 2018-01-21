@@ -1,28 +1,11 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Table from 'components/Table';
+import Table, { ChapterCell } from 'components/Table';
 import LoadingOrContent from 'components/LoadingOrContent';
 import { electionUnitJoin } from 'selectors/elections';
 import { fetchElections } from 'redux/state/election';
 import { unitsRequest } from 'redux/state/unit';
-
-const columns = [
-  {
-    Header: 'Unit',
-    accessor: 'unit',
-    Cell: ({ value: { number } }) => `Troop ${number}`,
-  },
-  {
-    Header: 'Chapter',
-    accessor: 'unit',
-    Cell: ({ value: { district } }) => district,
-  },
-  {
-    Header: 'Status',
-    accessor: 'status',
-  },
-];
 
 class ElectionList extends React.Component {
   static propTypes = {
@@ -33,6 +16,9 @@ class ElectionList extends React.Component {
       election: propTypes.bool,
       unit: propTypes.bool,
     }).isRequired,
+    user: propTypes.shape({
+      capability: propTypes.string,
+    }).isRequired,
   };
 
   componentWillMount() {
@@ -41,7 +27,23 @@ class ElectionList extends React.Component {
   }
 
   render() {
-    const { elections, loading } = this.props;
+    const { elections, loading, user } = this.props;
+    const columns = [
+      {
+        Header: 'Unit',
+        accessor: 'unit',
+        Cell: ({ value: { number } }) => `Troop ${number}`,
+      },
+      {
+        Header: 'Chapter',
+        accessor: 'unit',
+        Cell: ({ value: { chapter } }) => <ChapterCell user={user} value={chapter} />,
+      },
+      {
+        Header: 'Status',
+        accessor: 'status',
+      },
+    ];
     return (
       <LoadingOrContent loading={loading.unit || loading.election}>
         <Table data={elections} columns={columns} />
@@ -52,6 +54,7 @@ class ElectionList extends React.Component {
 
 const mapStateToProps = state => ({
   elections: electionUnitJoin(state),
+  user: state.user,
   loading: state.loading,
 });
 
