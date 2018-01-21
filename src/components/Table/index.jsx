@@ -46,3 +46,4 @@ Table.defaultProps = {
 };
 
 export default Table;
+export { default as ChapterCell } from './Chapter';

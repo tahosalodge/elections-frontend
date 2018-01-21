@@ -6,3 +6,4 @@ export { default as SelectChapter } from './SelectChapter';
 export { default as SelectDistrict } from './SelectDistrict';
 export { default as DatePicker } from './DatePicker';
 export { default as Form } from './Form';
+export { default as TextArea } from './TextArea';

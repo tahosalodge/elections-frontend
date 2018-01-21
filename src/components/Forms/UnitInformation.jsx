@@ -6,7 +6,15 @@ import { push } from 'react-router-redux';
 import { flow } from 'lodash';
 import { adultLeadershipPositions } from 'constants/values';
 import { updateRequest, createRequest } from 'redux/state/unit';
-import { FieldWithLabel, Button, Select, SelectDistrict, Address, Form } from './elements';
+import {
+  FieldWithLabel,
+  Button,
+  Select,
+  SelectDistrict,
+  Address,
+  Form,
+  TextArea,
+} from './elements';
 
 class UnitInformation extends React.Component {
   static propTypes = {
@@ -71,6 +79,7 @@ class UnitInformation extends React.Component {
           <SelectDistrict />
           <FieldWithLabel label="Active Members" id="activeMembers" />
           <Address prefix="meetingLocation" />
+          <TextArea label="Location Notes" id="meetingLocation.notes" />
           <h2>Unit Leader</h2>
           <FieldWithLabel label="First Name" id="unitLeader.fname" />
           <FieldWithLabel label="Last Name" id="unitLeader.lname" />

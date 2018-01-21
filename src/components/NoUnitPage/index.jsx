@@ -3,7 +3,8 @@ import propTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { unitsRequest } from 'redux/state/unit';
-import Table from 'components/Table';
+import toArray from 'selectors/array';
+import Table, { ChapterCell } from 'components/Table';
 
 class NoUnitPage extends React.PureComponent {
   static propTypes = {
@@ -24,14 +25,16 @@ class NoUnitPage extends React.PureComponent {
   }
 
   render() {
+    const { units, user } = this.props;
     const columns = [
       {
         Header: 'Unit',
         accessor: 'number',
       },
       {
-        Header: 'District',
-        accessor: 'district',
+        Header: user.capability === 'unit' ? 'District' : 'Chapter',
+        accessor: 'chapter',
+        Cell: ({ value }) => <ChapterCell user={user} value={value} />,
       },
       {
         Header: 'Unit Leader',
@@ -49,8 +52,6 @@ class NoUnitPage extends React.PureComponent {
       // },
     ];
 
-    const { units } = this.props;
-
     return (
       <div>
         <h2>Hey there! It looks like you&apos;re not linked to a unit.</h2>
@@ -66,7 +67,7 @@ class NoUnitPage extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  units: state.unit.items || {},
+  units: toArray(state.unit.items),
   user: state.user,
 });
 export default connect(mapStateToProps, { unitsRequest })(withRouter(NoUnitPage));
