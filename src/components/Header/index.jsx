@@ -74,6 +74,7 @@ const Header = ({ menu }) => (
       {MenuItems[menu].map(item => (
         <MenuItem key={`menuItem${item.to}`} to={item.to} text={item.text} />
       ))}
+      {menu !== 'loggedOut' && <MenuItem to="/logout" text="Log Out" />}
     </ul>
   </StyledHeader>
 );

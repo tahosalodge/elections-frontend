@@ -6,6 +6,7 @@ export const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
 export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
 export const USER_LOGIN_FAILURE = 'USER_LOGIN_FAILURE';
 export const USER_LOGIN_CHECK_TOKEN = 'USER_LOGIN_CHECK_TOKEN';
+export const USER_LOGOUT = 'USER_LOGOUT';
 
 const initialState = {
   messages: [],
@@ -35,6 +36,9 @@ export default function userReducer(state = initialState, action) {
           },
         ],
       };
+
+    case USER_LOGOUT:
+      return initialState;
 
     default:
       return state;
@@ -70,6 +74,12 @@ function loginFailure(error) {
   };
 }
 
+export function userLogoutRequest() {
+  return {
+    type: USER_LOGOUT,
+  };
+}
+
 // Saga
 function* loginFlow(action) {
   try {
@@ -84,7 +94,11 @@ function* loginFlow(action) {
 }
 
 function* checkToken() {
+  const { pathname } = window.location;
   try {
+    if (pathname === '/logout') {
+      return;
+    }
     if (!localStorage.getItem('electionToken')) {
       throw new Error('No token found.');
     }
@@ -94,14 +108,19 @@ function* checkToken() {
     if (error.code !== 'NETWORK') {
       localStorage.removeItem('electionToken');
     }
-    const { pathname } = window.location;
     if (pathname.indexOf('register') === -1 && pathname !== '/') {
       yield put(push('/login'));
     }
   }
 }
 
+function* logout() {
+  localStorage.removeItem('electionToken');
+  yield put(push('/login'));
+}
+
 export function* userSaga() {
+  yield takeLatest(USER_LOGOUT, logout);
   yield takeLatest(USER_LOGIN_CHECK_TOKEN, checkToken);
   yield takeLatest(USER_LOGIN_REQUEST, loginFlow);
 }
