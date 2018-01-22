@@ -79,7 +79,7 @@ class UnitInformation extends React.Component {
           <SelectDistrict />
           <FieldWithLabel label="Active Members" id="activeMembers" />
           <Address prefix="meetingLocation" />
-          <TextArea label="Location Notes" id="meetingLocation.notes" />
+          <TextArea label="Location Notes (optional)" id="meetingLocation.notes" />
           <h2>Unit Leader</h2>
           <FieldWithLabel label="First Name" id="unitLeader.fname" />
           <FieldWithLabel label="Last Name" id="unitLeader.lname" />
@@ -90,12 +90,17 @@ class UnitInformation extends React.Component {
             id="unitLeader.position"
             options={adultLeadershipPositions}
           />
-          <h2>Adult Representative</h2>
+          <h2>Unit Representatives</h2>
+          <p>
+            If you have a unit OA rep or adviser, please provide their contact info so we can send
+            them information throughout the year.{' '}
+          </p>
+          <h3>Adult</h3>
           <FieldWithLabel label="First Name" id="adultRepresentative.fname" />
           <FieldWithLabel label="Last Name" id="adultRepresentative.lname" />
           <FieldWithLabel label="Phone" id="adultRepresentative.phone" type="phone" />
           <FieldWithLabel label="Email" id="adultRepresentative.email" type="email" />
-          <h2>Youth Representative</h2>
+          <h3>Youth</h3>
           <FieldWithLabel label="First Name" id="youthRepresentative.fname" />
           <FieldWithLabel label="Last Name" id="youthRepresentative.lname" />
           <FieldWithLabel label="Phone" id="youthRepresentative.phone" type="phone" />

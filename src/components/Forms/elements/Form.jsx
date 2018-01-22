@@ -30,6 +30,11 @@ const Form = styled.form`
     background-size: 12px;
     background-position: 95% center;
   }
+
+  h2 em {
+    font-weight: normal;
+    font-size: 16px;
+  }
 `;
 
 export default Form;
