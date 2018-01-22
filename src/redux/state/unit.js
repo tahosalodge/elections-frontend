@@ -35,7 +35,7 @@ export default function unitReducer(state = initialState, action) {
     case UNIT_FETCH_SUCCESS:
       return {
         ...state,
-        items: payload.data.units,
+        items: payload.data.units || {},
       };
 
     case UNIT_UPDATE_SUCCESS:

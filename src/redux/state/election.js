@@ -28,7 +28,7 @@ export default function electionReducer(state = initialState, action) {
     case ELECTION_FETCH_SUCCESS:
       return {
         ...state,
-        items: payload.data.elections,
+        items: payload.data.elections || {},
       };
 
     case ELECTION_FETCH_FAILURE:
