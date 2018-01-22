@@ -27,9 +27,14 @@ const Page = styled.div`
   width: 90%;
   padding: 2em 5em;
   background: white;
-  margin: 0 auto;
+  margin: 2em auto 0;
   min-height: 60vh;
-  margin-top: 2em;
+
+  @media (max-width: 600px) {
+    width: 100%;
+    padding: 1em;
+    margin-top: 0;
+  }
 `;
 
 class App extends React.PureComponent {

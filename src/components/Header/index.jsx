@@ -9,9 +9,15 @@ const StyledHeader = styled.header`
   padding: 1em;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  flex-flow: row wrap;
 
   h1 {
     margin: 0;
+
+    @media (max-width: 600px) {
+      font-size: 5vw;
+    }
 
     a {
       color: white;
@@ -22,11 +28,44 @@ const StyledHeader = styled.header`
   ul {
     display: flex;
     list-style: none;
+    flex-flow: row wrap;
+    padding: 0;
+    margin: 0;
+
+    @media (max-width: 600px) {
+      width: 100%;
+      display: ${props => (props.showMenu ? 'block' : 'none')};
+    }
 
     a {
       color: white;
       text-decoration: none;
       margin-right: 1.5em;
+    }
+  }
+
+  li {
+    @media (max-width: 600px) {
+      width: 100%;
+      padding: 1em;
+      border-top: 1px solid white;
+
+      &:first-child {
+        border-top: 0;
+      }
+    }
+  }
+
+  button {
+    background: white;
+    color: black;
+    border: 0;
+    width: auto;
+    padding: 0.5em 1em;
+    display: none;
+
+    @media (max-width: 600px) {
+      display: block;
     }
   }
 `;
@@ -64,23 +103,46 @@ const MenuItems = {
   ],
 };
 
-const Header = ({ menu }) => (
-  <StyledHeader>
-    <h1>
-      <Link to="/">Tahosa Lodge Elections</Link>
-    </h1>
+class Header extends React.Component {
+  static propTypes = {
+    menu: propTypes.string.isRequired,
+  };
 
-    <ul>
-      {MenuItems[menu].map(item => (
-        <MenuItem key={`menuItem${item.to}`} to={item.to} text={item.text} />
-      ))}
-      {menu !== 'loggedOut' && <MenuItem to="/logout" text="Log Out" />}
-    </ul>
-  </StyledHeader>
-);
+  state = { mobileMenuToggle: false };
 
-Header.propTypes = {
-  menu: propTypes.string.isRequired,
-};
+  toggleMobileMenu = () => {
+    this.setState({ mobileMenuToggle: !this.state.mobileMenuToggle });
+  };
+
+  hideMobileMenu = () => {
+    this.setState({ mobileMenuToggle: false });
+  };
+
+  render() {
+    const { menu } = this.props;
+    const { mobileMenuToggle } = this.state;
+    return (
+      <StyledHeader showMenu={mobileMenuToggle}>
+        <h1>
+          <Link to="/">Tahosa Lodge Elections</Link>
+        </h1>
+
+        <button onClick={this.toggleMobileMenu}>Menu</button>
+
+        <ul>
+          {MenuItems[menu].map(item => (
+            <MenuItem
+              key={`menuItem${item.to}`}
+              to={item.to}
+              text={item.text}
+              onClick={this.hideMobileMenu}
+            />
+          ))}
+          {menu !== 'loggedOut' && <MenuItem to="/logout" text="Log Out" />}
+        </ul>
+      </StyledHeader>
+    );
+  }
+}
 
 export default Header;
