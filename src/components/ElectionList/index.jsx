@@ -1,6 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Table, { ChapterCell } from 'components/Table';
 import LoadingOrContent from 'components/LoadingOrContent';
 import { electionUnitJoin } from 'selectors/elections';
@@ -26,8 +27,8 @@ class ElectionList extends React.Component {
     this.props.unitsRequest();
   }
 
-  render() {
-    const { elections, loading, user } = this.props;
+  columns = () => {
+    const { user } = this.props;
     const columns = [
       {
         Header: 'Unit',
@@ -43,10 +44,20 @@ class ElectionList extends React.Component {
         Header: 'Status',
         accessor: 'status',
       },
+      {
+        Header: 'Actions',
+        accessor: '_id',
+        Cell: ({ value }) => <Link to={`/elections/${value}/edit`}>Schedule</Link>,
+      },
     ];
+    return columns;
+  };
+
+  render() {
+    const { elections, loading } = this.props;
     return (
       <LoadingOrContent loading={loading.unit || loading.election}>
-        <Table data={elections} columns={columns} />
+        <Table data={elections} columns={this.columns()} />
       </LoadingOrContent>
     );
   }

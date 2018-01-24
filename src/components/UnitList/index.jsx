@@ -35,15 +35,15 @@ class NoUnitPage extends React.PureComponent {
     </F>
   );
 
-  render() {
-    const { units, user } = this.props;
+  columns = () => {
+    const { user, user: { capability } } = this.props;
     const columns = [
       {
         Header: 'Unit',
         accessor: 'number',
       },
       {
-        Header: user.capability === 'unit' ? 'District' : 'Chapter',
+        Header: capability === 'unit' ? 'District' : 'Chapter',
         accessor: 'chapter',
         Cell: ({ value }) => <ChapterCell user={user} value={value} />,
       },
@@ -62,11 +62,23 @@ class NoUnitPage extends React.PureComponent {
       //   Cell: cell => <button value={cell.value}>Join Unit</button>,
       // },
     ];
+    if (capability !== 'unit') {
+      columns.push({
+        Header: 'Actions',
+        accessor: '_id',
+        Cell: ({ value }) => <Link to={`/units/${value}`}>View</Link>,
+      });
+    }
+    return columns;
+  };
+
+  render() {
+    const { units, user } = this.props;
 
     return (
       <div>
         {user.capability === 'unit' && this.unitMessage}
-        <Table columns={columns} data={units} />
+        <Table columns={this.columns()} data={units} />
       </div>
     );
   }

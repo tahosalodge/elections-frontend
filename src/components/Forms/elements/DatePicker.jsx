@@ -46,11 +46,12 @@ DatePicker.propTypes = {
   label: propTypes.string.isRequired,
   id: propTypes.string.isRequired,
   initialMonth: propTypes.instanceOf(Date),
-  disabledDays: propTypes.arrayOf(propTypes.object).isRequired,
+  disabledDays: propTypes.arrayOf(propTypes.object),
 };
 
 DatePicker.defaultProps = {
   initialMonth: new Date(),
+  disabledDays: [],
 };
 
 export default DatePicker;

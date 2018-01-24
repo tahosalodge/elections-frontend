@@ -12,6 +12,10 @@ export const ELECTION_CREATE_REQUEST = 'ELECTION_CREATE_REQUEST';
 export const ELECTION_CREATE_SUCCESS = 'ELECTION_CREATE_SUCCESS';
 export const ELECTION_CREATE_FAILURE = 'ELECTION_CREATE_FAILURE';
 
+export const ELECTION_UPDATE_REQUEST = 'ELECTION_UPDATE_REQUEST';
+export const ELECTION_UPDATE_SUCCESS = 'ELECTION_UPDATE_SUCCESS';
+export const ELECTION_UPDATE_FAILURE = 'ELECTION_UPDATE_FAILURE';
+
 export const ELECTION_ENTITY = new schema.Entity('elections', {}, { idAttribute: '_id' });
 export const ELECTION_SCHEMA = [ELECTION_ENTITY];
 
@@ -71,6 +75,13 @@ export function createElection(data) {
   };
 }
 
+export function updateElection(data) {
+  return {
+    type: ELECTION_UPDATE_REQUEST,
+    payload: data,
+  };
+}
+
 function electionCreateSuccess(elections) {
   return {
     type: ELECTION_CREATE_SUCCESS,
@@ -89,6 +100,15 @@ function electionFetchSuccess(elections) {
   };
 }
 
+function electionUpdateSuccess(elections) {
+  return {
+    type: ELECTION_FETCH_SUCCESS,
+    payload: {
+      data: normalize(elections, ELECTION_SCHEMA).entities,
+    },
+  };
+}
+
 function electionFetchFailure(error) {
   return {
     type: ELECTION_FETCH_FAILURE,
@@ -97,6 +117,13 @@ function electionFetchFailure(error) {
 }
 
 function electionCreateFailure(error) {
+  return {
+    type: ELECTION_FETCH_FAILURE,
+    error,
+  };
+}
+
+function electionUpdateFailure(error) {
   return {
     type: ELECTION_FETCH_FAILURE,
     error,
@@ -130,7 +157,19 @@ function* createSaga(action) {
   }
 }
 
+function* updateSaga(action) {
+  try {
+    const { electionId, data } = action.payload;
+    const unit = yield call(apiRequest, `/election/${electionId}`, 'PUT', data);
+    yield put(electionUpdateSuccess(unit));
+    yield put(push(`/election/${electionId}`));
+  } catch (error) {
+    yield put(electionUpdateFailure(error));
+  }
+}
+
 export function* electionSaga() {
   yield takeLatest(ELECTION_FETCH_REQUEST, fetchSaga);
   yield takeLatest(ELECTION_CREATE_REQUEST, createSaga);
+  yield takeLatest(ELECTION_UPDATE_REQUEST, updateSaga);
 }

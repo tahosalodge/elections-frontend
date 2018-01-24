@@ -6,25 +6,10 @@ import Table from 'components/Table';
 import { unitRequest } from 'redux/state/unit';
 import { fetchElections } from 'redux/state/election';
 import { electionsByUnit } from 'selectors/elections';
+import { chapters } from 'constants/values';
 import LoadingOrContent from 'components/LoadingOrContent';
 
-const columns = [
-  {
-    Header: 'Season',
-    accessor: 'season',
-  },
-  {
-    Header: 'Status',
-    accessor: 'status',
-  },
-  {
-    Header: 'Details',
-    accessor: '_id',
-    Cell: cell => <Link to={`/elections/${cell.value}`}>Details</Link>,
-  },
-];
-
-class UnitLanding extends React.Component {
+class Unit extends React.Component {
   static propTypes = {
     elections: propTypes.arrayOf(propTypes.object).isRequired,
     unit: propTypes.shape().isRequired,
@@ -44,16 +29,39 @@ class UnitLanding extends React.Component {
     this.props.fetchElections();
   }
 
+  columns = () => [
+    {
+      Header: 'Season',
+      accessor: 'season',
+    },
+    {
+      Header: 'Status',
+      accessor: 'status',
+    },
+    {
+      Header: 'Details',
+      accessor: '_id',
+      Cell: ({ value }) => <Link to={`/elections/${value}`}>Details</Link>,
+    },
+  ];
+
   render() {
     const {
       elections, unit, loadingElection, loadingUnit,
     } = this.props;
+    const selectedChapter = chapters.find(chapter => chapter.value === unit.chapter);
+
     return (
       <LoadingOrContent loading={loadingUnit || loadingElection || !unit}>
         <h1>Troop {unit.number}</h1>
+        {selectedChapter && (
+          <h2>
+            {selectedChapter.district} District | {selectedChapter.chapter}
+          </h2>
+        )}
         <Link to={`${window.location.pathname}/edit`}>Edit Unit Information</Link>
         <h2>Elections</h2>
-        {elections.length > 0 && <Table columns={columns} data={elections} />}
+        {elections.length > 0 && <Table columns={this.columns()} data={elections} />}
         {elections.length <= 0 && <p>No elections found.</p>}
         <Link to="/elections/new">Request Election</Link>
 
@@ -72,4 +80,4 @@ const mapStateToProps = (state, props) => ({
   loadingUnit: state.loading.unit,
 });
 
-export default connect(mapStateToProps, { unitRequest, fetchElections })(UnitLanding);
+export default connect(mapStateToProps, { unitRequest, fetchElections })(Unit);
