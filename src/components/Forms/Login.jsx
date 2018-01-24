@@ -15,7 +15,7 @@ class Login extends React.Component {
     loginRequest: propTypes.func.isRequired,
     errors: propTypes.arrayOf(propTypes.shape({
       body: propTypes.string,
-      time: propTypes.string,
+      time: propTypes.date,
     })).isRequired,
   };
 

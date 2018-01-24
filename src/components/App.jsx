@@ -10,7 +10,7 @@ import Header from 'components/Header';
 import Home from 'components/Home';
 import UnitInformation from 'components/Forms/UnitInformation';
 import Unit from 'components/Unit';
-import NoUnitPage from 'components/NoUnitPage';
+import UnitList from 'components/UnitList';
 import ElectionForm from 'components/Forms/Election';
 import Candidate from 'components/Forms/Candidate';
 import Nomination from 'components/Forms/Nomination';
@@ -59,7 +59,7 @@ class App extends React.PureComponent {
               <Route exact path="/units/new" component={UnitInformation} />
               <Route path="/units/:unitId/edit" component={UnitInformation} />
               <Route path="/units/:unitId" component={Unit} />
-              <Route path="/units/" component={NoUnitPage} />
+              <Route path="/units/" component={UnitList} />
               <Route path="/elections/new" component={ElectionForm} />
               <Route path="/candidate" component={Candidate} />
               <Route path="/nomination" component={Nomination} />

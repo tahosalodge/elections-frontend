@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment as F } from 'react';
 import propTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -23,6 +23,17 @@ class NoUnitPage extends React.PureComponent {
     }
     this.props.unitsRequest();
   }
+
+  unitMessage = () => (
+    <F>
+      <h2>Hey there! It looks like you&apos;re not linked to a unit.</h2>
+      <p>
+        You can <Link to="/units/new">create a new unit</Link>, or if your unit is listed below,
+        contact the unit leader for access. <br />
+        If you need help, <Link to="/help">let us know</Link>.
+      </p>
+    </F>
+  );
 
   render() {
     const { units, user } = this.props;
@@ -54,12 +65,7 @@ class NoUnitPage extends React.PureComponent {
 
     return (
       <div>
-        <h2>Hey there! It looks like you&apos;re not linked to a unit.</h2>
-        <p>
-          You can <Link to="/units/new">create a new unit</Link>, or if your unit is listed below,
-          contact the unit leader for access. <br />
-          If you need help, <Link to="/help">let us know</Link>.
-        </p>
+        {user.capability === 'unit' && this.unitMessage}
         <Table columns={columns} data={units} />
       </div>
     );
