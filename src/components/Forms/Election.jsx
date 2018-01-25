@@ -6,6 +6,7 @@ import { push } from 'react-router-redux';
 import addDays from 'date-fns/add_days';
 import isBefore from 'date-fns/is_before';
 import flow from 'lodash/flow';
+import { isEmpty } from 'lodash/lang';
 
 import { createElection, updateElection } from 'redux/state/election';
 import Notices from 'components/Notices';
@@ -41,7 +42,7 @@ class RequestElection extends React.Component {
   componentDidMount() {
     const { match: { params: { electionId } }, election, initialize } = this.props;
     if (electionId) {
-      if (!election) {
+      if (isEmpty(election)) {
         this.props.push(`/units/${electionId}`);
       }
       const { requestedDates } = election;

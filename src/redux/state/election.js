@@ -68,39 +68,7 @@ export function fetchElections() {
   };
 }
 
-export function createElection(data) {
-  return {
-    type: ELECTION_CREATE_REQUEST,
-    payload: data,
-  };
-}
-
-export function updateElection(data) {
-  return {
-    type: ELECTION_UPDATE_REQUEST,
-    payload: data,
-  };
-}
-
-function electionCreateSuccess(elections) {
-  return {
-    type: ELECTION_CREATE_SUCCESS,
-    payload: {
-      data: normalize(elections, ELECTION_SCHEMA).entities,
-    },
-  };
-}
-
 function electionFetchSuccess(elections) {
-  return {
-    type: ELECTION_FETCH_SUCCESS,
-    payload: {
-      data: normalize(elections, ELECTION_SCHEMA).entities,
-    },
-  };
-}
-
-function electionUpdateSuccess(elections) {
   return {
     type: ELECTION_FETCH_SUCCESS,
     payload: {
@@ -116,6 +84,22 @@ function electionFetchFailure(error) {
   };
 }
 
+export function createElection(data) {
+  return {
+    type: ELECTION_CREATE_REQUEST,
+    payload: data,
+  };
+}
+
+function electionCreateSuccess(elections) {
+  return {
+    type: ELECTION_CREATE_SUCCESS,
+    payload: {
+      data: normalize(elections, ELECTION_SCHEMA).entities,
+    },
+  };
+}
+
 function electionCreateFailure(error) {
   return {
     type: ELECTION_FETCH_FAILURE,
@@ -123,9 +107,25 @@ function electionCreateFailure(error) {
   };
 }
 
+export function updateElection(data) {
+  return {
+    type: ELECTION_UPDATE_REQUEST,
+    payload: data,
+  };
+}
+
+function electionUpdateSuccess(elections) {
+  return {
+    type: ELECTION_UPDATE_SUCCESS,
+    payload: {
+      data: normalize(elections, ELECTION_SCHEMA).entities,
+    },
+  };
+}
+
 function electionUpdateFailure(error) {
   return {
-    type: ELECTION_FETCH_FAILURE,
+    type: ELECTION_UPDATE_FAILURE,
     error,
   };
 }
