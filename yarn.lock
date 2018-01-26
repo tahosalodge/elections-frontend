@@ -5566,6 +5566,13 @@ react-table@^6.7.6:
   dependencies:
     classnames "^2.2.5"
 
+react-typekit@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-typekit/-/react-typekit-1.1.2.tgz#190b5d6d1a1a84b8c5ab54d668deda352c4ecad8"
+  dependencies:
+    lodash "^4.17.4"
+    prop-types "^15.5.10"
+
 react-with-styles-interface-css@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-with-styles-interface-css/-/react-with-styles-interface-css-3.0.0.tgz#ebb000c23f75567f25af6792ab7a29089d798fda"
