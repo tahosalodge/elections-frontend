@@ -2,6 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { schema, normalize } from 'normalizr';
 import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
+import { addToast } from 'redux/state/toasts';
 
 export const UNIT_FETCH_REQUEST = 'UNIT_FETCH_REQUEST';
 export const UNIT_FETCH_SUCCESS = 'UNIT_FETCH_SUCCESS';
@@ -187,6 +188,7 @@ function* fetchUnits() {
     yield put(fetchSuccess(units));
   } catch (error) {
     yield put(fetchFailure(error));
+    yield put(addToast(error.message));
   }
 }
 
@@ -197,6 +199,7 @@ function* getUnit(action) {
     yield put(getSuccess(unit));
   } catch (error) {
     yield put(getFailure(error));
+    yield put(addToast(error.message));
   }
 }
 
@@ -208,6 +211,7 @@ function* updateUnit(action) {
     yield put(push(`/units/${unitId}`));
   } catch (error) {
     yield put(updateFailure(error));
+    yield put(addToast(error.message));
   }
 }
 
@@ -219,6 +223,7 @@ function* createUnit(action) {
     yield put(push(`/units/${unit._id}`));
   } catch (error) {
     yield put(createFailure(error));
+    yield put(addToast(error.message));
   }
 }
 

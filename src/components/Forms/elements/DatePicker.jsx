@@ -20,13 +20,14 @@ const StyledField = styled.div`
 `;
 
 const DatePicker = ({
-  label, id, initialMonth, disabledDays,
+  label, id, initialMonth, disabledDays, validate,
 }) => (
   <StyledField>
     <label htmlFor={id}>{label}</label>
     <Field
       id={id}
       name={id}
+      validate={validate}
       component={({ input }) => (
         <DayPickerInput
           value={input.value}
@@ -47,11 +48,13 @@ DatePicker.propTypes = {
   id: propTypes.string.isRequired,
   initialMonth: propTypes.instanceOf(Date),
   disabledDays: propTypes.arrayOf(propTypes.object),
+  validate: propTypes.arrayOf(propTypes.func),
 };
 
 DatePicker.defaultProps = {
   initialMonth: new Date(),
   disabledDays: [],
+  validate: [],
 };
 
 export default DatePicker;

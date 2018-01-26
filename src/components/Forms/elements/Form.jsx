@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { colors } from 'constants/values';
 import downArrow from './downarrow.svg';
 
 const Form = styled.form`
@@ -10,7 +11,7 @@ const Form = styled.form`
   label {
     font-size: 0.8em;
     text-transform: uppercase;
-    margin: 0 0 0.4em 0.4em;
+    margin: 0 0 0.4em;
     display: block;
   }
 
@@ -34,6 +35,12 @@ const Form = styled.form`
   h2 em {
     font-weight: normal;
     font-size: 16px;
+  }
+
+  .form__error {
+    color: ${colors.red};
+    font-style: italic;
+    margin-bottom: 0.4em;
   }
 `;
 
