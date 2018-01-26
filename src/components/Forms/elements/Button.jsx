@@ -16,6 +16,11 @@ const ButtonStyles = styled.div`
     font-size: 16px;
     padding: 0.5em 1em;
     width: 100%;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 `;
 const Button = ({ type, text, disabled }) => (

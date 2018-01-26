@@ -194,7 +194,7 @@ function* getUnit(action) {
   try {
     const { unitId } = action.payload;
     const unit = yield call(apiRequest, `/units/${unitId}`);
-    yield put(getSuccess(unit[0]));
+    yield put(getSuccess(unit));
   } catch (error) {
     yield put(getFailure(error));
   }

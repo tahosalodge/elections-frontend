@@ -7,6 +7,7 @@ import addDays from 'date-fns/add_days';
 import isBefore from 'date-fns/is_before';
 import flow from 'lodash/flow';
 import { isEmpty } from 'lodash/lang';
+import { format } from 'date-fns';
 
 import { createElection, updateElection } from 'redux/state/election';
 import Notices from 'components/Notices';
@@ -43,17 +44,19 @@ class RequestElection extends React.Component {
     const { match: { params: { electionId } }, election, initialize } = this.props;
     if (electionId) {
       if (isEmpty(election)) {
-        this.props.push(`/units/${electionId}`);
+        this.props.push('/units/');
       }
       const { requestedDates } = election;
-      initialize({ requestedDates });
+      const formattedDates =
+        !isEmpty(requestedDates) && requestedDates.map(date => format(date, 'YYYY-M-D'));
+      initialize({ requestedDates: formattedDates });
     }
   }
 
   submit = (values) => {
     const { match: { params } } = this.props;
     if (params.electionId) {
-      this.props.updateElection(params.unitid, values);
+      this.props.updateElection(params.electionId, values);
     } else {
       this.props.createElection(values);
     }
@@ -126,7 +129,6 @@ const mapStateToProps = (state, props) => {
     toProps.election = state.election.items[params.electionId];
     toProps.editing = true;
   }
-  console.log(toProps);
   return toProps;
 };
 

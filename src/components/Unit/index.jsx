@@ -25,7 +25,10 @@ class Unit extends React.Component {
   };
 
   componentWillMount() {
-    this.props.unitRequest(this.props.match.params.unitId);
+    if (this.props.match.params) {
+      const { params } = this.props.match;
+      this.props.unitRequest(params.unitId);
+    }
     this.props.fetchElections();
   }
 

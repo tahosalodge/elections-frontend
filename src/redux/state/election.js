@@ -107,10 +107,13 @@ function electionCreateFailure(error) {
   };
 }
 
-export function updateElection(data) {
+export function updateElection(electionId, patch) {
   return {
     type: ELECTION_UPDATE_REQUEST,
-    payload: data,
+    payload: {
+      electionId,
+      patch,
+    },
   };
 }
 
@@ -159,10 +162,10 @@ function* createSaga(action) {
 
 function* updateSaga(action) {
   try {
-    const { electionId, data } = action.payload;
-    const unit = yield call(apiRequest, `/election/${electionId}`, 'PUT', data);
+    const { electionId, patch } = action.payload;
+    const unit = yield call(apiRequest, `/elections/${electionId}`, 'PUT', patch);
     yield put(electionUpdateSuccess(unit));
-    yield put(push(`/election/${electionId}`));
+    yield put(push(`/elections/${electionId}`));
   } catch (error) {
     yield put(electionUpdateFailure(error));
   }
