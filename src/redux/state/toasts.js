@@ -1,3 +1,5 @@
+import { delay } from 'redux-saga';
+import { takeLatest, put } from 'redux-saga/effects';
 import { colors } from 'constants/values';
 
 export const ADD_TOAST = 'ADD_TOAST';
@@ -6,6 +8,7 @@ export const REMOVE_TOAST = 'REMOVE_TOAST';
 let toastId = 0;
 const defaultOptions = {
   color: colors.blue,
+  sticky: false,
 };
 
 function createToast(text, options) {
@@ -44,4 +47,16 @@ export default function reducer(state = [], action) {
     default:
       return state;
   }
+}
+
+function* expireToasts(action) {
+  const { sticky, id } = action.payload;
+  if (!sticky) {
+    yield delay(5000);
+    yield put(removeToast(id));
+  }
+}
+
+export function* toastsSaga() {
+  yield takeLatest(ADD_TOAST, expireToasts);
 }
