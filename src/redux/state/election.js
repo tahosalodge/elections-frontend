@@ -2,6 +2,7 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { schema, normalize } from 'normalizr';
 import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
+import { addToast } from 'redux/state/toasts';
 import { season } from 'constants/values';
 
 export const ELECTION_FETCH_REQUEST = 'ELECTION_FETCH_REQUEST';
@@ -140,6 +141,7 @@ function* fetchSaga() {
     yield put(electionFetchSuccess(response));
   } catch (error) {
     yield put(electionFetchFailure(error));
+    yield put(addToast(error.message));
   }
 }
 
@@ -157,6 +159,7 @@ function* createSaga(action) {
     yield put(push(`/elections/${election._id}`));
   } catch (error) {
     yield put(electionCreateFailure(error));
+    yield put(addToast(error.message));
   }
 }
 
@@ -168,6 +171,7 @@ function* updateSaga(action) {
     yield put(push(`/elections/${electionId}`));
   } catch (error) {
     yield put(electionUpdateFailure(error));
+    yield put(addToast(error.message));
   }
 }
 

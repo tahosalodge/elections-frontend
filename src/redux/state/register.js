@@ -1,6 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
+import { addToast } from 'redux/state/toasts';
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
@@ -85,6 +86,7 @@ function* registerFlow(action) {
     yield put(push('/units'));
   } catch (error) {
     yield put(registerFailure(error));
+    yield put(addToast(error.message));
   }
 }
 

@@ -1,6 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
+import { addToast } from 'redux/state/toasts';
 
 export const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
 export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
@@ -90,6 +91,7 @@ function* loginFlow(action) {
     yield put(push('/'));
   } catch (error) {
     yield put(loginFailure(error));
+    yield put(addToast(error.message));
   }
 }
 
@@ -117,6 +119,7 @@ function* checkToken() {
 function* logout() {
   localStorage.removeItem('electionToken');
   yield put(push('/login'));
+  yield put(addToast('Logged out successfully.'));
 }
 
 export function* userSaga() {
