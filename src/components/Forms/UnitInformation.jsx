@@ -6,6 +6,7 @@ import { push } from 'react-router-redux';
 import { flow } from 'lodash';
 import { adultLeadershipPositions } from 'constants/values';
 import { updateRequest, createRequest } from 'redux/state/unit';
+import { required, number, email } from 'components/Forms/validation';
 import {
   FieldWithLabel,
   Button,
@@ -75,16 +76,21 @@ class UnitInformation extends React.Component {
       <div>
         <h1>Unit Information</h1>
         <Form onSubmit={handleSubmit(this.submit)}>
-          <FieldWithLabel label="Unit Number" id="number" />
+          <FieldWithLabel label="Unit Number" id="number" validate={[required, number]} />
           <SelectDistrict />
-          <FieldWithLabel label="Active Members" id="activeMembers" />
+          <FieldWithLabel label="Active Members" id="activeMembers" validate={[required, number]} />
           <Address prefix="meetingLocation" />
           <TextArea label="Location Notes (optional)" id="meetingLocation.notes" />
           <h2>Unit Leader</h2>
-          <FieldWithLabel label="First Name" id="unitLeader.fname" />
-          <FieldWithLabel label="Last Name" id="unitLeader.lname" />
-          <FieldWithLabel label="Phone" id="unitLeader.phone" type="phone" />
-          <FieldWithLabel label="Email" id="unitLeader.email" type="email" />
+          <FieldWithLabel label="First Name" id="unitLeader.fname" validate={[required]} />
+          <FieldWithLabel label="Last Name" id="unitLeader.lname" validate={[required]} />
+          <FieldWithLabel label="Phone" id="unitLeader.phone" type="phone" validate={[required]} />
+          <FieldWithLabel
+            label="Email"
+            id="unitLeader.email"
+            type="email"
+            validate={[required, email]}
+          />
           <Select
             label="Leadership Position"
             id="unitLeader.position"

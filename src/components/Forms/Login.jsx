@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { flow } from 'lodash';
 import { loginRequest } from 'redux/state/user';
+import { required, email } from 'components/Forms/validation';
 import { FieldWithLabel, Button, Form } from './elements';
 
 class Login extends React.Component {
@@ -23,8 +24,8 @@ class Login extends React.Component {
       <div>
         <h1>Login</h1>
         <Form onSubmit={handleSubmit(this.submit)}>
-          <FieldWithLabel id="email" label="Email" />
-          <FieldWithLabel id="password" label="Password" type="password" />
+          <FieldWithLabel id="email" label="Email" validate={[required, email]} />
+          <FieldWithLabel id="password" label="Password" type="password" validate={[required]} />
           <Button text="Login" disabled={pristine || submitting} />
         </Form>
       </div>

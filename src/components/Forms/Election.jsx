@@ -12,7 +12,7 @@ import { format } from 'date-fns';
 import { createElection, updateElection } from 'redux/state/election';
 import Notices from 'components/Notices';
 import { Button, DatePicker, Form } from './elements';
-import { dateValidation } from './util';
+import { uniqueElectionDate } from './validation';
 
 class RequestElection extends React.Component {
   static propTypes = {
@@ -111,7 +111,7 @@ class RequestElection extends React.Component {
 
 const validate = (values) => {
   const errors = [];
-  if (!dateValidation(values.requestedDates)) {
+  if (!uniqueElectionDate(values.requestedDates)) {
     errors.push({
       message: 'Please provide 3 unique dates.',
       time: new Date(),
