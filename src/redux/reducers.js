@@ -6,15 +6,17 @@ import user from 'redux/state/user';
 import unit from 'redux/state/unit';
 import election from 'redux/state/election';
 import loading from 'redux/state/loading';
+import toasts from 'redux/state/toasts';
 
 const rootReducer = combineReducers({
-  routerReducer,
-  form: reduxFormReducer,
-  register,
-  user,
-  unit,
   election,
+  form: reduxFormReducer,
+  routerReducer,
   loading,
+  register,
+  toasts,
+  unit,
+  user,
 });
 
 export default rootReducer;
