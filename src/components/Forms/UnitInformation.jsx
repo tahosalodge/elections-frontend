@@ -86,8 +86,8 @@ class UnitInformation extends React.Component {
             validate={[required, validNumber]}
           />
           <FieldWithLabel label="Meeting Time" id="meetingTime" validate={[required]} />
+          <TextArea label="Location Name / Notes (optional)" id="meetingLocation.notes" />
           <Address prefix="meetingLocation" />
-          <TextArea label="Location Notes (optional)" id="meetingLocation.notes" />
           <h2>Unit Leader</h2>
           <FieldWithLabel label="First Name" id="unitLeader.fname" validate={[required]} />
           <FieldWithLabel label="Last Name" id="unitLeader.lname" validate={[required]} />
