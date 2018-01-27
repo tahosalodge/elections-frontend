@@ -6,7 +6,7 @@ import { push } from 'react-router-redux';
 import { flow } from 'lodash';
 import { adultLeadershipPositions } from 'constants/values';
 import { updateRequest, createRequest } from 'redux/state/unit';
-import { required, number, email } from 'components/Forms/validation';
+import { required, number as validNumber, email } from 'components/Forms/validation';
 import {
   FieldWithLabel,
   Button,
@@ -48,6 +48,7 @@ class UnitInformation extends React.Component {
         adultRepresentative,
         youthRepresentative,
         meetingLocation,
+        meetingTime,
       } = unit;
       initialize({
         number,
@@ -57,6 +58,7 @@ class UnitInformation extends React.Component {
         adultRepresentative,
         youthRepresentative,
         meetingLocation,
+        meetingTime,
       });
     }
   }
@@ -76,9 +78,14 @@ class UnitInformation extends React.Component {
       <div>
         <h1>Unit Information</h1>
         <Form onSubmit={handleSubmit(this.submit)}>
-          <FieldWithLabel label="Unit Number" id="number" validate={[required, number]} />
+          <FieldWithLabel label="Unit Number" id="number" validate={[required, validNumber]} />
           <SelectDistrict />
-          <FieldWithLabel label="Active Members" id="activeMembers" validate={[required, number]} />
+          <FieldWithLabel
+            label="Active Members"
+            id="activeMembers"
+            validate={[required, validNumber]}
+          />
+          <FieldWithLabel label="Meeting Time" id="meetingTime" validate={[required]} />
           <Address prefix="meetingLocation" />
           <TextArea label="Location Notes (optional)" id="meetingLocation.notes" />
           <h2>Unit Leader</h2>
