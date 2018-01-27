@@ -1,10 +1,12 @@
+import { parse } from 'date-fns';
+
 export function uniqueElectionDate(dates) {
   if (typeof dates === 'undefined') {
     return true;
   }
   function isDateInArray(needle, haystack) {
     for (let i = 0; i < haystack.length; i += 1) {
-      if (needle.getTime() === haystack[i].getTime()) {
+      if (parse(needle).getTime() === parse(haystack[i]).getTime()) {
         return true;
       }
     }

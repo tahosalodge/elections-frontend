@@ -77,7 +77,7 @@ class NoUnitPage extends React.PureComponent {
 
     return (
       <div>
-        {user.capability === 'unit' && this.unitMessage}
+        {user.capability === 'unit' && this.unitMessage()}
         <Table columns={this.columns()} data={units} />
       </div>
     );
