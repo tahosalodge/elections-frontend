@@ -58,7 +58,7 @@ class RequestElection extends React.Component {
     if (params.electionId) {
       this.props.updateElection(params.electionId, values);
     } else {
-      this.props.createElection(values);
+      this.props.createElection(params.unitId, values);
     }
   };
 

@@ -22,12 +22,12 @@ const Routes = () => (
     <Route path="/units/:unitId/edit" component={UnitInformation} />
     <Route path="/units/:unitId" component={Unit} />
     <Route path="/units/" component={UnitList} />
-    <Route path="/elections/new" component={ElectionForm} />
-    <Route path="/candidate" component={Candidate} />
-    <Route path="/nomination" component={Nomination} />
+    <Route path="/elections/new/:unitId" component={ElectionForm} />
     <Route path="/elections/:electionId/edit" component={ElectionForm} />
     <Route path="/elections/:electionId" component={Election} />
     <Route path="/election-list" component={ElectionList} />
+    <Route path="/candidate" component={Candidate} />
+    <Route path="/nomination" component={Nomination} />
     <Route path="/register/:type" component={Register} />
     <Route path="/register/" component={Register} />
     <Route path="/help" component={Help} />

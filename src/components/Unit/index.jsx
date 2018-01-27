@@ -64,9 +64,8 @@ class Unit extends React.Component {
         )}
         <Link to={`${window.location.pathname}/edit`}>Edit Unit Information</Link>
         <h2>Elections</h2>
-        {elections.length > 0 && <Table columns={this.columns()} data={elections} />}
-        {elections.length <= 0 && <p>No elections found.</p>}
-        <Link to="/elections/new">Request Election</Link>
+        {<Table columns={this.columns()} data={elections} notFoundMessage="No elections found." />}
+        <Link to={`/elections/new/${unit._id}`}>Request Election</Link>
 
         {/* <h2>Leaders</h2>
         <Table headers={headers} data={data} />

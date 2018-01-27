@@ -6,7 +6,7 @@ const getUnits = state => state.unit.items;
 
 export const electionsByUnit = createSelector([getUnitId, getElections], (unitId, elections) => {
   const unitElections = Object.keys(elections)
-    .filter(electionId => elections[electionId].unit === unitId)
+    .filter(electionId => elections[electionId].unitId === unitId)
     .reduce((map, electionId) => {
       const newMap = [...map];
       newMap.push(elections[electionId]);

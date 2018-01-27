@@ -1,4 +1,4 @@
-import { call, put, takeLatest, select } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { schema, normalize } from 'normalizr';
 import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
@@ -85,10 +85,13 @@ function electionFetchFailure(error) {
   };
 }
 
-export function createElection(data) {
+export function createElection(unitId, data) {
   return {
     type: ELECTION_CREATE_REQUEST,
-    payload: data,
+    payload: {
+      unitId,
+      ...data,
+    },
   };
 }
 
@@ -147,12 +150,10 @@ function* fetchSaga() {
 
 function* createSaga(action) {
   try {
-    const unit = yield select(state => state.user.unit);
     const electionData = {
       ...action.payload,
       status: 'Requested',
       season,
-      unit,
     };
     const election = yield call(apiRequest, '/elections', 'POST', electionData);
     yield put(electionCreateSuccess(election));
