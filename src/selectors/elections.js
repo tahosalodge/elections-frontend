@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 const getUnitId = (state, props) => props.match.params.unitId;
+const getElectionId = (state, props) => props.match.params.electionId;
 const getElections = state => state.election.items;
 const getUnits = state => state.unit.items;
 
@@ -19,13 +20,18 @@ export const electionUnitJoin = createSelector([getUnits, getElections], (units,
   const electionsWithUnits = Object.keys(elections).reduce((map, electionId) => {
     const newMap = [...map];
     const thisElection = elections[electionId];
-    if (units[thisElection.unit]) {
+    if (units[thisElection.unitId]) {
       newMap.push({
         ...thisElection,
-        unit: units[thisElection.unit],
+        unit: units[thisElection.unitId],
       });
     }
     return newMap;
   }, []);
   return electionsWithUnits;
 });
+
+export const electionById = createSelector(
+  [getElectionId, getElections],
+  (electionId, elections) => elections[electionId],
+);
