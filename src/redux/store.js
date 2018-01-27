@@ -13,7 +13,13 @@ export default function (history) {
   const router = routerMiddleware(history);
   const store = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(ravenMiddleware(Raven), sagaMiddleware, router)),
+    composeWithDevTools(applyMiddleware(
+      ravenMiddleware(Raven, {
+        getUserContext: state => state.user.email,
+      }),
+      sagaMiddleware,
+      router,
+    )),
   );
   sagaMiddleware.run(rootSaga);
 
