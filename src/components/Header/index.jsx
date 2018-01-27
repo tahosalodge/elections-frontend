@@ -86,10 +86,6 @@ const MenuItems = {
       to: '/election-list',
       text: 'Election List',
     },
-    {
-      to: '/elections/schedule',
-      text: 'Schedule Elections',
-    },
   ],
   loggedOut: [
     {
