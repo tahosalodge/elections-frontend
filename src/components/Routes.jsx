@@ -15,6 +15,7 @@ import Login from 'components/Forms/Login';
 import Help from 'components/Help';
 import Logout from 'components/Logout';
 import UnitImport from 'components/Admin/UnitImport';
+import CreateUser from 'components/Admin/CreateUser';
 
 const Routes = () => (
   <Switch>
@@ -35,6 +36,7 @@ const Routes = () => (
     <Route path="/login" component={Login} />
     <Route path="/logout" component={Logout} />
     <Route path="/admin/import" component={UnitImport} />
+    <Route path="/admin/create-user" component={CreateUser} />
   </Switch>
 );
 

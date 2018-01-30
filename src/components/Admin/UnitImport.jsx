@@ -3,6 +3,7 @@ import propTypes from 'prop-types';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { addToast } from 'redux/state/toasts';
+import { Form, Button } from 'components/Forms/elements';
 
 class UnitImport extends React.Component {
   static propTypes = {
@@ -41,18 +42,14 @@ class UnitImport extends React.Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit}>
+        <div>
           <label>Unit Id</label>
-          <br />
-          <br />
           <input type="text" name="unitId" onChange={this.handleChange} />
-          <br />
-          <br />
-          <button type="submit">Submit</button>
-          <pre>{JSON.stringify(this.state.unitData, null, 2)}</pre>
-        </form>
-      </div>
+        </div>
+        <Button />
+        <pre>{JSON.stringify(this.state.unitData, null, 2)}</pre>
+      </Form>
     );
   }
 }

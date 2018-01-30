@@ -33,13 +33,14 @@ const Button = ({ type, text, disabled }) => (
 
 Button.propTypes = {
   type: propTypes.string,
-  text: propTypes.string.isRequired,
+  text: propTypes.string,
   disabled: propTypes.bool,
 };
 
 Button.defaultProps = {
   type: 'submit',
   disabled: false,
+  text: 'Submit',
 };
 
 export default Button;
