@@ -1,9 +1,13 @@
 import React from 'react';
+import propTypes from 'prop-types';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { addToast } from 'redux/state/toasts';
 
 class UnitImport extends React.Component {
+  static propTypes = {
+    addToast: propTypes.func.isRequired,
+  };
   state = {
     unitData: {},
     unitId: '',
@@ -23,8 +27,11 @@ class UnitImport extends React.Component {
         },
       );
       this.props.addToast(`Unit ${this.state.unitId} added successfully.`);
-    } catch (e) {
-      this.props.addToast(`There was an error importing ${this.state.unitId}.`);
+      this.setState({ unitData: response.data });
+    } catch (error) {
+      console.log(error);
+      const { data, status } = error.response;
+      this.props.addToast(`${status}: ${data}`);
     }
   };
 
@@ -43,6 +50,7 @@ class UnitImport extends React.Component {
           <br />
           <br />
           <button type="submit">Submit</button>
+          <pre>{JSON.stringify(this.state.unitData, null, 2)}</pre>
         </form>
       </div>
     );
