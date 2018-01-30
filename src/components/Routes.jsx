@@ -14,6 +14,7 @@ import Register from 'components/Forms/Register';
 import Login from 'components/Forms/Login';
 import Help from 'components/Help';
 import Logout from 'components/Logout';
+import UnitImport from 'components/Admin/UnitImport';
 
 const Routes = () => (
   <Switch>
@@ -33,6 +34,7 @@ const Routes = () => (
     <Route path="/help" component={Help} />
     <Route path="/login" component={Login} />
     <Route path="/logout" component={Logout} />
+    <Route path="/admin/import" component={UnitImport} />
   </Switch>
 );
 
