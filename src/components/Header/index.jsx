@@ -87,6 +87,24 @@ const MenuItems = {
       text: 'Election List',
     },
   ],
+  admin: [
+    {
+      to: '/units',
+      text: 'Units',
+    },
+    {
+      to: '/election-list',
+      text: 'Election List',
+    },
+    {
+      to: '/admin/import',
+      text: 'Import Unit',
+    },
+    {
+      to: '/admin/create-user',
+      text: 'Create User',
+    },
+  ],
   loggedOut: [
     {
       to: '/register',
