@@ -1,3 +1,3 @@
-FROM kyma/docker-nginx
-COPY build/ /var/www
-CMD ["nginx"]
+FROM zzswang/docker-nginx-react:latest
+ENV DEBUG=off
+COPY build/ /app
