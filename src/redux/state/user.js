@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
 import { addToast } from 'redux/state/toasts';
@@ -82,7 +82,7 @@ export function userLogoutRequest() {
 }
 
 // Saga
-function* loginFlow(action) {
+function* login(action) {
   try {
     const { email, password } = action;
     const response = yield call(apiRequest, '/auth/login', 'POST', { email, password });
@@ -122,8 +122,21 @@ function* logout() {
   yield put(addToast('Logged out successfully.'));
 }
 
+function* unitLeaderRedirect() {
+  try {
+    const { capability, unit } = yield select(state => state.user);
+    if (capability === 'unit') {
+      yield put(push(`/units/${unit}`));
+    }
+  } catch (error) {
+    yield put(addToast(error.message));
+  }
+}
+
 export function* userSaga() {
   yield takeLatest(USER_LOGOUT, logout);
   yield takeLatest(USER_LOGIN_CHECK_TOKEN, checkToken);
-  yield takeLatest(USER_LOGIN_REQUEST, loginFlow);
+  yield takeLatest(USER_LOGIN_REQUEST, login);
+  yield takeLatest(USER_LOGIN_CHECK_TOKEN, unitLeaderRedirect);
+  yield takeLatest(USER_LOGIN_SUCCESS, unitLeaderRedirect);
 }

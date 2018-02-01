@@ -1,26 +1,22 @@
 import React, { Fragment as F } from 'react';
 import propTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { unitsRequest } from 'redux/state/unit';
 import toArray from 'selectors/array';
 import Table, { ChapterCell } from 'components/Table';
+import LoadingOrContent from 'components/LoadingOrContent';
 
 class NoUnitPage extends React.PureComponent {
   static propTypes = {
     unitsRequest: propTypes.func.isRequired,
     units: propTypes.arrayOf(propTypes.object).isRequired,
     user: propTypes.shape().isRequired,
-    history: propTypes.shape({
-      push: propTypes.func,
-    }).isRequired,
+    loadingUser: propTypes.bool.isRequired,
+    loadingUnit: propTypes.bool.isRequired,
   };
 
   componentWillMount() {
-    const { user, history: { push } } = this.props;
-    if (user.unit) {
-      push(`/units/${user.unit}`);
-    }
     this.props.unitsRequest();
   }
 
@@ -73,19 +69,29 @@ class NoUnitPage extends React.PureComponent {
   };
 
   render() {
-    const { units, user } = this.props;
+    const {
+      units, user, loadingUser, loadingUnit,
+    } = this.props;
 
     return (
-      <div>
-        {user.capability === 'unit' && this.unitMessage()}
-        <Table columns={this.columns()} data={units} />
-      </div>
+      <LoadingOrContent loading={loadingUser || loadingUnit}>
+        <div>
+          {user.capability === 'unit' && this.unitMessage()}
+          <Table columns={this.columns()} data={units} />
+        </div>
+      </LoadingOrContent>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  units: toArray(state.unit.items),
-  user: state.user,
-});
-export default connect(mapStateToProps, { unitsRequest })(withRouter(NoUnitPage));
+const mapStateToProps = (state) => {
+  const { user, loading } = state;
+  const { user: loadingUser, unit: loadingUnit } = loading;
+  return {
+    units: toArray(state.unit.items),
+    user,
+    loadingUnit,
+    loadingUser,
+  };
+};
+export default connect(mapStateToProps, { unitsRequest })(NoUnitPage);

@@ -28,7 +28,12 @@ import {
   UNIT_CREATE_FAILURE,
 } from 'redux/state/unit';
 
-import { USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGIN_FAILURE } from 'redux/state/user';
+import {
+  USER_LOGIN_CHECK_TOKEN,
+  USER_LOGIN_REQUEST,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_FAILURE,
+} from 'redux/state/user';
 /**
  * Utility function to making a simple reducer to swap the loading indicator status.
  *
@@ -76,7 +81,11 @@ export default combineReducers({
     [ELECTION_FETCH_SUCCESS, ELECTION_CREATE_SUCCESS, ELECTION_UPDATE_SUCCESS],
     [ELECTION_FETCH_FAILURE, ELECTION_CREATE_FAILURE, ELECTION_UPDATE_FAILURE],
   ),
-  user: makeReducer(USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGIN_FAILURE),
+  user: makeMultiActionReducer(
+    [USER_LOGIN_CHECK_TOKEN, USER_LOGIN_REQUEST],
+    [USER_LOGIN_SUCCESS],
+    [USER_LOGIN_FAILURE],
+  ),
   unit: makeMultiActionReducer(
     [UNIT_FETCH_REQUEST, UNIT_UPDATE_REQUEST, UNIT_GET_REQUEST, UNIT_CREATE_REQUEST],
     [UNIT_FETCH_SUCCESS, UNIT_UPDATE_SUCCESS, UNIT_GET_SUCCESS, UNIT_CREATE_SUCCESS],
