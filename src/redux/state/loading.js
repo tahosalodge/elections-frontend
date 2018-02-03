@@ -83,8 +83,7 @@ export default combineReducers({
   ),
   user: makeMultiActionReducer(
     [USER_LOGIN_CHECK_TOKEN, USER_LOGIN_REQUEST],
-    [USER_LOGIN_SUCCESS],
-    [USER_LOGIN_FAILURE],
+    [USER_LOGIN_SUCCESS, USER_LOGIN_FAILURE],
   ),
   unit: makeMultiActionReducer(
     [UNIT_FETCH_REQUEST, UNIT_UPDATE_REQUEST, UNIT_GET_REQUEST, UNIT_CREATE_REQUEST],

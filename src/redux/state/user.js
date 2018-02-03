@@ -107,6 +107,7 @@ function* checkToken() {
     const response = yield call(apiRequest, '/auth/me');
     yield put(loginSuccess(response));
   } catch (error) {
+    yield put(loginFailure(error));
     if (error.code !== 'NETWORK') {
       localStorage.removeItem('electionToken');
     }
