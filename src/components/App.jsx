@@ -13,16 +13,6 @@ import { userVerifyRequest } from 'redux/state/user';
 
 const GlobalStyles = styled.div`
   font-family: museo-sans, sans-serif;
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: museo-slab, Georgia, Times, serif;
-    font-weight: 500;
-  }
 `;
 
 const Page = styled.div`
@@ -32,10 +22,27 @@ const Page = styled.div`
   background: white;
   margin: 2em auto 0;
   min-height: 60vh;
+  position: relative;
 
   @media (max-width: 600px) {
     width: 100%;
     padding: 1em;
+    margin-top: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: museo-slab, Georgia, Times, serif;
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  p {
     margin-top: 0;
   }
 `;

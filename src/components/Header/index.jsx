@@ -14,6 +14,8 @@ const StyledHeader = styled.header`
 
   h1 {
     margin: 0;
+    font-family: museo-slab, Georgia, Times, serif;
+    font-weight: 500;
 
     @media (max-width: 600px) {
       font-size: 5vw;
