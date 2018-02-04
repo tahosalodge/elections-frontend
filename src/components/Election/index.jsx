@@ -9,6 +9,11 @@ import loadingShape from 'shapes/loading';
 import electionShape from 'shapes/election';
 import ElectionMenu from './ElectionMenu';
 import Overview from './Overview';
+import AddCandidate from './AddCandidate';
+import AddNomination from './AddNomination';
+import Ballots from './Ballots';
+import Report from './Report';
+import Team from './Team';
 
 const ElectionHeader = styled.div`
   display: flex;
@@ -49,11 +54,11 @@ class Election extends React.Component {
         <ElectionMenu election={election} />
         <Switch>
           <Route exact path="/elections/:electionId" component={Overview} />
-          <Route path="/elections/:electionId/candidates" component={Overview} />
-          <Route path="/elections/:electionId/nominations" component={Overview} />
-          <Route path="/elections/:electionId/team" component={Overview} />
-          <Route path="/elections/:electionId/report" component={Overview} />
-          <Route path="/elections/:electionId/ballots" component={Overview} />
+          <Route path="/elections/:electionId/candidate" component={AddCandidate} />
+          <Route path="/elections/:electionId/nomination" component={AddNomination} />
+          <Route path="/elections/:electionId/team" component={Team} />
+          <Route path="/elections/:electionId/report" component={Report} />
+          <Route path="/elections/:electionId/ballots" component={Ballots} />
         </Switch>
       </LoadingOrContent>
     );
