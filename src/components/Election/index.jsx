@@ -1,29 +1,33 @@
 import React from 'react';
 import propTypes from 'prop-types';
-// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
+import { Switch, Route } from 'react-router-dom';
 import { fetchElections } from 'redux/state/election';
 import LoadingOrContent from 'components/LoadingOrContent';
-// import Table from 'components/Table';
+import loadingShape from 'shapes/loading';
+import electionShape from 'shapes/election';
 import ElectionMenu from './ElectionMenu';
+import Overview from './Overview';
 
-// const columns = [
-//   {
-//     Header: 'Candidate',
-//     accessor: 'candidate',
-//   },
-//   {
-//     Header: 'Status',
-//     accessor: 'status',
-//   },
-// ];
+const ElectionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2em;
+
+  h1,
+  p {
+    margin: 0 !important;
+  }
+`;
 
 class Election extends React.Component {
   static propTypes = {
     fetchElections: propTypes.func.isRequired,
-    election: propTypes.shape().isRequired,
+    election: electionShape.isRequired,
     unit: propTypes.shape().isRequired,
-    loading: propTypes.bool.isRequired,
+    loading: loadingShape.isRequired,
   };
 
   componentWillMount() {
@@ -33,29 +37,37 @@ class Election extends React.Component {
   render() {
     const { election, unit, loading } = this.props;
     return (
-      <LoadingOrContent loading={loading}>
-        <h1>
-          {election.season} - Troop {unit.number}
-        </h1>
-        <ElectionMenu />
-        <p>
-          <strong>Election Status: {election.status}</strong>
-        </p>
-        <p>Adding candidates and nominations coming soon!</p>
-        {/* <h2>Candidates</h2> */}
-        {/* <Table columns={columns} data={data} /> */}
-        {/* <Link to="/">Add Candidate</Link> */}
-        {/* <h2>Nominations</h2> */}
-        {/* <Table columns={columns} data={data} /> */}
+      <LoadingOrContent loading={loading.election || loading.unit || loading.user}>
+        <ElectionHeader>
+          <h1>
+            Troop {unit.number} - {election.season}
+          </h1>
+          <p>
+            <strong>Election Status: {election.status}</strong>
+          </p>
+        </ElectionHeader>
+        <ElectionMenu election={election} />
+        <Switch>
+          <Route exact path="/elections/:electionId" component={Overview} />
+          <Route path="/elections/:electionId/candidates" component={Overview} />
+          <Route path="/elections/:electionId/nominations" component={Overview} />
+          <Route path="/elections/:electionId/team" component={Overview} />
+          <Route path="/elections/:electionId/report" component={Overview} />
+          <Route path="/elections/:electionId/ballots" component={Overview} />
+        </Switch>
       </LoadingOrContent>
     );
   }
 }
 
-const mapStateToProps = (state, props) => ({
-  election: state.election.items[props.match.params.electionId] || {},
-  unit: state.unit.items[state.user.unit] || {},
-  loading: state.loading.election,
+const mapStateToProps = ({
+  election, unit, loading, user,
+}, { match }) => ({
+  election: election.items[match.params.electionId] || {},
+  unit: unit.items[user.unit] || {},
+  loading: {
+    ...loading,
+  },
 });
 
 export default connect(mapStateToProps, { fetchElections })(Election);

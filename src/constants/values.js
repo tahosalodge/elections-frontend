@@ -81,5 +81,6 @@ export const adultLeadershipPositions = [
 
 export const colors = {
   red: '#E31837',
+  mutedRed: '#cf3a43',
   blue: '#005596',
 };
