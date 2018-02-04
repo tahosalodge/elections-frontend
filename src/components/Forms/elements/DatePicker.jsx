@@ -1,7 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import styled from 'styled-components';
-import { Field } from 'redux-form';
+import { Field, fieldPropTypes } from 'redux-form';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 
@@ -13,30 +13,62 @@ const StyledField = styled.div`
     flex: 1;
   }
 
+  .DayPickerInput {
+    width: 100%;
+  }
+
   input {
     font-size: 16px;
     padding: 2px;
   }
 `;
 
+const RenderField = ({
+  input: { name, value, onChange },
+  label,
+  meta: { error, warning },
+  initialMonth,
+  disabledDays,
+}) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      {value &&
+        ((error && <span className="form__error">{error}</span>) ||
+          (warning && <span className="form__warning">{warning}</span>))}
+      <DayPickerInput
+        value={value}
+        name={name}
+        onDayChange={day => onChange(day)}
+        dayPickerProps={{
+          initialMonth,
+          disabledDays,
+        }}
+      />
+    </div>
+  </div>
+);
+
+RenderField.propTypes = {
+  label: propTypes.string.isRequired,
+  ...fieldPropTypes,
+};
+
 const DatePicker = ({
   label, id, initialMonth, disabledDays, validate,
 }) => (
   <StyledField>
-    <label htmlFor={id}>{label}</label>
     <Field
       id={id}
       name={id}
       validate={validate}
-      component={({ input }) => (
-        <DayPickerInput
-          value={input.value}
-          name={input.name}
-          onDayChange={day => input.onChange(day)}
-          dayPickerProps={{
-            initialMonth,
-            disabledDays,
-          }}
+      component={({ input, meta }) => (
+        <RenderField
+          label={label}
+          input={input}
+          initialMonth={initialMonth}
+          disabledDays={disabledDays}
+          meta={meta}
         />
       )}
     />

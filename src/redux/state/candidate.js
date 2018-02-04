@@ -63,7 +63,10 @@ export default function candidateReducer(state = initialState, action) {
   }
 }
 
-// Action
+/**
+ * Get all candidates
+ * @return {Object} Action
+ */
 export function fetchCandidates() {
   return {
     type: CANDIDATE_FETCH_REQUEST,
@@ -86,11 +89,17 @@ function candidateFetchFailure(error) {
   };
 }
 
-export function createCandidate(unitId, data) {
+/**
+ * Candidate create action
+ * @param  {String} electionId
+ * @param  {Object} data       Parameters for candidate
+ * @return {Object}            Action
+ */
+export function createCandidate(electionId, data) {
   return {
     type: CANDIDATE_CREATE_REQUEST,
     payload: {
-      unitId,
+      electionId,
       ...data,
     },
   };
@@ -112,6 +121,12 @@ function candidateCreateFailure(error) {
   };
 }
 
+/**
+ * Candidate update action
+ * @param  {String} candidateId
+ * @param  {Object} patch       Parameters to update
+ * @return {Object}             Action
+ */
 export function updateCandidate(candidateId, patch) {
   return {
     type: CANDIDATE_UPDATE_REQUEST,

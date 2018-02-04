@@ -1,6 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import { Field, propTypes as rfPropTypes } from 'redux-form';
+import { Field, fieldPropTypes } from 'redux-form';
 
 const renderField = ({
   input, label, type, meta: { touched, error, warning },
@@ -17,7 +17,9 @@ const renderField = ({
 );
 
 renderField.propTypes = {
-  ...rfPropTypes,
+  label: propTypes.string.isRequired,
+  type: propTypes.string.isRequired,
+  ...fieldPropTypes,
 };
 
 const FieldWithLabel = ({

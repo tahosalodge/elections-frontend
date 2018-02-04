@@ -16,6 +16,7 @@ const ButtonStyles = styled.div`
     font-size: 16px;
     padding: 0.5em 1em;
     width: 100%;
+    max-width: 300px;
 
     &:disabled {
       opacity: 0.5;

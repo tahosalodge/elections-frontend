@@ -14,6 +14,7 @@ import Register from 'components/Forms/Register';
 import Login from 'components/Forms/Login';
 import Help from 'components/Help';
 import Logout from 'components/Logout';
+import NotFound from 'components/NotFound';
 import UnitImport from 'components/Admin/UnitImport';
 import CreateUser from 'components/Admin/CreateUser';
 
@@ -28,7 +29,8 @@ const Routes = () => (
     <Route path="/elections/:electionId/edit" component={ElectionForm} />
     <Route path="/elections/:electionId" component={Election} />
     <Route path="/election-list" component={ElectionList} />
-    <Route path="/candidate" component={Candidate} />
+    <Route path="/candidates/new/:electionId" component={Candidate} />
+    <Route path="/candidates/:candidateId" component={Candidate} />
     <Route path="/nomination" component={Nomination} />
     <Route path="/register/:type" component={Register} />
     <Route path="/register/" component={Register} />
@@ -37,6 +39,7 @@ const Routes = () => (
     <Route path="/logout" component={Logout} />
     <Route path="/admin/import" component={UnitImport} />
     <Route path="/admin/create-user" component={CreateUser} />
+    <Route path="*" component={NotFound} />
   </Switch>
 );
 

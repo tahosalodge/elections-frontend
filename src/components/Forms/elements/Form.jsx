@@ -3,7 +3,7 @@ import { colors } from 'constants/values';
 import downArrow from './downarrow.svg';
 
 const Form = styled.form`
-  max-width: 400px;
+  max-width: 600px;
   margin: auto;
   background: #f6f6f6;
   padding: 2em 4em;
