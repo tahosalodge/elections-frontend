@@ -93,7 +93,7 @@ class Candidate extends React.Component {
       <LoadingOrContent loading={loading.candidate}>
         <Form onSubmit={handleSubmit(this.submit)}>
           <h2>Contact Information</h2>
-          <FieldWithLabel label="BSA ID" id="bsaid" validate={[required, validNumber, bsaId]} />
+          <FieldWithLabel label="BSA ID" id="bsaid" validate={[bsaId]} />
           <FieldWithLabel label="First name" id="fname" validate={[required]} />
           <FieldWithLabel label="Last name" id="lname" validate={[required]} />
           <FieldWithLabel

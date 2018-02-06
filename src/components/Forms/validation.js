@@ -46,11 +46,17 @@ export const email = value =>
     : undefined);
 
 export const bsaId = (value) => {
+  if (!value) {
+    return 'This field is required. If you do not have a BSA ID for this person, you must enter N/A.';
+  }
+  if (value === 'N/A') {
+    return undefined;
+  }
   if ('012345'.indexOf(value) !== -1) {
-    return 'Invalid BSA ID.';
+    return 'Invalid BSA ID. If you do not have a BSA ID for this person, you must enter N/A.';
   }
   if (!/[1-9]/i.test(value)) {
-    return 'Invalid BSA ID.';
+    return 'Invalid BSA ID. If you do not have a BSA ID for this person, you must enter N/A.';
   }
   const idMinValidation = minLength(5)(value);
   if (idMinValidation) {
