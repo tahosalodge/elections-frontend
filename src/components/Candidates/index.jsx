@@ -31,7 +31,9 @@ class Candidates extends React.PureComponent {
 
   render() {
     const { candidates } = this.props;
-    return <Table columns={this.columns()} data={candidates} />;
+    return (
+      <Table columns={this.columns()} data={candidates} notFoundMessage="No candidates entered." />
+    );
   }
 }
 

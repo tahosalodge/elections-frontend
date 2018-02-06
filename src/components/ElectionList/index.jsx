@@ -47,7 +47,13 @@ class ElectionList extends React.Component {
       {
         Header: 'Actions',
         accessor: '_id',
-        Cell: ({ value }) => <Link to={`/elections/${value}/edit`}>Schedule</Link>,
+        Cell: ({ value }) => (
+          <span>
+            <Link to={`/elections/${value}`}>View</Link>
+            <span> | </span>
+            <Link to={`/elections/${value}/edit`}>Schedule</Link>
+          </span>
+        ),
       },
     ];
     return columns;
