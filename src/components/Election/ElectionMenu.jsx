@@ -7,6 +7,7 @@ import electionShape from 'shapes/election';
 
 const MenuStyles = styled.div`
   min-height: 55px;
+  margin-bottom: 1em;
 
   ul {
     width: 100%;
@@ -18,7 +19,6 @@ const MenuStyles = styled.div`
     flex-flow: row wrap;
     position: absolute;
     left: 0;
-    justify-content: space-between;
 
     @media (max-width: 600px) {
       position: relative;
@@ -47,10 +47,10 @@ const ElectionMenu = ({ election: { _id, unitId } }) => (
       <li>
         <NavLink to={`/elections/${_id}/candidate`}>Add Candidate</NavLink>
       </li>
-      <li>
+      {/* <li>
         <NavLink to={`/elections/${_id}/nomination`}>Add Nomination</NavLink>
-      </li>
-      <li>
+      </li> */}
+      {/* <li>
         <NavLink to={`/elections/${_id}/team`}>Election Team</NavLink>
       </li>
       <li>
@@ -58,7 +58,7 @@ const ElectionMenu = ({ election: { _id, unitId } }) => (
       </li>
       <li>
         <NavLink to={`/elections/${_id}/ballots`}>Print Ballots</NavLink>
-      </li>
+      </li> */}
     </ul>
   </MenuStyles>
 );
