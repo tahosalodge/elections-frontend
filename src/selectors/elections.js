@@ -33,5 +33,10 @@ export const electionUnitJoin = createSelector([getUnits, getElections], (units,
 
 export const electionById = createSelector(
   [getElectionId, getElections],
-  (electionId, elections) => elections[electionId],
+  (electionId, elections) => {
+    if (electionId && elections[electionId]) {
+      return elections[electionId];
+    }
+    return {};
+  },
 );
