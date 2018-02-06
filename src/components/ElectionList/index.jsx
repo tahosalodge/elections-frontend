@@ -6,13 +6,13 @@ import Table, { ChapterCell } from 'components/Table';
 import LoadingOrContent from 'components/LoadingOrContent';
 import { electionUnitJoin } from 'selectors/elections';
 import { fetchElections } from 'redux/state/election';
-import { unitsRequest } from 'redux/state/unit';
+import { fetchUnits } from 'redux/state/unit';
 
 class ElectionList extends React.Component {
   static propTypes = {
     elections: propTypes.arrayOf(propTypes.shape()).isRequired,
     fetchElections: propTypes.func.isRequired,
-    unitsRequest: propTypes.func.isRequired,
+    fetchUnits: propTypes.func.isRequired,
     loading: propTypes.shape({
       election: propTypes.bool,
       unit: propTypes.bool,
@@ -24,7 +24,7 @@ class ElectionList extends React.Component {
 
   componentWillMount() {
     this.props.fetchElections();
-    this.props.unitsRequest();
+    this.props.fetchUnits();
   }
 
   columns = () => {
@@ -69,4 +69,4 @@ const mapStateToProps = state => ({
   loading: state.loading,
 });
 
-export default connect(mapStateToProps, { fetchElections, unitsRequest })(ElectionList);
+export default connect(mapStateToProps, { fetchElections, fetchUnits })(ElectionList);

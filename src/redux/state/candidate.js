@@ -67,9 +67,10 @@ export default function candidateReducer(state = initialState, action) {
  * Get all candidates
  * @return {Object} Action
  */
-export function fetchCandidates() {
+export function fetchCandidates(electionId) {
   return {
     type: CANDIDATE_FETCH_REQUEST,
+    payload: { electionId },
   };
 }
 
@@ -154,9 +155,10 @@ function candidateUpdateFailure(error) {
 }
 
 // Saga
-function* fetchSaga() {
+function* fetchSaga(action) {
+  const { payload: { electionId } } = action;
   try {
-    const response = yield call(apiRequest, routes.candidates);
+    const response = yield call(apiRequest, `${routes.candidates}/${electionId}`);
     yield put(candidateFetchSuccess(response));
   } catch (error) {
     yield put(candidateFetchFailure(error));
@@ -165,11 +167,11 @@ function* fetchSaga() {
 }
 
 function* createSaga(action) {
+  const { payload } = action;
   try {
     const candidateData = {
-      ...action.payload,
-      status: 'Requested',
-      season,
+      ...payload,
+      status: 'Eligible',
     };
     const candidate = yield call(apiRequest, routes.candidates, 'POST', candidateData);
     yield put(candidateCreateSuccess(candidate));

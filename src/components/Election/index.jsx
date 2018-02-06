@@ -2,18 +2,18 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { Switch, Route } from 'react-router-dom';
 import { fetchElections } from 'redux/state/election';
+import { fetchCandidates } from 'redux/state/candidate';
+import { fetchUnits } from 'redux/state/unit';
+import { electionById } from 'selectors/elections';
+import { unitForElection } from 'selectors/units';
+import { candidatesForElection } from 'selectors/candidates';
 import LoadingOrContent from 'components/LoadingOrContent';
 import loadingShape from 'shapes/loading';
+import candidateShape from 'shapes/candidate';
 import electionShape from 'shapes/election';
 import ElectionMenu from './ElectionMenu';
-import Overview from './Overview';
-import AddCandidate from './AddCandidate';
-import AddNomination from './AddNomination';
-import Ballots from './Ballots';
-import Report from './Report';
-import Team from './Team';
+import ElectionPages from './pages';
 
 const ElectionHeader = styled.div`
   display: flex;
@@ -30,49 +30,56 @@ const ElectionHeader = styled.div`
 class Election extends React.Component {
   static propTypes = {
     fetchElections: propTypes.func.isRequired,
+    fetchCandidates: propTypes.func.isRequired,
+    fetchUnits: propTypes.func.isRequired,
     election: electionShape.isRequired,
     unit: propTypes.shape().isRequired,
+    candidates: propTypes.arrayOf(candidateShape).isRequired,
     loading: loadingShape.isRequired,
   };
 
   componentWillMount() {
+    const { electionId } = this.props.match.params;
+    console.log(electionId);
     this.props.fetchElections();
+    this.props.fetchCandidates(electionId);
+    this.props.fetchUnits();
   }
 
   render() {
-    const { election, unit, loading } = this.props;
+    const {
+      election, unit, loading, candidates,
+    } = this.props;
+    const { number } = unit;
     return (
-      <LoadingOrContent loading={loading.election || loading.unit || loading.user}>
+      <LoadingOrContent
+        loading={loading.election || loading.unit || loading.user || loading.candidates}
+      >
         <ElectionHeader>
           <h1>
-            Troop {unit.number} - {election.season}
+            Troop {number} - {election.season}
           </h1>
           <p>
             <strong>Election Status: {election.status}</strong>
           </p>
         </ElectionHeader>
         <ElectionMenu election={election} />
-        <Switch>
-          <Route exact path="/elections/:electionId" component={Overview} />
-          <Route path="/elections/:electionId/candidate" component={AddCandidate} />
-          <Route path="/elections/:electionId/nomination" component={AddNomination} />
-          <Route path="/elections/:electionId/team" component={Team} />
-          <Route path="/elections/:electionId/report" component={Report} />
-          <Route path="/elections/:electionId/ballots" component={Ballots} />
-        </Switch>
+        <ElectionPages election={election} candidates={candidates} />
       </LoadingOrContent>
     );
   }
 }
 
-const mapStateToProps = ({
-  election, unit, loading, user,
-}, { match }) => ({
-  election: election.items[match.params.electionId] || {},
-  unit: unit.items[user.unit] || {},
-  loading: {
-    ...loading,
-  },
-});
+const mapStateToProps = (state, props) => {
+  const election = electionById(state, props);
+  return {
+    election,
+    unit: unitForElection(state, election),
+    candidates: candidatesForElection(state, props),
+    loading: {
+      ...state.loading,
+    },
+  };
+};
 
-export default connect(mapStateToProps, { fetchElections })(Election);
+export default connect(mapStateToProps, { fetchElections, fetchCandidates, fetchUnits })(Election);
