@@ -10,6 +10,7 @@ import { unitForElection } from 'selectors/units';
 import { candidatesForElection } from 'selectors/candidates';
 import LoadingOrContent from 'components/LoadingOrContent';
 import loadingShape from 'shapes/loading';
+import { candidate as candidateMatchShape } from 'shapes/match';
 import candidateShape from 'shapes/candidate';
 import electionShape from 'shapes/election';
 import ElectionMenu from './ElectionMenu';
@@ -36,11 +37,11 @@ class Election extends React.Component {
     unit: propTypes.shape().isRequired,
     candidates: propTypes.arrayOf(candidateShape).isRequired,
     loading: loadingShape.isRequired,
+    match: candidateMatchShape.isRequired,
   };
 
   componentWillMount() {
     const { electionId } = this.props.match.params;
-    console.log(electionId);
     this.props.fetchElections();
     this.props.fetchCandidates(electionId);
     this.props.fetchUnits();

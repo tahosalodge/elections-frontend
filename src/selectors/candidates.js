@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 const getElectionId = (state, props) => props.match.params.electionId;
+const getCandidateId = (state, props) => props.match.params.candidateId;
 const getCandidates = state => state.candidate.items;
 
 export const candidatesForElection = createSelector(
@@ -13,6 +14,16 @@ export const candidatesForElection = createSelector(
         newMap.push(candidates[id]);
         return newMap;
       }, []),
+);
+
+export const candidateById = createSelector(
+  [getCandidateId, getCandidates],
+  (candidateId, candidates) => {
+    if (candidateId && candidates[candidateId]) {
+      return candidates[candidateId];
+    }
+    return {};
+  },
 );
 
 export const eslint = () => null;
