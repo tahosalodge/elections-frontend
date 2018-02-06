@@ -12,14 +12,7 @@ import electionShape from 'shapes/election';
 import loadingShape from 'shapes/loading';
 import { createCandidate, updateCandidate, getCandidate } from 'redux/state/candidate';
 import { candidateById } from 'selectors/candidates';
-import {
-  required,
-  number as validNumber,
-  email,
-  bsaId,
-  minValue,
-  isYouth,
-} from 'components/Forms/validation';
+import { required, email, bsaId, minValue, isYouth } from 'components/Forms/validation';
 import { FieldWithLabel, Address, Select, Button, Form } from 'components/Forms/elements';
 import LoadingOrContent from 'components/LoadingOrContent';
 
