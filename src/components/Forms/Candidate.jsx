@@ -40,12 +40,13 @@ class Candidate extends React.Component {
     candidate: candidateShape.isRequired,
     initialize: propTypes.func.isRequired,
     loading: loadingShape.isRequired,
+    reset: propTypes.func.isRequired,
   };
 
   componentWillReceiveProps({ candidate }) {
     const { match: { params: { candidateId } }, initialize } = this.props;
-    this.props.getCandidate(candidateId);
     if (candidateId && !isEmpty(candidate)) {
+      this.props.getCandidate(candidateId);
       initialize({
         ...candidate,
         dob: format(candidate.dob, 'MM/DD/YYYY'),
@@ -80,6 +81,7 @@ class Candidate extends React.Component {
       this.props.updateCandidate(params.candidateId, candidate);
     } else {
       this.props.createCandidate(params.electionId, candidate);
+      this.props.reset();
     }
   };
 

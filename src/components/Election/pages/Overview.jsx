@@ -1,15 +1,29 @@
 import React, { Fragment as F } from 'react';
+import propTypes from 'prop-types';
+import format from 'date-fns/format';
+import candidateShape from 'shapes/candidate';
+import electionShape from 'shapes/election';
 import Candidates from 'components/Candidates';
 
-const Overview = ({ match, candidates }) => (
+const Overview = ({ candidates, election: { requestedDates, date, status } }) => (
   <F>
-    {JSON.stringify(match)}
-    <h1>Hi, I'm the overview!</h1>
-    <p>Election Date: 123</p>
+    <h1>Election Overview</h1>
+    {status === 'Requested' && (
+      <F>
+        <h4>Requested Dates</h4>
+        <ul>
+          {requestedDates.map(reqDate => <li key={reqDate}>{format(reqDate, 'MMMM Do, YYYY')}</li>)}
+        </ul>
+      </F>
+    )}
+    {status === 'Scheduled' && <p>Election Date: {format(date, 'MMMM Do, YYYY')}</p>}
     <Candidates candidates={candidates} />
-    <button>Add Candidate</button>
-    <button>Add Nomination</button>
   </F>
 );
+
+Overview.propTypes = {
+  candidates: propTypes.arrayOf(candidateShape).isRequired,
+  election: electionShape.isRequired,
+};
 
 export default Overview;

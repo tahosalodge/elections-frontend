@@ -111,11 +111,11 @@ export function createCandidate(electionId, data) {
   };
 }
 
-function candidateCreateSuccess(candidates) {
+function candidateCreateSuccess(candidate) {
   return {
     type: CANDIDATE_CREATE_SUCCESS,
     payload: {
-      data: normalize(candidates, CANDIDATE_SCHEMA).entities,
+      data: candidate,
     },
   };
 }
@@ -221,7 +221,8 @@ function* createSaga(action) {
     };
     const candidate = yield call(apiRequest, routes.candidates, 'POST', candidateData);
     yield put(candidateCreateSuccess(candidate));
-    yield put(push(`${routes.candidates}/${candidate._id}`));
+    yield put(push(`${routes.elections}/${candidate.electionId}/candidate`));
+    yield put(addToast(`Created candidate ${candidate.fname} ${candidate.lname} successfully.`));
   } catch (error) {
     yield put(candidateCreateFailure(error));
     yield put(addToast(error.message));
@@ -231,9 +232,10 @@ function* createSaga(action) {
 function* updateSaga(action) {
   try {
     const { candidateId, patch } = action.payload;
-    const unit = yield call(apiRequest, `${routes.candidates}/${candidateId}`, 'PUT', patch);
-    yield put(candidateUpdateSuccess(unit));
+    const candidate = yield call(apiRequest, `${routes.candidates}/${candidateId}`, 'PUT', patch);
+    yield put(candidateUpdateSuccess(candidate));
     yield put(push(`${routes.candidates}/${candidateId}`));
+    yield put(addToast(`Updated candidate ${candidate.fname} ${candidate.lname} successfully.`));
   } catch (error) {
     yield put(candidateUpdateFailure(error));
     yield put(addToast(error.message));
