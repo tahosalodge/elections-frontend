@@ -2,14 +2,14 @@ import React, { Fragment as F } from 'react';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { unitsRequest } from 'redux/state/unit';
+import { fetchUnits } from 'redux/state/unit';
 import toArray from 'selectors/array';
 import Table, { ChapterCell } from 'components/Table';
 import LoadingOrContent from 'components/LoadingOrContent';
 
 class NoUnitPage extends React.PureComponent {
   static propTypes = {
-    unitsRequest: propTypes.func.isRequired,
+    fetchUnits: propTypes.func.isRequired,
     units: propTypes.arrayOf(propTypes.object).isRequired,
     user: propTypes.shape().isRequired,
     loadingUser: propTypes.bool.isRequired,
@@ -17,7 +17,7 @@ class NoUnitPage extends React.PureComponent {
   };
 
   componentWillMount() {
-    this.props.unitsRequest();
+    this.props.fetchUnits();
   }
 
   unitMessage = () => (
@@ -94,4 +94,4 @@ const mapStateToProps = (state) => {
     loadingUser,
   };
 };
-export default connect(mapStateToProps, { unitsRequest })(NoUnitPage);
+export default connect(mapStateToProps, { fetchUnits })(NoUnitPage);
