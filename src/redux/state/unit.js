@@ -71,7 +71,7 @@ export default function unitReducer(state = initialState, action) {
 /**
  * UNIT_FETCH Actions
  */
-export function unitsRequest() {
+export function fetchUnits() {
   return {
     type: UNIT_FETCH_REQUEST,
   };
@@ -182,7 +182,7 @@ function createFailure(error) {
 }
 
 // Saga
-function* fetchUnits() {
+function* fetchUnitsSaga() {
   try {
     const units = yield call(apiRequest, '/units');
     yield put(fetchSuccess(units));
@@ -228,7 +228,7 @@ function* createUnit(action) {
 }
 
 export function* unitSaga() {
-  yield takeLatest(UNIT_FETCH_REQUEST, fetchUnits);
+  yield takeLatest(UNIT_FETCH_REQUEST, fetchUnitsSaga);
   yield takeLatest(UNIT_GET_REQUEST, getUnit);
   yield takeLatest(UNIT_UPDATE_REQUEST, updateUnit);
   yield takeLatest(UNIT_CREATE_REQUEST, createUnit);

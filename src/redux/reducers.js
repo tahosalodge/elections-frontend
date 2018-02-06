@@ -7,6 +7,8 @@ import unit from 'redux/state/unit';
 import election from 'redux/state/election';
 import loading from 'redux/state/loading';
 import toasts from 'redux/state/toasts';
+import candidate from 'redux/state/candidate';
+import nomination from 'redux/state/nomination';
 
 const rootReducer = combineReducers({
   election,
@@ -17,6 +19,8 @@ const rootReducer = combineReducers({
   toasts,
   unit,
   user,
+  candidate,
+  nomination,
 });
 
 export default rootReducer;

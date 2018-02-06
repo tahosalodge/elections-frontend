@@ -3,12 +3,15 @@ import { schema, normalize } from 'normalizr';
 import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
 import { addToast } from 'redux/state/toasts';
-import { season } from 'constants/values';
 import routes from 'constants/routes';
 
 export const CANDIDATE_FETCH_REQUEST = 'CANDIDATE_FETCH_REQUEST';
 export const CANDIDATE_FETCH_SUCCESS = 'CANDIDATE_FETCH_SUCCESS';
 export const CANDIDATE_FETCH_FAILURE = 'CANDIDATE_FETCH_FAILURE';
+
+export const CANDIDATE_GET_REQUEST = 'CANDIDATE_GET_REQUEST';
+export const CANDIDATE_GET_SUCCESS = 'CANDIDATE_GET_SUCCESS';
+export const CANDIDATE_GET_FAILURE = 'CANDIDATE_GET_FAILURE';
 
 export const CANDIDATE_CREATE_REQUEST = 'CANDIDATE_CREATE_REQUEST';
 export const CANDIDATE_CREATE_SUCCESS = 'CANDIDATE_CREATE_SUCCESS';
@@ -49,6 +52,8 @@ export default function candidateReducer(state = initialState, action) {
         ]),
       };
 
+    case CANDIDATE_GET_SUCCESS:
+    case CANDIDATE_UPDATE_SUCCESS:
     case CANDIDATE_CREATE_SUCCESS:
       return {
         ...state,
@@ -67,9 +72,10 @@ export default function candidateReducer(state = initialState, action) {
  * Get all candidates
  * @return {Object} Action
  */
-export function fetchCandidates() {
+export function fetchCandidates(electionId) {
   return {
     type: CANDIDATE_FETCH_REQUEST,
+    payload: { electionId },
   };
 }
 
@@ -105,11 +111,11 @@ export function createCandidate(electionId, data) {
   };
 }
 
-function candidateCreateSuccess(candidates) {
+function candidateCreateSuccess(candidate) {
   return {
     type: CANDIDATE_CREATE_SUCCESS,
     payload: {
-      data: normalize(candidates, CANDIDATE_SCHEMA).entities,
+      data: candidate,
     },
   };
 }
@@ -153,10 +159,41 @@ function candidateUpdateFailure(error) {
   };
 }
 
+/**
+ * Candidate get action
+ * @param  {String} candidateId
+ * @return {Object}             Action
+ */
+export function getCandidate(candidateId) {
+  return {
+    type: CANDIDATE_GET_REQUEST,
+    payload: {
+      candidateId,
+    },
+  };
+}
+
+function candidateGetSuccess(candidate) {
+  return {
+    type: CANDIDATE_GET_SUCCESS,
+    payload: {
+      data: candidate,
+    },
+  };
+}
+
+function candidateGetFailure(error) {
+  return {
+    type: CANDIDATE_GET_FAILURE,
+    error,
+  };
+}
+
 // Saga
-function* fetchSaga() {
+function* fetchSaga(action) {
+  const { payload: { electionId } } = action;
   try {
-    const response = yield call(apiRequest, routes.candidates);
+    const response = yield call(apiRequest, `${routes.candidates}/?electionId=${electionId}`);
     yield put(candidateFetchSuccess(response));
   } catch (error) {
     yield put(candidateFetchFailure(error));
@@ -164,16 +201,28 @@ function* fetchSaga() {
   }
 }
 
+function* getSaga(action) {
+  const { payload: { candidateId } } = action;
+  try {
+    const candidate = yield call(apiRequest, `${routes.candidates}/${candidateId}`);
+    yield put(candidateGetSuccess(candidate));
+  } catch (error) {
+    yield put(candidateGetFailure(error));
+    yield put(addToast(error.message));
+  }
+}
+
 function* createSaga(action) {
+  const { payload } = action;
   try {
     const candidateData = {
-      ...action.payload,
-      status: 'Requested',
-      season,
+      ...payload,
+      status: 'Eligible',
     };
     const candidate = yield call(apiRequest, routes.candidates, 'POST', candidateData);
     yield put(candidateCreateSuccess(candidate));
-    yield put(push(`${routes.candidates}/${candidate._id}`));
+    yield put(push(`${routes.elections}/${candidate.electionId}/candidate`));
+    yield put(addToast(`Created candidate ${candidate.fname} ${candidate.lname} successfully.`));
   } catch (error) {
     yield put(candidateCreateFailure(error));
     yield put(addToast(error.message));
@@ -183,9 +232,10 @@ function* createSaga(action) {
 function* updateSaga(action) {
   try {
     const { candidateId, patch } = action.payload;
-    const unit = yield call(apiRequest, `${routes.candidates}/${candidateId}`, 'PUT', patch);
-    yield put(candidateUpdateSuccess(unit));
+    const candidate = yield call(apiRequest, `${routes.candidates}/${candidateId}`, 'PUT', patch);
+    yield put(candidateUpdateSuccess(candidate));
     yield put(push(`${routes.candidates}/${candidateId}`));
+    yield put(addToast(`Updated candidate ${candidate.fname} ${candidate.lname} successfully.`));
   } catch (error) {
     yield put(candidateUpdateFailure(error));
     yield put(addToast(error.message));
@@ -196,4 +246,5 @@ export function* candidateSaga() {
   yield takeLatest(CANDIDATE_FETCH_REQUEST, fetchSaga);
   yield takeLatest(CANDIDATE_CREATE_REQUEST, createSaga);
   yield takeLatest(CANDIDATE_UPDATE_REQUEST, updateSaga);
+  yield takeLatest(CANDIDATE_GET_REQUEST, getSaga);
 }

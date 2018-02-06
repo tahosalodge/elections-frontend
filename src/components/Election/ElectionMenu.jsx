@@ -7,6 +7,7 @@ import electionShape from 'shapes/election';
 
 const MenuStyles = styled.div`
   min-height: 55px;
+  margin-bottom: 1em;
 
   ul {
     width: 100%;
@@ -18,7 +19,6 @@ const MenuStyles = styled.div`
     flex-flow: row wrap;
     position: absolute;
     left: 0;
-    justify-content: space-between;
 
     @media (max-width: 600px) {
       position: relative;
@@ -42,15 +42,15 @@ const ElectionMenu = ({ election: { _id, unitId } }) => (
         <NavLink to={`/elections/${_id}`}>Overview</NavLink>
       </li>
       <li>
-        <NavLink to={`/units/${unitId}`}>Edit Unit</NavLink>
+        <NavLink to={`/units/${unitId}/edit`}>Edit Unit</NavLink>
       </li>
       <li>
-        <NavLink to={`/elections/${_id}/candidates`}>Candidates</NavLink>
+        <NavLink to={`/elections/${_id}/candidate`}>Add Candidate</NavLink>
       </li>
-      <li>
-        <NavLink to={`/elections/${_id}/nominations`}>Adult Nominations</NavLink>
-      </li>
-      <li>
+      {/* <li>
+        <NavLink to={`/elections/${_id}/nomination`}>Add Nomination</NavLink>
+      </li> */}
+      {/* <li>
         <NavLink to={`/elections/${_id}/team`}>Election Team</NavLink>
       </li>
       <li>
@@ -58,7 +58,7 @@ const ElectionMenu = ({ election: { _id, unitId } }) => (
       </li>
       <li>
         <NavLink to={`/elections/${_id}/ballots`}>Print Ballots</NavLink>
-      </li>
+      </li> */}
     </ul>
   </MenuStyles>
 );

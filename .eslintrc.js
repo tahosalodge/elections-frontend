@@ -4,16 +4,19 @@ module.exports = {
   env: {
     browser: true,
   },
+  globals: {
+    Raven: false,
+  },
   rules: {
     'jsx-a11y/label-has-for': 0,
     'jsx-a11y/anchor-is-valid': 0,
     'no-underscore-dangle': 0,
     'no-unused-vars': ['error', { ignoreRestSiblings: true }],
   },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "moduleDirectory": ["src/", "node_modules/"],
+  settings: {
+    'import/resolver': {
+      node: {
+        moduleDirectory: ['src/', 'node_modules/'],
       },
     },
   },

@@ -46,10 +46,11 @@ class RequestElection extends React.Component {
       if (isEmpty(election)) {
         this.props.push('/units/');
       }
-      const { requestedDates } = election;
+      const { requestedDates, date } = election;
       const formattedDates =
-        !isEmpty(requestedDates) && requestedDates.map(date => format(date, 'YYYY-M-D'));
-      initialize({ requestedDates: formattedDates });
+        !isEmpty(requestedDates) && requestedDates.map(reqDate => format(reqDate, 'YYYY-M-D'));
+      const formattedDate = date && format(date, 'YYYY-MM-DD');
+      initialize({ requestedDates: formattedDates, date: formattedDate });
     }
   }
 

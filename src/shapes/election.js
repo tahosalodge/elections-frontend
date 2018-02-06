@@ -7,4 +7,5 @@ export default propTypes.shape({
   status: propTypes.string.isRequired,
   season: propTypes.string.isRequired,
   date: propTypes.string.isRequired,
+  chapter: propTypes.string.isRequired,
 });

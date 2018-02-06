@@ -2,10 +2,16 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
 import flow from 'lodash/flow';
+import { isEmpty } from 'lodash/lang';
+import format from 'date-fns/format';
 import { connect } from 'react-redux';
 
 import { ranks } from 'constants/values';
-import { createCandidate, updateCandidate } from 'redux/state/candidate';
+import candidateShape from 'shapes/candidate';
+import electionShape from 'shapes/election';
+import loadingShape from 'shapes/loading';
+import { createCandidate, updateCandidate, getCandidate } from 'redux/state/candidate';
+import { candidateById } from 'selectors/candidates';
 import {
   required,
   number as validNumber,
@@ -15,23 +21,42 @@ import {
   isYouth,
 } from 'components/Forms/validation';
 import { FieldWithLabel, Address, Select, Button, Form } from 'components/Forms/elements';
+import LoadingOrContent from 'components/LoadingOrContent';
 
 class Candidate extends React.Component {
   static propTypes = {
     handleSubmit: propTypes.func.isRequired,
     pristine: propTypes.bool.isRequired,
     submitting: propTypes.bool.isRequired,
-    // createCandidate: propTypes.func.isRequired,
-    // updateCandidate: propTypes.func.isRequired,
-    // match: propTypes.shape({
-    //   params: propTypes.shape({
-    //     electionId: propTypes.string,
-    //   }),
-    // }).isRequired,
+    createCandidate: propTypes.func.isRequired,
+    updateCandidate: propTypes.func.isRequired,
+    getCandidate: propTypes.func.isRequired,
+    election: electionShape.isRequired,
+    match: propTypes.shape({
+      params: propTypes.shape({
+        electionId: propTypes.string,
+      }),
+    }).isRequired,
+    candidate: candidateShape.isRequired,
+    initialize: propTypes.func.isRequired,
+    loading: loadingShape.isRequired,
+    reset: propTypes.func.isRequired,
   };
 
+  componentWillReceiveProps({ candidate }) {
+    const { match: { params: { candidateId } }, initialize } = this.props;
+    if (candidateId && !isEmpty(candidate)) {
+      this.props.getCandidate(candidateId);
+      initialize({
+        ...candidate,
+        dob: format(candidate.dob, 'MM/DD/YYYY'),
+      });
+    }
+  }
+
   submit = (values) => {
-    // const { match: { params } } = this.props;
+    const { match: { params }, election } = this.props;
+    const { unitId, _id: electionId, chapter } = election;
     if (values.parentPhone === values.youthPhone) {
       throw new SubmissionError({
         youthPhone:
@@ -45,20 +70,27 @@ class Candidate extends React.Component {
           'Parent and youth email should not match, if the scout does not have their own please leave this field empty.',
       });
     }
-    console.log(values);
-    // if (params.electionId) {
-    //   this.props.updateCandidate(params.electionId, values);
-    // } else {
-    //   this.props.createCandidate(params.unitId, values);
-    // }
+    const candidate = {
+      ...values,
+      chapter,
+      electionId,
+      unitId,
+    };
+
+    if (params.candidateId) {
+      this.props.updateCandidate(params.candidateId, candidate);
+    } else {
+      this.props.createCandidate(params.electionId, candidate);
+      this.props.reset();
+    }
   };
 
   render() {
-    const { handleSubmit, pristine, submitting } = this.props;
+    const {
+      handleSubmit, pristine, submitting, loading,
+    } = this.props;
     return (
-      <div>
-        <h1>Candidate</h1>
-        <p />
+      <LoadingOrContent loading={loading.candidate}>
         <Form onSubmit={handleSubmit(this.submit)}>
           <h2>Contact Information</h2>
           <FieldWithLabel label="BSA ID" id="bsaid" validate={[required, validNumber, bsaId]} />
@@ -89,18 +121,22 @@ class Candidate extends React.Component {
           <Select label="Rank" id="rank" options={ranks} validate={[required]} />
           <Button text="Submit" disabled={pristine || submitting} />
         </Form>
-      </div>
+      </LoadingOrContent>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  election: state.election.items,
-});
+const mapStateToProps = (state, props) => {
+  const toProps = {
+    loading: state.loading,
+    candidate: candidateById(state, props),
+  };
+  return toProps;
+};
 
 export default flow(
   reduxForm({
     form: 'candidate',
   }),
-  connect(mapStateToProps, { createCandidate, updateCandidate }),
+  connect(mapStateToProps, { createCandidate, updateCandidate, getCandidate }),
 )(Candidate);
