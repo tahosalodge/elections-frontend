@@ -125,9 +125,9 @@ function* logout() {
   yield put(addToast('Logged out successfully.'));
 }
 
-function* unitLeaderRedirect() {
+function* unitLeaderRedirect(action) {
+  const { capability, unit } = action.response;
   try {
-    const { capability, unit } = yield select(state => state.user);
     if (capability === 'unit') {
       yield put(push(`/units/${unit}`));
     }
