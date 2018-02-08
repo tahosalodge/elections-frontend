@@ -1,4 +1,4 @@
-import { call, put, takeLatest, select } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
 import { addToast } from 'redux/state/toasts';
@@ -126,6 +126,7 @@ function* logout() {
 }
 
 function* unitLeaderRedirect(action) {
+  console.log(action);
   const { capability, unit } = action.response;
   try {
     if (capability === 'unit') {
@@ -147,7 +148,7 @@ export function* userSaga() {
   yield takeLatest(USER_LOGOUT, logout);
   yield takeLatest(USER_LOGIN_CHECK_TOKEN, checkToken);
   yield takeLatest(USER_LOGIN_REQUEST, login);
-  yield takeLatest(USER_LOGIN_CHECK_TOKEN, unitLeaderRedirect);
+  yield takeLatest(USER_LOGIN_SUCCESS, unitLeaderRedirect);
   yield takeLatest(USER_LOGIN_SUCCESS, unitLeaderRedirect);
   yield takeLatest(USER_LOGIN_SUCCESS, sentryUserContext);
 }
