@@ -5,6 +5,7 @@ pipeline:
     channel: deployments
     username: drone
     template: "<{{build.link}}|Deployment #{{build.number}} started> on <http://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}> by {{build.author}}"
+
   docker-build:
     image: plugins/docker
     repo: mckernanin/elections-react
