@@ -93,7 +93,7 @@ function* login(action) {
     yield put(push('/'));
   } catch (error) {
     yield put(loginFailure(error));
-    yield put(addToast(error.message));
+    yield put(addToast(error.message, { sticky: true }));
   }
 }
 
@@ -126,14 +126,13 @@ function* logout() {
 }
 
 function* unitLeaderRedirect(action) {
-  console.log(action);
   const { capability, unit } = action.response;
   try {
     if (capability === 'unit') {
       yield put(push(`/units/${unit}`));
     }
   } catch (error) {
-    yield put(addToast(error.message));
+    yield put(addToast(error.message), { sticky: true });
   }
 }
 

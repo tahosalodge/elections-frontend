@@ -144,7 +144,7 @@ function* fetchSaga() {
     yield put(electionFetchSuccess(response));
   } catch (error) {
     yield put(electionFetchFailure(error));
-    yield put(addToast(error.message));
+    yield put(addToast(error.message, { sticky: true }));
   }
 }
 
@@ -160,7 +160,7 @@ function* createSaga(action) {
     yield put(push(`/elections/${election._id}`));
   } catch (error) {
     yield put(electionCreateFailure(error));
-    yield put(addToast(error.message));
+    yield put(addToast(error.message, { sticky: true }));
   }
 }
 
@@ -172,7 +172,7 @@ function* updateSaga(action) {
     yield put(push(`/elections/${electionId}`));
   } catch (error) {
     yield put(electionUpdateFailure(error));
-    yield put(addToast(error.message));
+    yield put(addToast(error.message, { sticky: true }));
   }
 }
 

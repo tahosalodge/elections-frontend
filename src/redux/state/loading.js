@@ -1,4 +1,8 @@
+import { put, call } from 'redux-saga/effects';
 import { combineReducers } from 'redux';
+import { apiRequest } from 'redux/helpers/api';
+import { addToast } from 'redux/state/toasts';
+
 import {
   ELECTION_FETCH_REQUEST,
   ELECTION_FETCH_SUCCESS,
@@ -58,6 +62,9 @@ import {
   NOMINATION_CREATE_SUCCESS,
   NOMINATION_CREATE_FAILURE,
 } from 'redux/state/nomination';
+
+const { Raven } = window;
+
 /**
  * Utility function to making a simple reducer to swap the loading indicator status.
  *
@@ -126,3 +133,17 @@ export default combineReducers({
   ),
   register: makeReducer(REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE),
 });
+
+export function* healthCheck() {
+  try {
+    yield call(apiRequest, '/', 'GET');
+  } catch (error) {
+    yield put(addToast(
+      'We are currently experiencing technical difficulties. The administrator has been notified. Please try again later.',
+      { sticky: true },
+    ));
+    Raven.captureException(error, {
+      level: 'error',
+    });
+  }
+}

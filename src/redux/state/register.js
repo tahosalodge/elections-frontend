@@ -86,7 +86,7 @@ function* registerFlow(action) {
     yield put(push('/units'));
   } catch (error) {
     yield put(registerFailure(error));
-    yield put(addToast(error.message));
+    yield put(addToast(error.message, { sticky: true }));
   }
 }
 

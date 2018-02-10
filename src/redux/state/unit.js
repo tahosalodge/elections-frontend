@@ -188,7 +188,7 @@ function* fetchUnitsSaga() {
     yield put(fetchSuccess(units));
   } catch (error) {
     yield put(fetchFailure(error));
-    yield put(addToast(error.message));
+    yield put(addToast(error.message, { sticky: true }));
   }
 }
 
@@ -199,7 +199,7 @@ function* getUnit(action) {
     yield put(getSuccess(unit));
   } catch (error) {
     yield put(getFailure(error));
-    yield put(addToast(error.message));
+    yield put(addToast(error.message, { sticky: true }));
   }
 }
 
@@ -211,7 +211,7 @@ function* updateUnit(action) {
     yield put(push(`/units/${unitId}`));
   } catch (error) {
     yield put(updateFailure(error));
-    yield put(addToast(error.message));
+    yield put(addToast(error.message, { sticky: true }));
   }
 }
 
@@ -223,7 +223,7 @@ function* createUnit(action) {
     yield put(push(`/units/${unit._id}`));
   } catch (error) {
     yield put(createFailure(error));
-    yield put(addToast(error.message));
+    yield put(addToast(error.message, { sticky: true }));
   }
 }
 

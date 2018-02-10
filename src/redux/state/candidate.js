@@ -208,7 +208,7 @@ function* getSaga(action) {
     yield put(candidateGetSuccess(candidate));
   } catch (error) {
     yield put(candidateGetFailure(error));
-    yield put(addToast(error.message));
+    yield put(addToast(error.message, { sticky: true }));
   }
 }
 
@@ -225,7 +225,7 @@ function* createSaga(action) {
     yield put(addToast(`Created candidate ${candidate.fname} ${candidate.lname} successfully.`));
   } catch (error) {
     yield put(candidateCreateFailure(error));
-    yield put(addToast(error.message));
+    yield put(addToast(error.message, { sticky: true }));
   }
 }
 
@@ -238,7 +238,7 @@ function* updateSaga(action) {
     yield put(addToast(`Updated candidate ${candidate.fname} ${candidate.lname} successfully.`));
   } catch (error) {
     yield put(candidateUpdateFailure(error));
-    yield put(addToast(error.message));
+    yield put(addToast(error.message, { sticky: true }));
   }
 }
 
