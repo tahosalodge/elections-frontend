@@ -9,8 +9,8 @@ import { candidateSaga } from 'redux/state/candidate';
 import { healthCheck } from 'redux/state/loading';
 
 export default function* RootSaga() {
-  yield healthCheck();
   yield all([
+    healthCheck(),
     registerSaga(),
     userSaga(),
     unitSaga(),
