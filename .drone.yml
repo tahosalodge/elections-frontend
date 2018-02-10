@@ -33,4 +33,5 @@ pipeline:
     when:
       branch: [ master ]
       status: [ success, failure ]
+
 branches: master
