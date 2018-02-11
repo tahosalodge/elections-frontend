@@ -22,6 +22,10 @@ const ElectionHeader = styled.div`
   align-items: center;
   margin-bottom: 2em;
 
+  @media print {
+    display: none;
+  }
+
   h1,
   p {
     margin: 0 !important;

@@ -9,6 +9,10 @@ const MenuStyles = styled.div`
   min-height: 55px;
   margin-bottom: 1em;
 
+  @media print {
+    display: none;
+  }
+
   ul {
     width: 100%;
     background: ${colors.mutedRed};
@@ -47,6 +51,9 @@ const ElectionMenu = ({ election: { _id, unitId } }) => (
       <li>
         <NavLink to={`/elections/${_id}/candidate`}>Add Candidate</NavLink>
       </li>
+      <li>
+        <NavLink to={`/elections/${_id}/ballots`}>Print Ballots</NavLink>
+      </li>
       {/* <li>
         <NavLink to={`/elections/${_id}/nomination`}>Add Nomination</NavLink>
       </li> */}
@@ -56,9 +63,7 @@ const ElectionMenu = ({ election: { _id, unitId } }) => (
       <li>
         <NavLink to={`/elections/${_id}/report`}>Election Report</NavLink>
       </li>
-      <li>
-        <NavLink to={`/elections/${_id}/ballots`}>Print Ballots</NavLink>
-      </li> */}
+       */}
     </ul>
   </MenuStyles>
 );

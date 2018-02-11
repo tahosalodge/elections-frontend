@@ -5,7 +5,7 @@ export default propTypes.shape({
   fname: propTypes.string.isRequired,
   lname: propTypes.string.isRequired,
   dob: propTypes.string.isRequired,
-  bsaid: propTypes.number.isRequired,
+  bsaid: propTypes.string.isRequired,
   rank: propTypes.string.isRequired,
   electionId: propTypes.string.isRequired,
   address: propTypes.shape().isRequired,

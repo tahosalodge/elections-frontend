@@ -12,6 +12,10 @@ const StyledHeader = styled.header`
   align-items: center;
   flex-flow: row wrap;
 
+  @media print {
+    display: none;
+  }
+
   h1 {
     margin: 0;
     font-family: museo-slab, Georgia, Times, serif;

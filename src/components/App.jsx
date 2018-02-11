@@ -30,6 +30,18 @@ const Page = styled.div`
     margin-top: 0;
   }
 
+  @media print {
+    margin: 0;
+    width: 8in;
+    height: 10.5in;
+    overflow: hidden;
+    padding: 10px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
   h1,
   h2,
   h3,

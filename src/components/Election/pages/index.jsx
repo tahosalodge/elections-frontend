@@ -19,7 +19,6 @@ const ElectionPages = ({ election, candidates }) => (
     />
     <Route
       path="/elections/:electionId/candidate"
-        // component={AddCandidate}
       render={props => <AddCandidate election={election} {...props} />}
     />
     <Route path="/elections/:electionId/nomination" component={AddNomination} />
@@ -33,7 +32,7 @@ const ElectionPages = ({ election, candidates }) => (
     />
     <Route
       path="/elections/:electionId/ballots"
-      render={props => <Ballots election={election} {...props} />}
+      render={props => <Ballots election={election} candidates={candidates} {...props} />}
     />
   </Switch>
 );
