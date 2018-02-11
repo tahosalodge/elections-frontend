@@ -32,8 +32,8 @@ const Page = styled.div`
 
   @media print {
     margin: 0;
-    width: 8in;
-    height: 10.5in;
+    width: 8.5in;
+    height: 11in;
     overflow: hidden;
     padding: 10px;
     display: flex;

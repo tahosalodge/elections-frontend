@@ -7,6 +7,7 @@ import candidateShape from 'shapes/candidate';
 const BallotStyles = styled.div`
   display: flex;
   flex-flow: row wrap;
+  justify-content: space-between;
 
   > p,
   h1,
@@ -19,9 +20,13 @@ const BallotStyles = styled.div`
     }
   }
 
+  ul {
+    padding-left: 1em;
+  }
+
   .ballot {
-    width: 50%;
-    margin-bottom: 1em;
+    width: 45%;
+    margin-bottom: 2em;
   }
 
   li {
@@ -43,7 +48,7 @@ const BallotStyles = styled.div`
 const Ballot = ({ candidates }) => (
   <div className="ballot">
     <p>
-      You may vote for as many candidates as you like. <br />A blank ballot is a vote against all
+      You may vote for as many candidates as you like. A blank ballot is a vote against all
       candidates.
     </p>
     <ul>
