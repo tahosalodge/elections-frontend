@@ -1,13 +1,10 @@
 import React, { Fragment as F } from 'react';
+import ElectionReport from 'components/Forms/ElectionReport';
 
-const Report = ({ match }) => (
+const Report = ({ match, election, candidates }) => (
   <F>
-    {JSON.stringify(match)}
     <h1>Election Report</h1>
-    <p>Registered youth</p>
-    <p>In attendance</p>
-    <p>Votes info</p>
-    <p>Select Candidates</p>
+    <ElectionReport match={match} election={election} candidates={candidates} />
   </F>
 );
 

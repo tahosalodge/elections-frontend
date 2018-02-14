@@ -42,6 +42,23 @@ const Form = styled.form`
     font-style: italic;
     margin-bottom: 0.4em;
   }
+
+  .FieldWithLabel-checkbox {
+    display: flex;
+    margin-bottom: 0.5em;
+
+    label {
+      text-transform: none;
+      margin-bottom: 0;
+      font-size: 16px;
+      order: 1;
+    }
+
+    input {
+      margin: 4px 1em 0 0;
+      vertical-align: top;
+    }
+  }
 `;
 
 export default Form;

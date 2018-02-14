@@ -28,7 +28,7 @@ const ElectionPages = ({ election, candidates }) => (
     />
     <Route
       path="/elections/:electionId/report"
-      render={props => <Report election={election} {...props} />}
+      render={props => <Report election={election} candidates={candidates} {...props} />}
     />
     <Route
       path="/elections/:electionId/ballots"

@@ -5,7 +5,7 @@ import { Field, fieldPropTypes } from 'redux-form';
 const renderField = ({
   input, label, type, meta: { touched, error, warning },
 }) => (
-  <div>
+  <div className={`FieldWithLabel-${type}`}>
     <label>{label}</label>
     <div>
       {touched &&
