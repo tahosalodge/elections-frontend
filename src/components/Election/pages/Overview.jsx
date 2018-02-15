@@ -1,13 +1,12 @@
 import React, { Fragment as F } from 'react';
-import propTypes from 'prop-types';
 import format from 'date-fns/format';
-import candidateShape from 'shapes/candidate';
+import { arrayOfCandidates } from 'shapes/candidate';
 import electionShape from 'shapes/election';
 import Candidates from 'components/Candidates';
 
 const Overview = ({ candidates, election: { requestedDates, date, status } }) => (
   <F>
-    <h1>Election Overview</h1>
+    <h2>Election Overview</h2>
     {status === 'Requested' && (
       <F>
         <h4>Requested Dates</h4>
@@ -16,13 +15,15 @@ const Overview = ({ candidates, election: { requestedDates, date, status } }) =>
         </ul>
       </F>
     )}
-    {status === 'Scheduled' && <p>Election Date: {format(date, 'MMMM Do, YYYY')}</p>}
+    {status !== 'Requested' && <h3>Date: {format(date, 'MMMM Do, YYYY')}</h3>}
+    <br />
+    <h3>Candidates</h3>
     <Candidates candidates={candidates} />
   </F>
 );
 
 Overview.propTypes = {
-  candidates: propTypes.arrayOf(candidateShape).isRequired,
+  candidates: arrayOfCandidates.isRequired,
   election: electionShape.isRequired,
 };
 
