@@ -13,6 +13,7 @@ import loadingShape from 'shapes/loading';
 import { candidate as candidateMatchShape } from 'shapes/match';
 import candidateShape from 'shapes/candidate';
 import electionShape from 'shapes/election';
+import userShape from 'shapes/user';
 import ElectionMenu from './ElectionMenu';
 import ElectionPages from './pages';
 
@@ -42,6 +43,7 @@ class Election extends React.Component {
     candidates: propTypes.arrayOf(candidateShape).isRequired,
     loading: loadingShape.isRequired,
     match: candidateMatchShape.isRequired,
+    user: userShape.isRequired,
   };
 
   componentWillMount() {
@@ -53,7 +55,7 @@ class Election extends React.Component {
 
   render() {
     const {
-      election, unit, loading, candidates,
+      election, unit, loading, candidates, user,
     } = this.props;
     const { number } = unit;
     return (
@@ -68,7 +70,7 @@ class Election extends React.Component {
             <strong>Election Status: {election.status}</strong>
           </p>
         </ElectionHeader>
-        <ElectionMenu election={election} />
+        <ElectionMenu election={election} user={user} />
         <ElectionPages election={election} candidates={candidates} />
       </LoadingOrContent>
     );
@@ -81,9 +83,8 @@ const mapStateToProps = (state, props) => {
     election,
     unit: unitForElection(state, election),
     candidates: candidatesForElection(state, props),
-    loading: {
-      ...state.loading,
-    },
+    loading: state.loading,
+    user: state.user,
   };
 };
 

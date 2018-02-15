@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 import { colors } from 'constants/values';
 import electionShape from 'shapes/election';
+import userShape from 'shapes/user';
 
 const MenuStyles = styled.div`
   min-height: 55px;
@@ -39,7 +40,7 @@ const MenuStyles = styled.div`
     color: white;
   }
 `;
-const ElectionMenu = ({ election: { _id, unitId } }) => (
+const ElectionMenu = ({ election: { _id, unitId }, user: { capability } }) => (
   <MenuStyles>
     <ul>
       <li>
@@ -54,9 +55,11 @@ const ElectionMenu = ({ election: { _id, unitId } }) => (
       <li>
         <NavLink to={`/elections/${_id}/ballots`}>Print Ballots</NavLink>
       </li>
-      <li>
-        <NavLink to={`/elections/${_id}/report`}>Election Report</NavLink>
-      </li>
+      {capability !== 'unit' && (
+        <li>
+          <NavLink to={`/elections/${_id}/report`}>Election Report</NavLink>
+        </li>
+      )}
       {/* <li>
         <NavLink to={`/elections/${_id}/nomination`}>Add Nomination</NavLink>
       </li> */}
@@ -70,7 +73,8 @@ const ElectionMenu = ({ election: { _id, unitId } }) => (
 );
 
 ElectionMenu.propTypes = {
-  election: electionShape,
+  election: electionShape.isRequired,
+  user: userShape.isRequired,
 };
 
 export default ElectionMenu;
