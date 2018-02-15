@@ -90,7 +90,6 @@ function* login(action) {
     const response = yield call(apiRequest, '/auth/login', 'POST', { email, password });
     localStorage.setItem('electionToken', response.token);
     yield put(loginSuccess(response));
-    yield put(push('/'));
   } catch (error) {
     yield put(loginFailure(error));
     yield put(addToast(error.message, { sticky: true }));
@@ -125,11 +124,13 @@ function* logout() {
   yield put(addToast('Logged out successfully.'));
 }
 
-function* unitLeaderRedirect(action) {
+function* loginRedirect(action) {
   const { capability, unit } = action.response;
   try {
     if (capability === 'unit') {
       yield put(push(`/units/${unit}`));
+    } else {
+      yield put(push('/election-list'));
     }
   } catch (error) {
     yield put(addToast(error.message), { sticky: true });
@@ -147,7 +148,6 @@ export function* userSaga() {
   yield takeLatest(USER_LOGOUT, logout);
   yield takeLatest(USER_LOGIN_CHECK_TOKEN, checkToken);
   yield takeLatest(USER_LOGIN_REQUEST, login);
-  yield takeLatest(USER_LOGIN_SUCCESS, unitLeaderRedirect);
-  yield takeLatest(USER_LOGIN_SUCCESS, unitLeaderRedirect);
+  yield takeLatest(USER_LOGIN_SUCCESS, loginRedirect);
   yield takeLatest(USER_LOGIN_SUCCESS, sentryUserContext);
 }
