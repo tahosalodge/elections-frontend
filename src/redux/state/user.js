@@ -63,10 +63,11 @@ export function userVerifyRequest() {
   };
 }
 
-function loginSuccess(response) {
+function loginSuccess(response, options = {}) {
   return {
     type: USER_LOGIN_SUCCESS,
     response,
+    ...options,
   };
 }
 
@@ -89,7 +90,7 @@ function* login(action) {
     const { email, password } = action;
     const response = yield call(apiRequest, '/auth/login', 'POST', { email, password });
     localStorage.setItem('electionToken', response.token);
-    yield put(loginSuccess(response));
+    yield put(loginSuccess(response, { redirect: true }));
   } catch (error) {
     yield put(loginFailure(error));
     yield put(addToast(error.message, { sticky: true }));
@@ -106,7 +107,7 @@ function* checkToken() {
       throw new Error('No token found.');
     }
     const response = yield call(apiRequest, '/auth/me');
-    yield put(loginSuccess(response));
+    yield put(loginSuccess(response, { redirect: false }));
   } catch (error) {
     yield put(loginFailure(error));
     if (error.code !== 'NETWORK') {
@@ -125,12 +126,14 @@ function* logout() {
 }
 
 function* loginRedirect(action) {
-  const { capability, unit } = action.response;
+  const { capability, unit, redirect } = action.response;
   try {
-    if (capability === 'unit') {
-      yield put(push(`/units/${unit}`));
-    } else {
-      yield put(push('/election-list'));
+    if (redirect) {
+      if (capability === 'unit') {
+        yield put(push(`/units/${unit}`));
+      } else {
+        yield put(push('/election-list'));
+      }
     }
   } catch (error) {
     yield put(addToast(error.message), { sticky: true });
