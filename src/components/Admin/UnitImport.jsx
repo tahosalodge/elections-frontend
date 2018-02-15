@@ -19,7 +19,7 @@ class UnitImport extends React.Component {
     const token = localStorage.getItem('electionToken');
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/admin/import-unit/${this.state.unitId}`,
+        `/api/admin/import-unit/${this.state.unitId}`,
         {},
         {
           headers: {

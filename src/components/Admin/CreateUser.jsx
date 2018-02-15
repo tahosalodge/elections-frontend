@@ -26,7 +26,7 @@ class CreateUser extends React.Component {
         fname, lname, email, capability, chapter,
       } = this.state;
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/admin/create-user`,
+        '/api/admin/create-user',
         {
           fname,
           lname,
@@ -41,9 +41,7 @@ class CreateUser extends React.Component {
         },
       );
       this.props.addToast(`User ${response.data.email} added successfully.`);
-      this.setState({ response });
     } catch (error) {
-      console.log(error);
       const { data, status } = error.response;
       this.props.addToast(`${status}: ${data}`);
     }
