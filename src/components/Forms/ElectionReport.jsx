@@ -6,7 +6,7 @@ import { push } from 'react-router-redux';
 import flow from 'lodash/flow';
 import { isEmpty } from 'lodash/lang';
 
-import { fetchElections, updateElection } from 'redux/state/election';
+import { fetchElections, reportElection } from 'redux/state/election';
 import electionShape from 'shapes/election';
 import candidateShape from 'shapes/candidate';
 import { election as electionMatch } from 'shapes/match';
@@ -18,34 +18,41 @@ class ElectionReport extends React.Component {
     handleSubmit: propTypes.func.isRequired,
     pristine: propTypes.bool.isRequired,
     submitting: propTypes.bool.isRequired,
-    fetchElections: propTypes.func.isRequired,
-    updateElection: propTypes.func.isRequired,
+    reportElection: propTypes.func.isRequired,
     match: electionMatch.isRequired,
     initialize: propTypes.func.isRequired,
     initialized: propTypes.bool.isRequired,
     election: electionShape.isRequired,
-    user: propTypes.shape().isRequired,
     candidates: propTypes.arrayOf(candidateShape).isRequired,
   };
 
   componentDidMount() {
-    const { election, initialize, initialized } = this.props;
+    const {
+      election, initialize, initialized, candidates,
+    } = this.props;
+    const formCandidates = candidates.reduce((map, candidate) => {
+      const newMap = {
+        ...map,
+        [candidate._id]: false,
+      };
+      return newMap;
+    }, {});
     if (!isEmpty(election) && !initialized) {
       initialize({
         ...election,
+        candidates: formCandidates,
       });
     }
-    console.table(election);
   }
 
   submit = (values) => {
     const { match: { params } } = this.props;
-    this.props.updateElection(params.electionId, values);
+    this.props.reportElection(params.electionId, { ...values, status: 'Results Entered' });
   };
 
   render() {
     const {
-      handleSubmit, pristine, submitting, user, candidates,
+      handleSubmit, pristine, submitting, candidates,
     } = this.props;
 
     return (
@@ -79,5 +86,5 @@ export default flow(
   reduxForm({
     form: 'electionReport',
   }),
-  connect(mapStateToProps, { fetchElections, updateElection, push }),
+  connect(mapStateToProps, { fetchElections, reportElection, push }),
 )(ElectionReport);

@@ -4,6 +4,7 @@ import { push } from 'react-router-redux';
 import { apiRequest } from 'redux/helpers/api';
 import { addToast } from 'redux/state/toasts';
 import { season } from 'constants/values';
+import { candidateFetchSuccess } from 'redux/state/candidate';
 
 export const ELECTION_FETCH_REQUEST = 'ELECTION_FETCH_REQUEST';
 export const ELECTION_FETCH_SUCCESS = 'ELECTION_FETCH_SUCCESS';
@@ -16,6 +17,9 @@ export const ELECTION_CREATE_FAILURE = 'ELECTION_CREATE_FAILURE';
 export const ELECTION_UPDATE_REQUEST = 'ELECTION_UPDATE_REQUEST';
 export const ELECTION_UPDATE_SUCCESS = 'ELECTION_UPDATE_SUCCESS';
 export const ELECTION_UPDATE_FAILURE = 'ELECTION_UPDATE_FAILURE';
+
+export const ELECTION_REPORT_REQUEST = 'ELECTION_REPORT_REQUEST';
+export const ELECTION_REPORT_FAILURE = 'ELECTION_REPORT_FAILURE';
 
 export const ELECTION_ENTITY = new schema.Entity('elections', {}, { idAttribute: '_id' });
 export const ELECTION_SCHEMA = [ELECTION_ENTITY];
@@ -36,19 +40,8 @@ export default function electionReducer(state = initialState, action) {
         items: payload.data.elections || {},
       };
 
-    case ELECTION_FETCH_FAILURE:
-    case ELECTION_CREATE_FAILURE:
-      return {
-        ...state,
-        errors: state.errors.concat([
-          {
-            body: action.error.toString(),
-            time: new Date(),
-          },
-        ]),
-      };
-
     case ELECTION_CREATE_SUCCESS:
+    case ELECTION_UPDATE_SUCCESS:
       return {
         ...state,
         items: {
@@ -137,6 +130,16 @@ function electionUpdateFailure(error) {
   };
 }
 
+export function reportElection(electionId, patch) {
+  return {
+    type: ELECTION_REPORT_REQUEST,
+    payload: {
+      electionId,
+      patch,
+    },
+  };
+}
+
 // Saga
 function* fetchSaga() {
   try {
@@ -167,8 +170,26 @@ function* createSaga(action) {
 function* updateSaga(action) {
   try {
     const { electionId, patch } = action.payload;
-    const unit = yield call(apiRequest, `/elections/${electionId}`, 'PUT', patch);
-    yield put(electionUpdateSuccess(unit));
+    const election = yield call(apiRequest, `/elections/${electionId}`, 'PUT', patch);
+    yield put(electionUpdateSuccess(election));
+    yield put(push(`/elections/${electionId}`));
+  } catch (error) {
+    yield put(electionUpdateFailure(error));
+    yield put(addToast(error.message, { sticky: true }));
+  }
+}
+
+function* reportSaga(action) {
+  try {
+    const { electionId, patch } = action.payload;
+    const { election, candidates } = yield call(
+      apiRequest,
+      `/elections/${electionId}/report`,
+      'PUT',
+      patch,
+    );
+    yield put(electionUpdateSuccess(election));
+    yield put(candidateFetchSuccess(candidates));
     yield put(push(`/elections/${electionId}`));
   } catch (error) {
     yield put(electionUpdateFailure(error));
@@ -180,4 +201,5 @@ export function* electionSaga() {
   yield takeLatest(ELECTION_FETCH_REQUEST, fetchSaga);
   yield takeLatest(ELECTION_CREATE_REQUEST, createSaga);
   yield takeLatest(ELECTION_UPDATE_REQUEST, updateSaga);
+  yield takeLatest(ELECTION_REPORT_REQUEST, reportSaga);
 }

@@ -1,6 +1,6 @@
 import propTypes from 'prop-types';
 
-export default propTypes.shape({
+const candidateShape = propTypes.shape({
   _id: propTypes.string.isRequired,
   fname: propTypes.string.isRequired,
   lname: propTypes.string.isRequired,
@@ -20,3 +20,7 @@ export default propTypes.shape({
   notified: propTypes.string,
   unitId: propTypes.string.isRequired,
 });
+
+export const arrayOfCandidates = propTypes.arrayOf(candidateShape);
+
+export default candidateShape;

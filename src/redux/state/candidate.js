@@ -79,7 +79,7 @@ export function fetchCandidates(electionId) {
   };
 }
 
-function candidateFetchSuccess(candidates) {
+export function candidateFetchSuccess(candidates) {
   return {
     type: CANDIDATE_FETCH_SUCCESS,
     payload: {
