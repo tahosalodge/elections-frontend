@@ -71,7 +71,7 @@ class Election extends React.Component {
           </p>
         </ElectionHeader>
         <ElectionMenu election={election} user={user} />
-        <ElectionPages election={election} candidates={candidates} />
+        <ElectionPages election={election} candidates={candidates} user={user} />
       </LoadingOrContent>
     );
   }
