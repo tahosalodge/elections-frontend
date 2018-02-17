@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
-import { apiRequest } from 'redux/helpers/api';
+import apiRequest from 'redux/helpers/api';
 import { addToast } from 'redux/state/toasts';
 
 const { Raven } = window;

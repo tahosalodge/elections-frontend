@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { schema, normalize } from 'normalizr';
 import { push } from 'react-router-redux';
-import { apiRequest } from 'redux/helpers/api';
+import apiRequest from 'redux/helpers/api';
 import { addToast } from 'redux/state/toasts';
 
 export const UNIT_FETCH_REQUEST = 'UNIT_FETCH_REQUEST';

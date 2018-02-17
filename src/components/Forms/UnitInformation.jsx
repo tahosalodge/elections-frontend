@@ -6,6 +6,8 @@ import { push } from 'react-router-redux';
 import { flow } from 'lodash';
 import { adultLeadershipPositions } from 'constants/values';
 import { updateRequest, createRequest } from 'redux/state/unit';
+import unitShape from 'shapes/unit';
+import { unit as unitMatch } from 'shapes/match';
 import { required, number as validNumber, email } from 'components/Forms/validation';
 import {
   FieldWithLabel,
@@ -22,12 +24,8 @@ class UnitInformation extends React.Component {
     handleSubmit: propTypes.func.isRequired,
     pristine: propTypes.bool.isRequired,
     submitting: propTypes.bool.isRequired,
-    match: propTypes.shape({
-      params: propTypes.shape({
-        unitId: propTypes.string,
-      }),
-    }).isRequired,
-    unit: propTypes.shape().isRequired,
+    match: unitMatch.isRequired,
+    unit: unitShape.isRequired,
     initialize: propTypes.func.isRequired,
     push: propTypes.func.isRequired,
     updateRequest: propTypes.func.isRequired,

@@ -1,11 +1,15 @@
-import propTypes from 'prop-types';
+import { shape, string, arrayOf } from 'prop-types';
 
-export default propTypes.shape({
-  _id: propTypes.string.isRequired,
-  requestedDates: propTypes.arrayOf(propTypes.string),
-  unitId: propTypes.string.isRequired,
-  status: propTypes.string.isRequired,
-  season: propTypes.string.isRequired,
-  date: propTypes.string.isRequired,
-  chapter: propTypes.string.isRequired,
+const electionShape = shape({
+  _id: string.isRequired,
+  requestedDates: arrayOf(string),
+  unitId: string.isRequired,
+  status: string.isRequired,
+  season: string.isRequired,
+  date: string.isRequired,
+  chapter: string.isRequired,
 });
+
+export const arrayOfElections = arrayOf(electionShape);
+
+export default electionShape;

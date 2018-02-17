@@ -5,21 +5,19 @@ import { Link } from 'react-router-dom';
 import Table, { ChapterCell } from 'components/Table';
 import LoadingOrContent from 'components/LoadingOrContent';
 import { electionUnitJoin } from 'selectors/elections';
+import { arrayOfElections } from 'shapes/election';
+import userShape from 'shapes/user';
+import loadingShape from 'shapes/loading';
 import { fetchElections } from 'redux/state/election';
 import { fetchUnits } from 'redux/state/unit';
 
 class ElectionList extends React.Component {
   static propTypes = {
-    elections: propTypes.arrayOf(propTypes.shape()).isRequired,
+    elections: arrayOfElections.isRequired,
     fetchElections: propTypes.func.isRequired,
     fetchUnits: propTypes.func.isRequired,
-    loading: propTypes.shape({
-      election: propTypes.bool,
-      unit: propTypes.bool,
-    }).isRequired,
-    user: propTypes.shape({
-      capability: propTypes.string,
-    }).isRequired,
+    loading: loadingShape.isRequired,
+    user: userShape.isRequired,
   };
 
   componentWillMount() {

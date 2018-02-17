@@ -11,9 +11,10 @@ import { candidatesForElection } from 'selectors/candidates';
 import LoadingOrContent from 'components/LoadingOrContent';
 import loadingShape from 'shapes/loading';
 import { candidate as candidateMatchShape } from 'shapes/match';
-import candidateShape from 'shapes/candidate';
+import { arrayOfCandidates } from 'shapes/candidate';
 import electionShape from 'shapes/election';
 import userShape from 'shapes/user';
+import unitShape from 'shapes/unit';
 import ElectionMenu from './ElectionMenu';
 import ElectionPages from './pages';
 
@@ -39,8 +40,8 @@ class Election extends React.Component {
     fetchCandidates: propTypes.func.isRequired,
     fetchUnits: propTypes.func.isRequired,
     election: electionShape.isRequired,
-    unit: propTypes.shape().isRequired,
-    candidates: propTypes.arrayOf(candidateShape).isRequired,
+    unit: unitShape.isRequired,
+    candidates: arrayOfCandidates.isRequired,
     loading: loadingShape.isRequired,
     match: candidateMatchShape.isRequired,
     user: userShape.isRequired,

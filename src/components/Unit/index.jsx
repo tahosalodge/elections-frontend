@@ -7,21 +7,20 @@ import { unitRequest } from 'redux/state/unit';
 import { fetchElections } from 'redux/state/election';
 import { electionsByUnit } from 'selectors/elections';
 import { chapters } from 'constants/values';
+import unitShape from 'shapes/unit';
+import { unit as unitMatch } from 'shapes/match';
+import { arrayOfElections } from 'shapes/election';
 import LoadingOrContent from 'components/LoadingOrContent';
 
 class Unit extends React.Component {
   static propTypes = {
-    elections: propTypes.arrayOf(propTypes.object).isRequired,
-    unit: propTypes.shape().isRequired,
+    elections: arrayOfElections.isRequired,
+    unit: unitShape.isRequired,
     unitRequest: propTypes.func.isRequired,
     fetchElections: propTypes.func.isRequired,
     loadingElection: propTypes.bool.isRequired,
     loadingUnit: propTypes.bool.isRequired,
-    match: propTypes.shape({
-      params: propTypes.shape({
-        unitId: propTypes.string,
-      }),
-    }).isRequired,
+    match: unitMatch.isRequired,
   };
 
   componentWillMount() {
