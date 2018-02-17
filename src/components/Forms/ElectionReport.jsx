@@ -8,7 +8,7 @@ import { isEmpty } from 'lodash/lang';
 
 import { fetchElections, reportElection } from 'redux/state/election';
 import electionShape from 'shapes/election';
-import candidateShape from 'shapes/candidate';
+import { arrayOfCandidates } from 'shapes/candidate';
 import { election as electionMatch } from 'shapes/match';
 import { electionById } from 'selectors/elections';
 import { FieldWithLabel, Button, Form } from './elements';
@@ -23,7 +23,7 @@ class ElectionReport extends React.Component {
     initialize: propTypes.func.isRequired,
     initialized: propTypes.bool.isRequired,
     election: electionShape.isRequired,
-    candidates: propTypes.arrayOf(candidateShape).isRequired,
+    candidates: arrayOfCandidates.isRequired,
   };
 
   componentDidMount() {

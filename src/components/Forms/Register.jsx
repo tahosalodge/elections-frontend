@@ -3,6 +3,7 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { registerRequest } from 'redux/state/register';
+import { register as registerMatch } from 'shapes/match';
 import Notices from 'components/Notices';
 import { FieldWithLabel, Button, SelectChapter, SelectDistrict, Form } from './elements';
 
@@ -13,11 +14,7 @@ class Register extends React.Component {
     submitting: propTypes.bool.isRequired,
     registerRequest: propTypes.func.isRequired,
     register: propTypes.shape().isRequired,
-    match: propTypes.shape({
-      params: propTypes.shape({
-        type: propTypes.string,
-      }),
-    }).isRequired,
+    match: registerMatch.isRequired,
   };
 
   submit = (values) => {

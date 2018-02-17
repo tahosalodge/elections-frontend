@@ -17,3 +17,9 @@ export const candidate = shape({
     candidateId: string,
   }),
 });
+
+export const register = shape({
+  params: shape({
+    type: string,
+  }),
+});

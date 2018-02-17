@@ -1,8 +1,7 @@
 import React from 'react';
-import propTypes from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
 import electionShape from 'shapes/election';
-import candidateShape from 'shapes/candidate';
+import { arrayOfCandidates } from 'shapes/candidate';
 import Overview from './Overview';
 import AddCandidate from './AddCandidate';
 import AddNomination from './AddNomination';
@@ -39,7 +38,7 @@ const ElectionPages = ({ election, candidates }) => (
 
 ElectionPages.propTypes = {
   election: electionShape,
-  candidates: propTypes.arrayOf(candidateShape).isRequired,
+  candidates: arrayOfCandidates.isRequired,
 };
 
 export default ElectionPages;

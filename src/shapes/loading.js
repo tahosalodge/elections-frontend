@@ -1,9 +1,9 @@
-import propTypes from 'prop-types';
+import { shape, bool } from 'prop-types';
 
-export default propTypes.shape({
-  user: propTypes.bool.isRequired,
-  unit: propTypes.bool.isRequired,
-  election: propTypes.bool.isRequired,
-  register: propTypes.bool.isRequired,
-  candidate: propTypes.bool,
+export default shape({
+  user: bool.isRequired,
+  unit: bool.isRequired,
+  election: bool.isRequired,
+  register: bool.isRequired,
+  candidate: bool.isRequired,
 });

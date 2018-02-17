@@ -11,6 +11,9 @@ import { format } from 'date-fns';
 
 import { createElection, updateElection } from 'redux/state/election';
 import Notices from 'components/Notices';
+import electionShape from 'shapes/election';
+import userShape from 'shapes/user';
+import { election as electionMatch } from 'shapes/match';
 import { Button, DatePicker, Form } from './elements';
 import { uniqueElectionDate } from './validation';
 
@@ -22,15 +25,11 @@ class RequestElection extends React.Component {
     createElection: propTypes.func.isRequired,
     updateElection: propTypes.func.isRequired,
     errors: propTypes.arrayOf(propTypes.shape()),
-    match: propTypes.shape({
-      params: propTypes.shape({
-        electionId: propTypes.string,
-      }),
-    }).isRequired,
+    match: electionMatch.isRequired,
     initialize: propTypes.func.isRequired,
     push: propTypes.func.isRequired,
-    election: propTypes.shape(),
-    user: propTypes.shape().isRequired,
+    election: electionShape,
+    user: userShape.isRequired,
     editing: propTypes.bool,
   };
 

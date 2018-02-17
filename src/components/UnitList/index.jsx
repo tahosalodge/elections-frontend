@@ -4,14 +4,16 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchUnits } from 'redux/state/unit';
 import toArray from 'selectors/array';
+import { arrayOfUnits } from 'shapes/unit';
+import userShape from 'shapes/user';
 import Table, { ChapterCell } from 'components/Table';
 import LoadingOrContent from 'components/LoadingOrContent';
 
 class NoUnitPage extends React.PureComponent {
   static propTypes = {
     fetchUnits: propTypes.func.isRequired,
-    units: propTypes.arrayOf(propTypes.object).isRequired,
-    user: propTypes.shape().isRequired,
+    units: arrayOfUnits.isRequired,
+    user: userShape.isRequired,
     loadingUser: propTypes.bool.isRequired,
     loadingUnit: propTypes.bool.isRequired,
   };
