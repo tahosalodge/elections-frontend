@@ -1,6 +1,6 @@
 import { put, call } from 'redux-saga/effects';
 import { combineReducers } from 'redux';
-import { apiRequest } from 'redux/helpers/api';
+import apiRequest from 'redux/helpers/api';
 import { addToast } from 'redux/state/toasts';
 
 import {
