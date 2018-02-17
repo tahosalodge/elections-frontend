@@ -1,8 +1,7 @@
 import React from 'react';
-import propTypes from 'prop-types';
 
 import styled from 'styled-components';
-import candidateShape from 'shapes/candidate';
+import { arrayOfCandidates } from 'shapes/candidate';
 
 const BallotStyles = styled.div`
   display: flex;
@@ -63,12 +62,12 @@ const Ballot = ({ candidates }) => (
 );
 
 Ballot.propTypes = {
-  candidates: propTypes.arrayOf(candidateShape).isRequired,
+  candidates: arrayOfCandidates.isRequired,
 };
 
 class Ballots extends React.Component {
   static propTypes = {
-    candidates: propTypes.arrayOf(candidateShape).isRequired,
+    candidates: arrayOfCandidates.isRequired,
   };
 
   state = {

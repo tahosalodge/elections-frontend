@@ -10,6 +10,7 @@ import { ranks } from 'constants/values';
 import candidateShape from 'shapes/candidate';
 import electionShape from 'shapes/election';
 import loadingShape from 'shapes/loading';
+import { election as electionMatch } from 'shapes/match';
 import { createCandidate, updateCandidate, getCandidate } from 'redux/state/candidate';
 import { candidateById } from 'selectors/candidates';
 import { required, email, bsaId, minValue, isYouth } from 'components/Forms/validation';
@@ -25,11 +26,7 @@ class Candidate extends React.Component {
     updateCandidate: propTypes.func.isRequired,
     getCandidate: propTypes.func.isRequired,
     election: electionShape.isRequired,
-    match: propTypes.shape({
-      params: propTypes.shape({
-        electionId: propTypes.string,
-      }),
-    }).isRequired,
+    match: electionMatch.isRequired,
     candidate: candidateShape.isRequired,
     initialize: propTypes.func.isRequired,
     loading: loadingShape.isRequired,

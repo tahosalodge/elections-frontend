@@ -1,5 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
+import userShape from 'shapes/user';
 import { chapters } from 'constants/values';
 
 const ChapterCell = ({ value, user: { capability } }) => {
@@ -13,9 +14,7 @@ const ChapterCell = ({ value, user: { capability } }) => {
 
 ChapterCell.propTypes = {
   value: propTypes.string.isRequired,
-  user: propTypes.shape({
-    capability: propTypes.string,
-  }).isRequired,
+  user: userShape.isRequired,
 };
 
 export default ChapterCell;

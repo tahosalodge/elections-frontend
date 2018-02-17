@@ -1,33 +1,22 @@
-export function handleResponse(response) {
-  if (response.ok) {
-    return response.json();
-  }
+import axios from 'axios';
 
-  if (response.status === 500) {
-    const error = new Error('Connection error.');
-    error.status = 500;
-    throw error;
-  }
-  return response.json().then((error) => {
-    throw new Error(error.message);
-  });
-}
-
-export function apiRequest(url, method = 'GET', data = null) {
+export default async function apiRequest(url, method = 'GET', body = null) {
   const token = localStorage.getItem('electionToken');
-  const fetchParams = {
+  const params = {
     method,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: data ? JSON.stringify(data) : null,
+    url: `/api${url}`,
+    headers: {},
   };
-  if (token) {
-    fetchParams.headers.Authorization = `Bearer ${token}`;
+  if (body) {
+    params.data = body;
   }
-  return fetch(`/api${url}`, fetchParams)
-    .then(handleResponse)
-    .catch((error) => {
-      throw new Error(error);
-    });
+  if (token) {
+    params.headers.Authorization = `Bearer ${token}`;
+  }
+  try {
+    const { data } = await axios(params);
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
 }

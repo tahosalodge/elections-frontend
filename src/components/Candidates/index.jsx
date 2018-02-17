@@ -1,12 +1,11 @@
 import React from 'react';
-import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import candidateShape from 'shapes/candidate';
+import { arrayOfCandidates } from 'shapes/candidate';
 import Table from 'components/Table';
 
 class Candidates extends React.PureComponent {
   static propTypes = {
-    candidates: propTypes.arrayOf(candidateShape).isRequired,
+    candidates: arrayOfCandidates.isRequired,
   };
 
   columns = () => [
