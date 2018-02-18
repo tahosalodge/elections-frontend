@@ -90,7 +90,7 @@ function* login(action) {
     const { email, password } = action;
     const response = yield call(apiRequest, '/auth/login', 'POST', { email, password });
     localStorage.setItem('electionToken', response.token);
-    yield put(loginSuccess(response, { redirect: true }));
+    yield put(loginSuccess(response));
   } catch (error) {
     yield put(loginFailure(error));
     yield put(addToast(error.message, { sticky: true }));
@@ -106,8 +106,9 @@ function* checkToken() {
     if (!localStorage.getItem('electionToken')) {
       throw new Error('No token found.');
     }
+    yield put(addToast('Welcome back! Logging you in now...'));
     const response = yield call(apiRequest, '/auth/me');
-    yield put(loginSuccess(response, { redirect: false }));
+    yield put(loginSuccess(response));
   } catch (error) {
     yield put(loginFailure(error));
     if (error.code !== 'NETWORK') {
@@ -126,14 +127,16 @@ function* logout() {
 }
 
 function* loginRedirect(action) {
-  const { capability, unit, redirect } = action.response;
+  const { response: { capability, unit } } = action;
+  const { pathname } = window.location;
   try {
-    if (redirect) {
-      if (capability === 'unit') {
-        yield put(push(`/units/${unit}`));
-      } else {
-        yield put(push('/election-list'));
-      }
+    if (pathname !== '/login') {
+      return;
+    }
+    if (capability === 'unit') {
+      yield put(push(`/units/${unit}`));
+    } else {
+      yield put(push('/election-list'));
     }
   } catch (error) {
     yield put(addToast(error.message), { sticky: true });

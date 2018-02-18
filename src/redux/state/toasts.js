@@ -52,7 +52,7 @@ export default function reducer(state = [], action) {
 function* expireToasts(action) {
   const { sticky, id } = action.payload;
   if (!sticky) {
-    yield delay(5000);
+    yield delay(3000);
     yield put(removeToast(id));
   }
 }
