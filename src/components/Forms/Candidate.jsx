@@ -87,7 +87,7 @@ class Candidate extends React.Component {
           <FieldWithLabel label="First name" id="fname" validate={[required]} />
           <FieldWithLabel label="Last name" id="lname" validate={[required]} />
           <FieldWithLabel
-            label="Date of Birth (dd/mm/yyyy)"
+            label="Date of Birth (mm/dd/yyyy)"
             id="dob"
             validate={[required, isYouth]}
           />
