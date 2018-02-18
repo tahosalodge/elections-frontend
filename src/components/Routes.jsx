@@ -14,6 +14,7 @@ import Register from 'components/Forms/Register';
 import Login from 'components/Forms/Login';
 import Help from 'components/Help';
 import Logout from 'components/Logout';
+import ResetPassword from 'components/ResetPassword';
 import NotFound from 'components/NotFound';
 import UnitImport from 'components/Admin/UnitImport';
 import CreateUser from 'components/Admin/CreateUser';
@@ -37,6 +38,7 @@ const Routes = () => (
     <Route path="/help" component={Help} />
     <Route path="/login" component={Login} />
     <Route path="/logout" component={Logout} />
+    <Route path="/reset-password" component={ResetPassword} />
     <Route path="/admin/import" component={UnitImport} />
     <Route path="/admin/create-user" component={CreateUser} />
     <Route path="*" component={NotFound} />

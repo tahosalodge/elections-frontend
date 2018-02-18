@@ -3,9 +3,22 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { flow } from 'lodash';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { loginRequest } from 'redux/state/user';
 import { required, email } from 'components/Forms/validation';
 import { FieldWithLabel, Button, Form } from './elements';
+
+const StyledLink = styled(Link)`
+  text-align: center;
+  display: block;
+  color: black;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 class Login extends React.Component {
   static propTypes = {
@@ -27,6 +40,7 @@ class Login extends React.Component {
           <FieldWithLabel id="email" label="Email" validate={[required, email]} />
           <FieldWithLabel id="password" label="Password" type="password" validate={[required]} />
           <Button text="Login" disabled={pristine || submitting} />
+          <StyledLink to="/reset-password">Forgot your password?</StyledLink>
         </Form>
       </div>
     );
