@@ -2,6 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import apiRequest from 'redux/helpers/api';
 import { addToast } from 'redux/state/toasts';
+import { loginSuccess } from 'redux/state/user';
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
@@ -83,6 +84,7 @@ function* registerFlow(action) {
     const response = yield call(apiRequest, '/auth/register', 'POST', action);
     localStorage.setItem('electionToken', response.token);
     yield put(registerSuccess(response));
+    yield put(loginSuccess(response));
     yield put(push('/units'));
   } catch (error) {
     yield put(registerFailure(error));

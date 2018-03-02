@@ -63,7 +63,7 @@ export function userVerifyRequest() {
   };
 }
 
-function loginSuccess(response, options = {}) {
+export function loginSuccess(response, options = {}) {
   return {
     type: USER_LOGIN_SUCCESS,
     response,
