@@ -17,6 +17,6 @@ export default async function apiRequest(url, method = 'GET', body = null) {
     const { data } = await axios(params);
     return data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.response.data.message);
   }
 }

@@ -99,7 +99,7 @@ function electionCreateSuccess(elections) {
 
 function electionCreateFailure(error) {
   return {
-    type: ELECTION_FETCH_FAILURE,
+    type: ELECTION_CREATE_FAILURE,
     error,
   };
 }

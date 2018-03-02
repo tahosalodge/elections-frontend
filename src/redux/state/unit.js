@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { schema, normalize } from 'normalizr';
 import { push } from 'react-router-redux';
 import apiRequest from 'redux/helpers/api';
@@ -184,8 +184,13 @@ function createFailure(error) {
 // Saga
 function* fetchUnitsSaga() {
   try {
+    const { pathname } = window.location;
     const units = yield call(apiRequest, '/units');
     yield put(fetchSuccess(units));
+    const user = yield select(state => state.user);
+    if (pathname === '/units/') {
+      yield put(push(`/units/${user.unit}`));
+    }
   } catch (error) {
     yield put(fetchFailure(error));
     yield put(addToast(error.message, { sticky: true }));
