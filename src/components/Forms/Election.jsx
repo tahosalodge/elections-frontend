@@ -83,7 +83,7 @@ class RequestElection extends React.Component {
       },
       {
         before: startDate(),
-        after: new Date(2018, 2, 31),
+        after: new Date(2018, 3, 21),
       },
     ];
   };
