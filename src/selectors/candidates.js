@@ -25,5 +25,3 @@ export const candidateById = createSelector(
     return {};
   },
 );
-
-export const eslint = () => null;

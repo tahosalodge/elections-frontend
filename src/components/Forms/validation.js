@@ -72,3 +72,11 @@ export const isYouth = (value) => {
   }
   return undefined;
 };
+
+export const isAdult = (value) => {
+  const age = differenceInYears(new Date(), parse(value));
+  if (age < 21) {
+    return `${age} seems a little young for an adult...`;
+  }
+  return undefined;
+};

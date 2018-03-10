@@ -19,6 +19,11 @@ const TableStyles = styled.div`
   }
 `;
 
+const NotFoundMessage = styled.p`
+  display: block;
+  margin: 2em 0 !important;
+`;
+
 const Table = ({ columns, data, notFoundMessage }) => {
   if (data.length > 0) {
     return (
@@ -32,7 +37,7 @@ const Table = ({ columns, data, notFoundMessage }) => {
       </TableStyles>
     );
   }
-  return <p>{notFoundMessage}</p>;
+  return <NotFoundMessage>{notFoundMessage}</NotFoundMessage>;
 };
 
 Table.propTypes = {
