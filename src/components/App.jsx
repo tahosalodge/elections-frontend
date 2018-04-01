@@ -9,6 +9,7 @@ import Typekit from 'react-typekit';
 import Header from 'components/Header';
 import Routes from 'components/Routes';
 import Toasts from 'components/Toasts';
+import userShape from 'shapes/user';
 import { userVerifyRequest } from 'redux/state/user';
 
 const GlobalStyles = styled.div`
@@ -62,7 +63,7 @@ const Page = styled.div`
 class App extends React.PureComponent {
   static propTypes = {
     history: propTypes.shape().isRequired,
-    capability: propTypes.string.isRequired,
+    user: userShape.isRequired,
     userVerifyRequest: propTypes.func.isRequired,
   };
 
@@ -70,11 +71,11 @@ class App extends React.PureComponent {
     this.props.userVerifyRequest();
   }
   render() {
-    const { history, capability } = this.props;
+    const { history, user } = this.props;
     return (
       <ConnectedRouter history={history}>
         <GlobalStyles>
-          <Header menu={capability} />
+          <Header user={user} />
           <Page>
             <Routes />
           </Page>
@@ -87,7 +88,7 @@ class App extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  capability: state.user.capability,
+  user: state.user,
 });
 
 export default connect(mapStateToProps, { userVerifyRequest })(App);
