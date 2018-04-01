@@ -1,4 +1,3 @@
-import 'react-dates/initialize';
 import React from 'react';
 import propTypes from 'prop-types';
 import { ConnectedRouter } from 'react-router-redux';
