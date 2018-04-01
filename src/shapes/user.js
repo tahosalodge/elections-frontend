@@ -2,12 +2,12 @@ import { shape, string } from 'prop-types';
 
 const userShape = shape({
   capability: string.isRequired,
-  chapter: string.isRequired,
+  chapter: string,
   unit: string,
-  token: string.isRequired,
-  fname: string.isRequired,
-  lname: string.isRequired,
-  email: string.isRequired,
+  token: string,
+  fname: string,
+  lname: string,
+  email: string,
 });
 
 export default userShape;
