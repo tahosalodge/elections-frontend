@@ -21,7 +21,11 @@ export const ELECTION_UPDATE_FAILURE = 'ELECTION_UPDATE_FAILURE';
 export const ELECTION_REPORT_REQUEST = 'ELECTION_REPORT_REQUEST';
 export const ELECTION_REPORT_FAILURE = 'ELECTION_REPORT_FAILURE';
 
-export const ELECTION_ENTITY = new schema.Entity('elections', {}, { idAttribute: '_id' });
+export const ELECTION_ENTITY = new schema.Entity(
+  'elections',
+  {},
+  { idAttribute: '_id' }
+);
 export const ELECTION_SCHEMA = [ELECTION_ENTITY];
 
 const initialState = {
@@ -88,11 +92,11 @@ export function createElection(unitId, data) {
   };
 }
 
-function electionCreateSuccess(elections) {
+function electionCreateSuccess(data) {
   return {
     type: ELECTION_CREATE_SUCCESS,
     payload: {
-      data: normalize(elections, ELECTION_SCHEMA).entities,
+      data,
     },
   };
 }
@@ -170,7 +174,12 @@ function* createSaga(action) {
 function* updateSaga(action) {
   try {
     const { electionId, patch } = action.payload;
-    const election = yield call(apiRequest, `/elections/${electionId}`, 'PUT', patch);
+    const election = yield call(
+      apiRequest,
+      `/elections/${electionId}`,
+      'PUT',
+      patch
+    );
     yield put(electionUpdateSuccess(election));
     yield put(push(`/elections/${electionId}`));
   } catch (error) {
@@ -186,7 +195,7 @@ function* reportSaga(action) {
       apiRequest,
       `/elections/${electionId}/report`,
       'PUT',
-      patch,
+      patch
     );
     yield put(electionUpdateSuccess(election));
     yield put(candidateFetchSuccess(candidates));

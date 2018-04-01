@@ -1,6 +1,6 @@
 import React, { Fragment as F } from 'react';
 import propTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchUnits } from 'redux/state/unit';
 import toArray from 'selectors/array';
@@ -9,7 +9,7 @@ import userShape from 'shapes/user';
 import Table, { ChapterCell } from 'components/Table';
 import LoadingOrContent from 'components/LoadingOrContent';
 
-class NoUnitPage extends React.PureComponent {
+class UnitList extends React.Component {
   static propTypes = {
     fetchUnits: propTypes.func.isRequired,
     units: arrayOfUnits.isRequired,
@@ -21,17 +21,6 @@ class NoUnitPage extends React.PureComponent {
   componentWillMount() {
     this.props.fetchUnits();
   }
-
-  unitMessage = () => (
-    <F>
-      <h2>Hey there! It looks like you&apos;re not linked to a unit.</h2>
-      <p>
-        You can <Link to="/units/new">create a new unit</Link>, or if your unit is listed below,
-        contact the unit leader for access. <br />
-        If you need help, <Link to="/help">let us know</Link>.
-      </p>
-    </F>
-  );
 
   columns = () => {
     const { user, user: { capability } } = this.props;
@@ -72,21 +61,39 @@ class NoUnitPage extends React.PureComponent {
 
   render() {
     const {
-      units, user, loadingUser, loadingUnit,
+      units,
+      user: { capability, unit },
+      loadingUser,
+      loadingUnit,
     } = this.props;
 
     return (
       <LoadingOrContent loading={loadingUser || loadingUnit}>
         <div>
-          {user.capability === 'unit' && this.unitMessage()}
-          <Table columns={this.columns()} data={units} />
+          {capability === 'unit' &&
+            !unit(
+              <F>
+                <h2>
+                  Hey there! It looks like you&apos;re not linked to a unit.
+                </h2>
+                <p>
+                  You can <Link to="/units/new">create a new unit</Link>, or if
+                  your unit is listed below, contact the unit leader for access.{' '}
+                  <br />
+                  If you need help, <Link to="/help">let us know</Link>.
+                </p>
+              </F>
+            )}
+          {capability === 'unit' &&
+            unit(<Redirect to={`/units/${unit}`} push />)}
+          {<Table columns={this.columns()} data={units} />}
         </div>
       </LoadingOrContent>
     );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { user, loading } = state;
   const { user: loadingUser, unit: loadingUnit } = loading;
   return {
@@ -96,4 +103,4 @@ const mapStateToProps = (state) => {
     loadingUser,
   };
 };
-export default connect(mapStateToProps, { fetchUnits })(NoUnitPage);
+export default connect(mapStateToProps, { fetchUnits })(UnitList);

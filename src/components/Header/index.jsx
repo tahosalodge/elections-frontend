@@ -1,7 +1,8 @@
 import React from 'react';
-import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+import userShape from 'shapes/user';
 import MenuItem from './MenuItem';
 
 const StyledHeader = styled.header`
@@ -76,59 +77,91 @@ const StyledHeader = styled.header`
   }
 `;
 
-const MenuItems = {
-  unit: [
-    {
-      to: '/units',
-      text: 'My Unit',
-    },
-  ],
-  chapter: [
-    {
-      to: '/units',
-      text: 'Units',
-    },
-    {
-      to: '/election-list',
-      text: 'Election List',
-    },
-  ],
-  admin: [
-    {
-      to: '/units',
-      text: 'Units',
-    },
-    {
-      to: '/election-list',
-      text: 'Election List',
-    },
-    {
-      to: '/admin/import',
-      text: 'Import Unit',
-    },
-    {
-      to: '/admin/create-user',
-      text: 'Create User',
-    },
-  ],
-  loggedOut: [
-    {
-      to: '/register',
-      text: 'Register',
-    },
-    {
-      to: '/login',
-      text: 'Login',
-    },
-  ],
-};
-
 class Header extends React.Component {
   static propTypes = {
-    menu: propTypes.string.isRequired,
+    user: userShape.isRequired,
   };
 
   state = { mobileMenuToggle: false };
+
+  getMenuItems = () => {
+    const { user: { capability, ...user } } = this.props;
+    const unitPath = user.unit ? `/units/${user.unit}` : '/units';
+    let items = [];
+    switch (capability) {
+      case 'unit':
+        items = [
+          {
+            to: unitPath,
+            text: 'My Unit',
+          },
+          {
+            to: '/logout',
+            text: 'Log Out',
+          },
+        ];
+        break;
+      case 'chapter':
+        items = [
+          {
+            to: '/units',
+            text: 'Units',
+          },
+          {
+            to: '/election-list',
+            text: 'Election List',
+          },
+          {
+            to: '/logout',
+            text: 'Log Out',
+          },
+        ];
+        break;
+      case 'admin':
+        items = [
+          {
+            to: '/units',
+            text: 'Units',
+          },
+          {
+            to: '/election-list',
+            text: 'Election List',
+          },
+          {
+            to: '/admin/import',
+            text: 'Import Unit',
+          },
+          {
+            to: '/admin/create-user',
+            text: 'Create User',
+          },
+          {
+            to: '/logout',
+            text: 'Log Out',
+          },
+        ];
+        break;
+      default:
+        items = [
+          {
+            to: '/register',
+            text: 'Register',
+          },
+          {
+            to: '/login',
+            text: 'Login',
+          },
+        ];
+    }
+    return items.map(item => (
+      <MenuItem
+        key={`menuItem${item.to}`}
+        to={item.to}
+        text={item.text}
+        onClick={this.hideMobileMenu}
+      />
+    ));
+  };
 
   toggleMobileMenu = () => {
     this.setState({ mobileMenuToggle: !this.state.mobileMenuToggle });
@@ -139,7 +172,6 @@ class Header extends React.Component {
   };
 
   render() {
-    const { menu } = this.props;
     const { mobileMenuToggle } = this.state;
     return (
       <StyledHeader showMenu={mobileMenuToggle}>
@@ -149,17 +181,7 @@ class Header extends React.Component {
 
         <button onClick={this.toggleMobileMenu}>Menu</button>
 
-        <ul>
-          {MenuItems[menu].map(item => (
-            <MenuItem
-              key={`menuItem${item.to}`}
-              to={item.to}
-              text={item.text}
-              onClick={this.hideMobileMenu}
-            />
-          ))}
-          {menu !== 'loggedOut' && <MenuItem to="/logout" text="Log Out" />}
-        </ul>
+        <ul>{this.getMenuItems()}</ul>
       </StyledHeader>
     );
   }

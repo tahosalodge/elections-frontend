@@ -2,10 +2,14 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { Redirect } from 'react-router-dom';
+import { isEmpty } from 'lodash/lang';
+
 import { fetchElections } from 'redux/state/election';
 import { fetchCandidates } from 'redux/state/candidate';
 import { fetchNominations } from 'redux/state/nomination';
 import { fetchUnits } from 'redux/state/unit';
+import { addToast } from 'redux/state/toasts';
 import { electionById } from 'selectors/elections';
 import { unitForElection } from 'selectors/units';
 import { candidatesForElection } from 'selectors/candidates';
@@ -18,6 +22,7 @@ import { arrayOfNominations } from 'shapes/nomination';
 import electionShape from 'shapes/election';
 import userShape from 'shapes/user';
 import unitShape from 'shapes/unit';
+
 import ElectionMenu from './ElectionMenu';
 import ElectionPages from './pages';
 
@@ -43,6 +48,7 @@ class Election extends React.Component {
     fetchCandidates: propTypes.func.isRequired,
     fetchNominations: propTypes.func.isRequired,
     fetchUnits: propTypes.func.isRequired,
+    addToast: propTypes.func.isRequired,
     election: electionShape.isRequired,
     unit: unitShape.isRequired,
     candidates: arrayOfCandidates.isRequired,
@@ -65,6 +71,10 @@ class Election extends React.Component {
       election, unit, loading, candidates, nominations, user,
     } = this.props;
     const { number } = unit;
+    if (!loading.election && isEmpty(election) && !isEmpty(user)) {
+      this.props.addToast('Election not found, redirecting to your unit.');
+      return <Redirect to={`/units/${user.unit}`} />;
+    }
     return (
       <LoadingOrContent
         loading={
@@ -112,4 +122,5 @@ export default connect(mapStateToProps, {
   fetchCandidates,
   fetchUnits,
   fetchNominations,
+  addToast,
 })(Election);
