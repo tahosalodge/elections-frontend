@@ -2,9 +2,13 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { Redirect } from 'react-router-dom';
+import { isEmpty } from 'lodash/lang';
+
 import { fetchElections } from 'redux/state/election';
 import { fetchCandidates } from 'redux/state/candidate';
 import { fetchUnits } from 'redux/state/unit';
+import { addToast } from 'redux/state/toasts';
 import { electionById } from 'selectors/elections';
 import { unitForElection } from 'selectors/units';
 import { candidatesForElection } from 'selectors/candidates';
@@ -15,6 +19,7 @@ import { arrayOfCandidates } from 'shapes/candidate';
 import electionShape from 'shapes/election';
 import userShape from 'shapes/user';
 import unitShape from 'shapes/unit';
+
 import ElectionMenu from './ElectionMenu';
 import ElectionPages from './pages';
 
@@ -39,6 +44,7 @@ class Election extends React.Component {
     fetchElections: propTypes.func.isRequired,
     fetchCandidates: propTypes.func.isRequired,
     fetchUnits: propTypes.func.isRequired,
+    addToast: propTypes.func.isRequired,
     election: electionShape.isRequired,
     unit: unitShape.isRequired,
     candidates: arrayOfCandidates.isRequired,
@@ -55,13 +61,17 @@ class Election extends React.Component {
   }
 
   render() {
-    const {
-      election, unit, loading, candidates, user,
-    } = this.props;
+    const { election, unit, loading, candidates, user } = this.props;
     const { number } = unit;
+    if (!loading.election && isEmpty(election) && !isEmpty(user)) {
+      this.props.addToast('Election not found, redirecting to your unit.');
+      return <Redirect to={`/units/${user.unit}`} />;
+    }
     return (
       <LoadingOrContent
-        loading={loading.election || loading.unit || loading.user || loading.candidates}
+        loading={
+          loading.election || loading.unit || loading.user || loading.candidates
+        }
       >
         <ElectionHeader>
           <h1>
@@ -72,7 +82,11 @@ class Election extends React.Component {
           </p>
         </ElectionHeader>
         <ElectionMenu election={election} user={user} />
-        <ElectionPages election={election} candidates={candidates} user={user} />
+        <ElectionPages
+          election={election}
+          candidates={candidates}
+          user={user}
+        />
       </LoadingOrContent>
     );
   }
@@ -89,4 +103,9 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchElections, fetchCandidates, fetchUnits })(Election);
+export default connect(mapStateToProps, {
+  fetchElections,
+  fetchCandidates,
+  fetchUnits,
+  addToast,
+})(Election);
