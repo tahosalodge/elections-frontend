@@ -92,7 +92,7 @@ class ElectionForm extends React.Component {
       },
       {
         before: startDate(),
-        after: new Date(2018, 3, 21),
+        after: new Date(2018, 4, 31),
       },
     ];
   };
