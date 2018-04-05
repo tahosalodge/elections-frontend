@@ -53,6 +53,9 @@ const ElectionMenu = ({ election: { _id, unitId }, user: { capability } }) => (
         <NavLink to={`/elections/${_id}/candidate`}>Add Candidate</NavLink>
       </li>
       <li>
+        <NavLink to={`/elections/${_id}/nomination`}>Add Nomination</NavLink>
+      </li>
+      <li>
         <NavLink to={`/elections/${_id}/ballots`}>Print Ballots</NavLink>
       </li>
       {capability !== 'unit' && (
@@ -60,9 +63,6 @@ const ElectionMenu = ({ election: { _id, unitId }, user: { capability } }) => (
           <NavLink to={`/elections/${_id}/report`}>Election Report</NavLink>
         </li>
       )}
-      {/* <li>
-        <NavLink to={`/elections/${_id}/nomination`}>Add Nomination</NavLink>
-      </li> */}
       {/* <li>
         <NavLink to={`/elections/${_id}/team`}>Election Team</NavLink>
       </li>

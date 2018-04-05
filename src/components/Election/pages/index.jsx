@@ -18,7 +18,10 @@ const ElectionPages = electionProps => (
       path="/elections/:electionId/candidate"
       render={props => <AddCandidate {...props} {...electionProps} />}
     />
-    <Route path="/elections/:electionId/nomination" component={AddNomination} />
+    <Route
+      path="/elections/:electionId/nomination"
+      render={props => <AddNomination {...props} {...electionProps} />}
+    />
     <Route
       path="/elections/:electionId/team"
       render={props => <Team {...props} {...electionProps} />}

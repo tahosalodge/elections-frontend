@@ -84,3 +84,14 @@ export const colors = {
   mutedRed: '#cf3a43',
   blue: '#005596',
 };
+
+export const adultTypes = [
+  {
+    label: 'Unit',
+    value: 'unit',
+  },
+  {
+    label: 'District / Council',
+    value: 'council',
+  },
+];

@@ -7,15 +7,18 @@ import { isEmpty } from 'lodash/lang';
 
 import { fetchElections } from 'redux/state/election';
 import { fetchCandidates } from 'redux/state/candidate';
+import { fetchNominations } from 'redux/state/nomination';
 import { fetchUnits } from 'redux/state/unit';
 import { addToast } from 'redux/state/toasts';
 import { electionById } from 'selectors/elections';
 import { unitForElection } from 'selectors/units';
 import { candidatesForElection } from 'selectors/candidates';
+import { nominationsForElection } from 'selectors/nominations';
 import LoadingOrContent from 'components/LoadingOrContent';
 import loadingShape from 'shapes/loading';
 import { candidate as candidateMatchShape } from 'shapes/match';
 import { arrayOfCandidates } from 'shapes/candidate';
+import { arrayOfNominations } from 'shapes/nomination';
 import electionShape from 'shapes/election';
 import userShape from 'shapes/user';
 import unitShape from 'shapes/unit';
@@ -43,11 +46,13 @@ class Election extends React.Component {
   static propTypes = {
     fetchElections: propTypes.func.isRequired,
     fetchCandidates: propTypes.func.isRequired,
+    fetchNominations: propTypes.func.isRequired,
     fetchUnits: propTypes.func.isRequired,
     addToast: propTypes.func.isRequired,
     election: electionShape.isRequired,
     unit: unitShape.isRequired,
     candidates: arrayOfCandidates.isRequired,
+    nominations: arrayOfNominations.isRequired,
     loading: loadingShape.isRequired,
     match: candidateMatchShape.isRequired,
     user: userShape.isRequired,
@@ -57,22 +62,34 @@ class Election extends React.Component {
     const { electionId } = this.props.match.params;
     this.props.fetchElections();
     this.props.fetchCandidates(electionId);
+    this.props.fetchNominations(electionId);
     this.props.fetchUnits();
   }
 
   render() {
-    const { election, unit, loading, candidates, user } = this.props;
+    const {
+      election,
+      unit,
+      loading,
+      candidates,
+      nominations,
+      user,
+    } = this.props;
     const { number } = unit;
-    if (!loading.election && isEmpty(election) && !isEmpty(user)) {
-      this.props.addToast('Election not found, redirecting to your unit.');
-      return <Redirect to={`/units/${user.unit}`} />;
+    const somethingLoading =
+      loading.election ||
+      loading.unit ||
+      loading.user ||
+      loading.candidates ||
+      loading.nominations;
+    if (!somethingLoading && isEmpty(election)) {
+      this.props.addToast('Election not found, redirecting...');
+      const redirectPath =
+        user.capability === 'unit' ? `/units/${user.unit}` : '/election-list';
+      return <Redirect to={redirectPath} />;
     }
     return (
-      <LoadingOrContent
-        loading={
-          loading.election || loading.unit || loading.user || loading.candidates
-        }
-      >
+      <LoadingOrContent loading={somethingLoading}>
         <ElectionHeader>
           <h1>
             Troop {number} - {election.season}
@@ -85,6 +102,7 @@ class Election extends React.Component {
         <ElectionPages
           election={election}
           candidates={candidates}
+          nominations={nominations}
           user={user}
         />
       </LoadingOrContent>
@@ -98,6 +116,7 @@ const mapStateToProps = (state, props) => {
     election,
     unit: unitForElection(state, election),
     candidates: candidatesForElection(state, props),
+    nominations: nominationsForElection(state, props),
     loading: state.loading,
     user: state.user,
   };
@@ -107,5 +126,6 @@ export default connect(mapStateToProps, {
   fetchElections,
   fetchCandidates,
   fetchUnits,
+  fetchNominations,
   addToast,
 })(Election);

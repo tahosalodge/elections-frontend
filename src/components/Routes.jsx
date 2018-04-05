@@ -32,7 +32,7 @@ const Routes = () => (
     <Route path="/election-list" component={ElectionList} />
     <Route path="/candidates/new/:electionId" component={Candidate} />
     <Route path="/candidates/:candidateId" component={Candidate} />
-    <Route path="/nomination" component={Nomination} />
+    <Route path="/nominations/:nominationId" component={Nomination} />
     <Route path="/register/:type" component={Register} />
     <Route path="/register/" component={Register} />
     <Route path="/help" component={Help} />
