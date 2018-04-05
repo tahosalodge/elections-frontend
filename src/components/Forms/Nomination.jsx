@@ -10,10 +10,25 @@ import nominationShape from 'shapes/nomination';
 import electionShape from 'shapes/election';
 import loadingShape from 'shapes/loading';
 import { election as electionMatch } from 'shapes/match';
-import { createNomination, updateNomination, getNomination } from 'redux/state/nomination';
+import {
+  createNomination,
+  updateNomination,
+  getNomination,
+} from 'redux/state/nomination';
 import { nominationById } from 'selectors/nominations';
-import { required, email, bsaId, minValue, isAdult } from 'components/Forms/validation';
-import { FieldWithLabel, Address, Button, Form, Select } from 'components/Forms/elements';
+import {
+  required,
+  email,
+  bsaId,
+  minValue,
+  isAdult,
+} from 'components/Forms/validation';
+import {
+  FieldWithLabel,
+  Address,
+  Button,
+  Form,
+} from 'components/Forms/elements';
 import LoadingOrContent from 'components/LoadingOrContent';
 
 class Nomination extends React.Component {
@@ -44,29 +59,29 @@ class Nomination extends React.Component {
     }
   }
 
-  submit = (values) => {
-    const { match: { params }, election } = this.props;
+  submit = values => {
+    const { match: { params }, election, nomination } = this.props;
     const { unitId, _id: electionId, chapter } = election;
 
-    const nomination = {
-      ...values,
-      chapter,
-      electionId,
-      unitId,
-    };
-
-    if (params.nominationId) {
-      this.props.updateNomination(params.nominationId, nomination);
+    if (!isEmpty(nomination)) {
+      this.props.updateNomination(params.nominationId, {
+        ...nomination,
+        ...values,
+      });
     } else {
-      this.props.createNomination(params.electionId, nomination);
+      this.props.createNomination(electionId, {
+        ...values,
+        chapter,
+        electionId,
+        unitId,
+        type: 'unit',
+      });
       this.props.reset();
     }
   };
 
   render() {
-    const {
-      handleSubmit, pristine, submitting, loading,
-    } = this.props;
+    const { handleSubmit, pristine, submitting, loading } = this.props;
     return (
       <LoadingOrContent loading={loading.nomination}>
         <Form onSubmit={handleSubmit(this.submit)}>
@@ -80,7 +95,11 @@ class Nomination extends React.Component {
             validate={[required, isAdult]}
           />
           <FieldWithLabel label="Phone" id="phone" validate={[required]} />
-          <FieldWithLabel label="Email" id="email" validate={[required, email]} />
+          <FieldWithLabel
+            label="Email"
+            id="email"
+            validate={[required, email]}
+          />
           <Address />
           <h2>Eligibility Information</h2>
           <FieldWithLabel
@@ -109,13 +128,13 @@ const mapStateToProps = (state, props) => {
   return toProps;
 };
 
-// export default reduxForm({
-//   form: 'nomination',
-// })(Nomination);
-
 export default flow(
   reduxForm({
     form: 'nomination',
   }),
-  connect(mapStateToProps, { createNomination, updateNomination, getNomination }),
+  connect(mapStateToProps, {
+    createNomination,
+    updateNomination,
+    getNomination,
+  })
 )(Nomination);
