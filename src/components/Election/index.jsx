@@ -68,23 +68,28 @@ class Election extends React.Component {
 
   render() {
     const {
-      election, unit, loading, candidates, nominations, user,
+      election,
+      unit,
+      loading,
+      candidates,
+      nominations,
+      user,
     } = this.props;
     const { number } = unit;
-    if (!loading.election && isEmpty(election) && !isEmpty(user)) {
-      this.props.addToast('Election not found, redirecting to your unit.');
-      return <Redirect to={`/units/${user.unit}`} />;
+    const somethingLoading =
+      loading.election ||
+      loading.unit ||
+      loading.user ||
+      loading.candidates ||
+      loading.nominations;
+    if (!somethingLoading && isEmpty(election)) {
+      this.props.addToast('Election not found, redirecting...');
+      const redirectPath =
+        user.capability === 'unit' ? `/units/${user.unit}` : '/election-list';
+      return <Redirect to={redirectPath} />;
     }
     return (
-      <LoadingOrContent
-        loading={
-          loading.election ||
-          loading.unit ||
-          loading.user ||
-          loading.candidates ||
-          loading.nominations
-        }
-      >
+      <LoadingOrContent loading={somethingLoading}>
         <ElectionHeader>
           <h1>
             Troop {number} - {election.season}
