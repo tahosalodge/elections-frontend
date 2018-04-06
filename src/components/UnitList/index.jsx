@@ -71,7 +71,7 @@ class UnitList extends React.Component {
       <LoadingOrContent loading={loadingUser || loadingUnit}>
         <div>
           {capability === 'unit' &&
-            !unit(
+            !unit && (
               <F>
                 <h2>
                   Hey there! It looks like you&apos;re not linked to a unit.
@@ -85,7 +85,7 @@ class UnitList extends React.Component {
               </F>
             )}
           {capability === 'unit' &&
-            unit(<Redirect to={`/units/${unit}`} push />)}
+            unit && <Redirect to={`/units/${unit}`} push />}
           {<Table columns={this.columns()} data={units} />}
         </div>
       </LoadingOrContent>
