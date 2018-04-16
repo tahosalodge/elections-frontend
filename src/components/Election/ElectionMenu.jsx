@@ -50,10 +50,10 @@ const ElectionMenu = ({ election: { _id, unitId }, user: { capability } }) => (
         <NavLink to={`/units/${unitId}/edit`}>Edit Unit</NavLink>
       </li>
       <li>
-        <NavLink to={`/elections/${_id}/candidate`}>Add Candidate</NavLink>
+        <NavLink to={`/elections/${_id}/candidate`}>Add Youth Candidate</NavLink>
       </li>
       <li>
-        <NavLink to={`/elections/${_id}/nomination`}>Add Nomination</NavLink>
+        <NavLink to={`/elections/${_id}/nomination`}>Add Adult Nomination</NavLink>
       </li>
       <li>
         <NavLink to={`/elections/${_id}/ballots`}>Print Ballots</NavLink>
