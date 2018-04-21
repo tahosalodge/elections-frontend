@@ -18,6 +18,7 @@ import ResetPassword from 'components/ResetPassword';
 import NotFound from 'components/NotFound';
 import UnitImport from 'components/Admin/UnitImport';
 import CreateUser from 'components/Admin/CreateUser';
+import NominationApproval from 'components/NominationApproval';
 
 const Routes = () => (
   <Switch>
@@ -33,6 +34,7 @@ const Routes = () => (
     <Route path="/candidates/new/:electionId" component={Candidate} />
     <Route path="/candidates/:candidateId" component={Candidate} />
     <Route path="/nominations/:nominationId" component={Nomination} />
+    <Route path="/nomination-approval" component={NominationApproval} />
     <Route path="/register/:type" component={Register} />
     <Route path="/register/" component={Register} />
     <Route path="/help" component={Help} />
