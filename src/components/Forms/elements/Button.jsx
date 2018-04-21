@@ -24,9 +24,9 @@ const ButtonStyles = styled.div`
     }
   }
 `;
-const Button = ({ type, text, disabled }) => (
+const Button = ({ type, text, disabled, onClick }) => (
   <ButtonStyles>
-    <button type={type} disabled={disabled}>
+    <button type={type} disabled={disabled} onClick={onClick}>
       {text}
     </button>
   </ButtonStyles>
@@ -36,12 +36,14 @@ Button.propTypes = {
   type: propTypes.string,
   text: propTypes.string,
   disabled: propTypes.bool,
+  onClick: propTypes.func,
 };
 
 Button.defaultProps = {
   type: 'submit',
   disabled: false,
   text: 'Submit',
+  onClick: () => null,
 };
 
 export default Button;
