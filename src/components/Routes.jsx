@@ -16,10 +16,7 @@ import Help from 'components/Help';
 import Logout from 'components/Logout';
 import ResetPassword from 'components/ResetPassword';
 import NotFound from 'components/NotFound';
-import NominationApproval from 'components/NominationApproval';
-import UnitImport from 'components/Admin/UnitImport';
-import CreateUser from 'components/Admin/CreateUser';
-import UserList from 'components/Admin/UserList';
+import Admin from 'components/Admin';
 
 const Routes = () => (
   <Switch>
@@ -35,16 +32,13 @@ const Routes = () => (
     <Route path="/candidates/new/:electionId" component={Candidate} />
     <Route path="/candidates/:candidateId" component={Candidate} />
     <Route path="/nominations/:nominationId" component={Nomination} />
-    <Route path="/nomination-approval" component={NominationApproval} />
     <Route path="/register/:type" component={Register} />
     <Route path="/register/" component={Register} />
     <Route path="/help" component={Help} />
     <Route path="/login" component={Login} />
     <Route path="/logout" component={Logout} />
     <Route path="/reset-password" component={ResetPassword} />
-    <Route path="/admin/import" component={UnitImport} />
-    <Route path="/admin/create-user" component={CreateUser} />
-    <Route path="/admin/users" component={UserList} />
+    <Route path="/admin" component={Admin} />
     <Route path="*" component={NotFound} />
   </Switch>
 );
