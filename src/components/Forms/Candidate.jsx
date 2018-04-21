@@ -71,8 +71,6 @@ class Candidate extends React.Component {
   }
 
   submit = values => {
-    const { match: { params }, election } = this.props;
-    const { unitId, _id: electionId, chapter } = election;
     if (values.parentPhone === values.youthPhone) {
       throw new SubmissionError({
         youthPhone:
@@ -86,18 +84,26 @@ class Candidate extends React.Component {
           'Parent and youth email should not match, if the scout does not have their own please leave this field empty.',
       });
     }
-    const candidate = {
-      ...values,
-      chapter,
-      electionId,
-      unitId,
-    };
+    if (this.props.election) {
+      const { match: { params }, election } = this.props;
+      const { unitId, _id: electionId, chapter } = election;
 
-    if (params.candidateId) {
-      this.props.updateCandidate(params.candidateId, candidate);
-    } else {
+      const candidate = {
+        ...values,
+        chapter,
+        electionId,
+        unitId,
+      };
+
       this.props.createCandidate(params.electionId, candidate);
       this.props.reset();
+    } else {
+      const { match: { params }, candidate } = this.props;
+      const patch = {
+        ...candidate,
+        ...values,
+      };
+      this.props.updateCandidate(params.candidateId, patch);
     }
   };
 
