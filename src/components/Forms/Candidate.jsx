@@ -11,10 +11,26 @@ import candidateShape from 'shapes/candidate';
 import electionShape from 'shapes/election';
 import loadingShape from 'shapes/loading';
 import { election as electionMatch } from 'shapes/match';
-import { createCandidate, updateCandidate, getCandidate } from 'redux/state/candidate';
+import {
+  createCandidate,
+  updateCandidate,
+  getCandidate,
+} from 'redux/state/candidate';
 import { candidateById } from 'selectors/candidates';
-import { required, email, bsaId, minValue, isYouth } from 'components/Forms/validation';
-import { FieldWithLabel, Address, Select, Button, Form } from 'components/Forms/elements';
+import {
+  required,
+  email,
+  bsaId,
+  minValue,
+  isYouth,
+} from 'components/Forms/validation';
+import {
+  FieldWithLabel,
+  Address,
+  Select,
+  Button,
+  Form,
+} from 'components/Forms/elements';
 import LoadingOrContent from 'components/LoadingOrContent';
 
 class Candidate extends React.Component {
@@ -33,18 +49,28 @@ class Candidate extends React.Component {
     reset: propTypes.func.isRequired,
   };
 
+  state = {
+    loaded: false,
+  };
+
+  componentDidMount() {
+    const { match: { params: { candidateId } } } = this.props;
+    this.props.getCandidate(candidateId);
+  }
+
   componentWillReceiveProps({ candidate }) {
     const { match: { params: { candidateId } }, initialize } = this.props;
-    if (candidateId && !isEmpty(candidate)) {
-      this.props.getCandidate(candidateId);
+    const { loaded } = this.state;
+    if (candidateId && !isEmpty(candidate) && !loaded) {
       initialize({
         ...candidate,
         dob: format(candidate.dob, 'MM/DD/YYYY'),
       });
+      this.setState({ loaded: true });
     }
   }
 
-  submit = (values) => {
+  submit = values => {
     const { match: { params }, election } = this.props;
     const { unitId, _id: electionId, chapter } = election;
     if (values.parentPhone === values.youthPhone) {
@@ -76,9 +102,7 @@ class Candidate extends React.Component {
   };
 
   render() {
-    const {
-      handleSubmit, pristine, submitting, loading,
-    } = this.props;
+    const { handleSubmit, pristine, submitting, loading } = this.props;
     return (
       <LoadingOrContent loading={loading.candidate}>
         <Form onSubmit={handleSubmit(this.submit)}>
@@ -91,10 +115,22 @@ class Candidate extends React.Component {
             id="dob"
             validate={[required, isYouth]}
           />
-          <FieldWithLabel label="Parent Phone" id="parentPhone" validate={[required]} />
-          <FieldWithLabel label="Parent Email" id="parentEmail" validate={[required, email]} />
+          <FieldWithLabel
+            label="Parent Phone"
+            id="parentPhone"
+            validate={[required]}
+          />
+          <FieldWithLabel
+            label="Parent Email"
+            id="parentEmail"
+            validate={[required, email]}
+          />
           <FieldWithLabel label="Youth Phone (optional)" id="youthPhone" />
-          <FieldWithLabel label="Youth Email (optional)" id="youthEmail" validate={[email]} />
+          <FieldWithLabel
+            label="Youth Email (optional)"
+            id="youthEmail"
+            validate={[email]}
+          />
           <Address />
 
           <h2>Eligibility Information</h2>
@@ -108,7 +144,12 @@ class Candidate extends React.Component {
             id="campingShortTerm"
             validate={[required, minValue(10)]}
           />
-          <Select label="Rank" id="rank" options={ranks} validate={[required]} />
+          <Select
+            label="Rank"
+            id="rank"
+            options={ranks}
+            validate={[required]}
+          />
           <Button text="Submit" disabled={pristine || submitting} />
         </Form>
       </LoadingOrContent>
@@ -128,5 +169,5 @@ export default flow(
   reduxForm({
     form: 'candidate',
   }),
-  connect(mapStateToProps, { createCandidate, updateCandidate, getCandidate }),
+  connect(mapStateToProps, { createCandidate, updateCandidate, getCandidate })
 )(Candidate);
