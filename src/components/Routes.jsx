@@ -16,9 +16,10 @@ import Help from 'components/Help';
 import Logout from 'components/Logout';
 import ResetPassword from 'components/ResetPassword';
 import NotFound from 'components/NotFound';
+import NominationApproval from 'components/NominationApproval';
 import UnitImport from 'components/Admin/UnitImport';
 import CreateUser from 'components/Admin/CreateUser';
-import NominationApproval from 'components/NominationApproval';
+import UserList from 'components/Admin/UserList';
 
 const Routes = () => (
   <Switch>
@@ -43,6 +44,7 @@ const Routes = () => (
     <Route path="/reset-password" component={ResetPassword} />
     <Route path="/admin/import" component={UnitImport} />
     <Route path="/admin/create-user" component={CreateUser} />
+    <Route path="/admin/users" component={UserList} />
     <Route path="*" component={NotFound} />
   </Switch>
 );
