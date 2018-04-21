@@ -3,8 +3,6 @@ import { push } from 'react-router-redux';
 import apiRequest from 'redux/helpers/api';
 import { addToast } from 'redux/state/toasts';
 
-const { Raven } = window;
-
 export const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
 export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
 export const USER_LOGIN_FAILURE = 'USER_LOGIN_FAILURE';
@@ -88,7 +86,10 @@ export function userLogoutRequest() {
 function* login(action) {
   try {
     const { email, password } = action;
-    const response = yield call(apiRequest, '/auth/login', 'POST', { email, password });
+    const response = yield call(apiRequest, '/auth/login', 'POST', {
+      email,
+      password,
+    });
     localStorage.setItem('electionToken', response.token);
     yield put(loginSuccess(response));
   } catch (error) {
@@ -143,17 +144,17 @@ function* loginRedirect(action) {
   }
 }
 
-function sentryUserContext(action) {
-  const { response: { token, ...response } } = action;
-  Raven.setUserContext({
-    ...response,
-  });
-}
+// function sentryUserContext(action) {
+//   const { response: { token, ...response } } = action;
+//   Raven.setUserContext({
+//     ...response,
+//   });
+// }
 
 export function* userSaga() {
   yield takeLatest(USER_LOGOUT, logout);
   yield takeLatest(USER_LOGIN_CHECK_TOKEN, checkToken);
   yield takeLatest(USER_LOGIN_REQUEST, login);
   yield takeLatest(USER_LOGIN_SUCCESS, loginRedirect);
-  yield takeLatest(USER_LOGIN_SUCCESS, sentryUserContext);
+  // yield takeLatest(USER_LOGIN_SUCCESS, sentryUserContext);
 }

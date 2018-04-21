@@ -21,7 +21,11 @@ export const NOMINATION_UPDATE_REQUEST = 'NOMINATION_UPDATE_REQUEST';
 export const NOMINATION_UPDATE_SUCCESS = 'NOMINATION_UPDATE_SUCCESS';
 export const NOMINATION_UPDATE_FAILURE = 'NOMINATION_UPDATE_FAILURE';
 
-export const NOMINATION_ENTITY = new schema.Entity('nominations', {}, { idAttribute: '_id' });
+export const NOMINATION_ENTITY = new schema.Entity(
+  'nominations',
+  {},
+  { idAttribute: '_id' }
+);
 export const NOMINATION_SCHEMA = [NOMINATION_ENTITY];
 
 const initialState = {
@@ -38,18 +42,6 @@ export default function nominationReducer(state = initialState, action) {
       return {
         ...state,
         items: payload.data.nominations || {},
-      };
-
-    case NOMINATION_FETCH_FAILURE:
-    case NOMINATION_CREATE_FAILURE:
-      return {
-        ...state,
-        errors: state.errors.concat([
-          {
-            body: action.error.toString(),
-            time: new Date(),
-          },
-        ]),
       };
 
     case NOMINATION_GET_SUCCESS:
@@ -143,11 +135,11 @@ export function updateNomination(nominationId, patch) {
   };
 }
 
-function nominationUpdateSuccess(nominations) {
+function nominationUpdateSuccess(nomination) {
   return {
     type: NOMINATION_UPDATE_SUCCESS,
     payload: {
-      data: normalize(nominations, NOMINATION_SCHEMA).entities,
+      data: nomination,
     },
   };
 }
@@ -191,9 +183,13 @@ function nominationGetFailure(error) {
 
 // Saga
 function* fetchSaga(action) {
-  const { payload: { electionId } } = action;
   try {
-    const response = yield call(apiRequest, `${routes.nominations}/?electionId=${electionId}`);
+    const { payload: { electionId } } = action;
+    let url = routes.nominations;
+    if (electionId) {
+      url = `${url}/?electionId=${electionId}`;
+    }
+    const response = yield call(apiRequest, url);
     yield put(nominationFetchSuccess(response));
   } catch (error) {
     yield put(nominationFetchFailure(error));
@@ -204,7 +200,10 @@ function* fetchSaga(action) {
 function* getSaga(action) {
   const { payload: { nominationId } } = action;
   try {
-    const nomination = yield call(apiRequest, `${routes.nominations}/${nominationId}`);
+    const nomination = yield call(
+      apiRequest,
+      `${routes.nominations}/${nominationId}`
+    );
     yield put(nominationGetSuccess(nomination));
   } catch (error) {
     yield put(nominationGetFailure(error));
@@ -219,10 +218,21 @@ function* createSaga(action) {
       ...payload,
       status: 'Pending Approval',
     };
-    const nomination = yield call(apiRequest, routes.nominations, 'POST', nominationData);
+    const nomination = yield call(
+      apiRequest,
+      routes.nominations,
+      'POST',
+      nominationData
+    );
     yield put(nominationCreateSuccess(nomination));
     yield put(push(`${routes.elections}/${nomination.electionId}/nomination`));
-    yield put(addToast(`Created nomination ${nomination.fname} ${nomination.lname} successfully.`));
+    yield put(
+      addToast(
+        `Created nomination ${nomination.fname} ${
+          nomination.lname
+        } successfully.`
+      )
+    );
   } catch (error) {
     yield put(nominationCreateFailure(error));
     yield put(addToast(error.message, { sticky: true }));
@@ -236,11 +246,16 @@ function* updateSaga(action) {
       apiRequest,
       `${routes.nominations}/${nominationId}`,
       'PUT',
-      patch,
+      patch
     );
     yield put(nominationUpdateSuccess(nomination));
-    yield put(push(`${routes.nominations}/${nominationId}`));
-    yield put(addToast(`Updated nomination ${nomination.fname} ${nomination.lname} successfully.`));
+    yield put(
+      addToast(
+        `Updated nomination ${nomination.fname} ${
+          nomination.lname
+        } successfully.`
+      )
+    );
   } catch (error) {
     yield put(nominationUpdateFailure(error));
     yield put(addToast(error.message, { sticky: true }));
