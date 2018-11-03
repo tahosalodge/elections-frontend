@@ -1,1 +1,1 @@
-/api/* https://elections-api.now.sh/api/:splat 200
+/api/* https://election-api.wimachtendienk.com/api:splat 200
